@@ -1,0 +1,26 @@
+.category:hover {
+    background-color: white;
+    box-shadow: 10px 10px 0px 2px #89B4B9;
+    transition: box-shadow 0.4s linear;
+    -webkit-transition: box-shadow 0.4s linear;
+    -moz-transition: box-shadow 0.4s linear;
+    -ms-transition: box-shadow 0.4s linear;
+    -o-transition: box-shadow 0.4s linear;
+}
+
+h1{
+    font-family: arial, serif;
+
+}h2{
+    font-family: arial, serif;
+
+}h3{
+    font-family: arial, serif;
+
+}h4{
+    font-family: arial, serif;
+
+}
+p{
+    font-family: aria, serif;
+}

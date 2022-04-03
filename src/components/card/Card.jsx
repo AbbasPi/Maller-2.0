@@ -1,19 +1,42 @@
 import './card.css'
 import {Link} from "react-router-dom";
-function Card({products}) {
+import {useEffect, useState} from "react";
+import axios from "axios";
+import {BASE_URL} from "../../utils/Constants";
+function Card({products, productsPage, store_id}) {
+    const [pro, setPro] = useState([])
+    useEffect(()=>{
+        const getProducts = () =>{
+    if (store_id !== undefined && store_id !== null ){
+        axios.get(`${BASE_URL}/vendor/vendor/products/${store_id}`).then((res)=>{
+            setPro(res.data.data);
+        }).catch((err)=>{
+            console.log(err);
+        })}
+    else {
+        setPro(products)
+    }
+        }
+        getProducts()
+    }, [products, store_id])
     return (
         <div className="bg-white">
-            <div className="max-w-2xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
-                <div className={'flex justify-between'}>
+            <div className="max-w-2xl  mx-auto px-4 py-14 sm:px-6 lg:max-w-7xl lg:px-8">
+                {
+                 !productsPage &&
+                <div className='flex justify-between'>
 
                 <h2 className="text-2xl font-bold text-gray-900">Products</h2>
                 <Link to={'/'} className="text-2xl text-gray-900">Browse ></Link>
                 </div>
-                <div className="mt-6 grid  gap-y-10 gap-x-6 grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
-                    {products.map((product) => (
-                        <div key={product.id} className="">
-                            <div className="w-full min-h-80 bg-gray-100 aspect-w-1 aspect-h-1 rounded-md
-                             overflow-hidden group-hover:cursor-cell lg:h-80 lg:aspect-none">
+                }
+                <div className="mt-6 grid gap-y-24 gap-x-6 grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
+                    {pro.map((product) => (
+                        <div key={product.id} className="relative">
+                            <div className="w-full hover:cursor-pointer min-h-80 bg-gray-100 aspect-w-1 aspect-h-1
+                            rounded-md overflow-hidden group-hover:cursor-cell lg:h-80 lg:aspect-none">
+                                <Link to={`/product/${product.id}`}>
+
                                 <img
                                     src={product.images.map((img)=>{
                                        return img.image
@@ -21,19 +44,20 @@ function Card({products}) {
                                     alt={product.name}
                                     className="w-full  h-full object-center object-contain lg:w-full lg:h-full"
                                 />
+                                </Link>
                             </div>
                             <div className="mt-4">
                                 <div>
-                                    <h3 className="text-sm text-gray-700">
-                                        <a href={product.href}>
-                                            <span aria-hidden="true" className="absolute inset-0" />
+                                    <h3 className="text-md text-gray-700">
+                                        <Link to={`/product/${product.id}`}>
                                             {product.name}
-                                        </a>
+                                        </Link>
                                     </h3>
                                 </div>
-                                <p className="mt-2 font-medium text-gray-900">${product.lowest}</p>
                             </div>
-                                <button className='border-2 border-cyan-700 mt-4 bg p-2 rounded-xl'>Add To Cart</button>
+                                <p className="mt-2 font-medium text-gray-900">${product.lowest}</p>
+                                <button className='border-2 rounded-md border-cyan-700 lg:absolute -bottom-14 btn mx-auto  mt-4
+                                  p-2 hover:bg-[#39818d] hover:text-white'>Add To Cart</button>
 
                         </div>
                     ))}

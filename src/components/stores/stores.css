@@ -1,0 +1,22 @@
+.topstores a{
+    color: #000000;
+    text-decoration: none;
+}
+
+.topstores a:hover{
+    color: #f08040;
+}
+
+.store1{
+    margin-left: 70px;
+    font-size: 25px;
+}
+.topstores{
+    background-color: rgba(239, 239, 239, 0.5);
+    padding: 20px;
+    font-size: 20px;
+    color: #3B828B;
+    padding-left: 110px;
+    align-items: center;
+    display: flex;
+}

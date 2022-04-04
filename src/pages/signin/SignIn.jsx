@@ -12,7 +12,7 @@ function SignIn({isLog, l}) {
             const data = res.data;
             localStorage.setItem(TOKEN_KEY, JSON.stringify(data))
             navigate('/')
-            isLog()
+            isLog(true)
         }).catch((error) => {
             console.log(error)
         });

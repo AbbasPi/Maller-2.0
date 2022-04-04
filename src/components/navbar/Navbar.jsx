@@ -8,7 +8,7 @@ import {TOKEN_KEY} from "../../utils/Constants";
 const Navbar = ({loc, isLog, l}) => {
     const logout = () =>{
         localStorage.removeItem(TOKEN_KEY);
-        isLog()
+        isLog(false)
 
     }
     let [open,setOpen]=useState(false);
@@ -52,7 +52,7 @@ const Navbar = ({loc, isLog, l}) => {
                                     l ?
                                 <div className="dropdown-content1">
                                     <Link to="/profile">Profile</Link>
-                                    <Link to ='login'>
+                                    <Link to ='/login'>
                                     <button onClick={() => logout()}>Log Out</button>
                                     </Link>
                                 </div>

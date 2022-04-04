@@ -1,5 +1,5 @@
 import React from 'react';
-import '../stores/stores.css'
+import './stores.css'
 import {Link} from "react-router-dom";
 function TopStoresLine({topStores}) {
     return (

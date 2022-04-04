@@ -9,10 +9,48 @@ import fb from '../../components/assets/svg/facebook.svg'
 import ig from '../../components/assets/svg/icons8instagram.svg'
 import tw from '../../components/assets/svg/icons8-twitter.svg'
 import Loading from "../../components/Loading";
-function StoreDetail() {
+import ReactPaginate from "react-paginate";
+function StoreDetail({isLog, l}) {
     const {storeId} = useParams()
     const [store, setStore] = useState()
+    const [pageCount, setpageCount] = useState(0);
+    const [items, setItems] = useState([]);
     const [loading, setLoading] = useState(true)
+    const [loading2, setLoading2] = useState(false)
+    let limit = 12;
+    useEffect(() => {
+        const getProducts= () => {
+            setLoading(true)
+            axios.get(`${BASE_URL}/product/all`, {params : {per_page: limit, page: 1 , vendor_id: storeId}}).then((res)=>{
+                const data = res.data.data
+                setpageCount(res.data.page_count);
+                setItems(data);
+                setLoading(false)
+            }).catch((err)=>{
+                console.log(err);
+            })
+        }
+        getProducts();
+    },[limit])
+
+    const fetchProducts= (currentPage) => {
+        setLoading2(true)
+        axios.get(`${BASE_URL}/product/all`, {params : {per_page: limit, page: currentPage}}).then((res)=>{
+            const data = res.data.data
+            setItems(data)
+            setpageCount(res.data.page_count);
+            setLoading2(false)
+        }).catch((err)=>{
+            console.log(err);
+        })
+    };
+
+    const handlePageClick = (data) => {
+        let currentPage = data.selected + 1;
+        fetchProducts(currentPage);
+        // scroll to the top
+        // window.scrollTo(10, 0)
+    };
     useEffect(()=>{
         if(storeId != null){
             axios.get(`${BASE_URL}/vendor/${storeId}`).then((res)=>{
@@ -31,7 +69,7 @@ function StoreDetail() {
 
     return (
         <div>
-            <Navbar/>
+            <Navbar isLog={isLog} l={l}/>
             {
                 store &&
         <section className="text-gray-600 body-font mt-12">
@@ -63,7 +101,31 @@ function StoreDetail() {
                             }
                     </div>
                 </div>
-                <Card productsPage={true} store_id={store.id} />
+                {
+                    loading2 ?
+                        <Loading/>
+                    :
+                <Card products={items} productsPage={true}/>
+                }
+                <ReactPaginate
+                    previousLabel={"<"}
+                    nextLabel={">"}
+                    breakLabel={"..."}
+                    pageCount={pageCount}
+                    marginPagesDisplayed={2}
+                    pageRangeDisplayed={3}
+                    onPageChange={handlePageClick}
+                    containerClassName={"pagination ml-96"}
+                    pageClassName={"page-item"}
+                    pageLinkClassName={"page-link"}
+                    previousClassName={"page-item"}
+                    previousLinkClassName={"page-link"}
+                    nextClassName={"page-item"}
+                    nextLinkClassName={"page-link"}
+                    breakClassName={"page-item"}
+                    breakLinkClassName={"page-link"}
+                    activeClassName={"active"}
+                />
             </div>
         </section>
             }

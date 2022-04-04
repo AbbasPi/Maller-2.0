@@ -6,7 +6,7 @@ import Loading from "../../components/Loading";
 import Navbar from "../../components/navbar/Navbar";
 import Footer from "../../components/footer/Footer";
 
-function ProductDetail() {
+function ProductDetail({isLog, l}) {
     const {productId} = useParams()
     const [product, setProduct] = useState();
     useEffect(()=>{
@@ -21,7 +21,7 @@ function ProductDetail() {
             {
                 product ?
                     <div>
-                    <Navbar/>
+                    <Navbar isLog={isLog} l={l}/>
             <section className="text-gray-700 body-font overflow-hidden bg-white">
                 <div className="container px-5 py-24 mx-auto">
                     <div className="lg:w-4/5 mx-auto flex flex-wrap">

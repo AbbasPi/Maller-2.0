@@ -27,7 +27,7 @@ function Card({products, productsPage, store_id}) {
                 <div className='flex justify-between'>
 
                 <h2 className="text-2xl font-bold text-gray-900">Products</h2>
-                <Link to={'/'} className="text-2xl text-gray-900">Browse ></Link>
+                <Link to={'/products'} className="text-2xl text-gray-900">Browse ></Link>
                 </div>
                 }
                 <div className="mt-6 grid gap-y-24 gap-x-6 grid-cols-2 lg:grid-cols-4 xl:gap-x-8">

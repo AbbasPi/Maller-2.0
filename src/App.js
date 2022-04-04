@@ -12,6 +12,7 @@ import Categories from "./pages/categories/Categories";
 import CategoriesPage from "./pages/categories page/CategoriesPage";
 import SignUp from "./pages/sign up/SignUp";
 import SignIn from "./pages/signin/SignIn";
+import Cart from "./pages/cart/Cart";
 
 
 function App() {
@@ -20,8 +21,8 @@ function App() {
     const [isLog, setIsLog] = useState(false)
     const [categories, setCategories] = useState([])
     const [topStores, setTopStores] = useState([])
-    const logStatus = () =>{
-        setIsLog(!isLog)
+    const logStatus = (s) =>{
+        setIsLog(s)
     }
     useEffect(()=>{
         axios.get(`${BASE_URL}/category/all`).then((res)=>{
@@ -48,14 +49,15 @@ function App() {
             <Routes>
                 <Route  path="/" element={<Home products={products.slice(0,4)} isLog={logStatus} l={isLog}
                  topStores={topStores.slice(0,5)}categories={categories.slice(0,5)}  loading={loading}/>}/>
-                <Route  path='/products' element={<Products data={products} loading={loading}/>}/>
-                <Route path="/product/:productId" element={<ProductDetail/>} />
-                <Route path="/stores" element={<Stores stores={topStores}/>} />
-                <Route path="/store/:storeId" element={<StoreDetail/>} />
-                <Route path="/category/:categoryId" element={<Categories/>} />
-                <Route path="/category" element={<CategoriesPage categories={categories}/>} />
+                <Route  path='/products' element={<Products loading={loading} isLog={logStatus} l={isLog}/>}/>
+                <Route path="/product/:productId" element={<ProductDetail isLog={logStatus} l={isLog}/>} />
+                <Route path="/stores" element={<Stores stores={topStores} isLog={logStatus} l={isLog}/>} />
+                <Route path="/store/:storeId" element={<StoreDetail isLog={logStatus} l={isLog}/>}/>
+                <Route path="/category/:categoryId" element={<Categories isLog={logStatus} l={isLog}/> }/>
+                <Route path="/category" element={<CategoriesPage categories={categories} isLog={logStatus} l={isLog}/>} />
                 <Route path="/signup" element={<SignUp/>} />
                 <Route path="/login" element={<SignIn isLog={logStatus} l={isLog}/>} />
+                <Route path="/cart" element={<Cart isLog={logStatus} l={isLog}/>} />
             </Routes>
         </BrowserRouter>
     </div>

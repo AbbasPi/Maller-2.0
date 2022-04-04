@@ -7,17 +7,20 @@ import Navbar from "../../components/navbar/Navbar";
 import './cart.css'
 import { BASE_URL, TOKEN_STR } from '../../../src/utils/Constants';
 import products from "../products/Products";
+import Loading from "../../components/Loading";
 
 
 function Cart({l, logout}) {
     const [total, setTotal] = useState([])
     const [status, setStatus] = useState(0)
     const [carts, setCarts] = useState([])
-
+    const [loading, setLoading] = useState(true)
     useEffect(()=>{
+        setLoading(true)
         axios.get(`${BASE_URL}/cart/my`, { headers: {"Authorization" : `${TOKEN_STR.token.token_type} ${TOKEN_STR.token.access_token}`} })
             .then((res)=>{
                 setCarts([...res.data])
+                setLoading(false)
             }).catch(function (error) {
             if (error.response) {
                 console.log(error.response.status);
@@ -127,7 +130,13 @@ function Cart({l, logout}) {
             </div>
         )
     return (
+
         <div className="container p-8 mx-auto mt-12">
+            {
+                loading ?
+                    <Loading/>
+                    :
+
             <div className="w-full overflow-x-auto">
                 <div className="my-2">
                     <h3 className="text-xl font-bold tracking-wider">Shopping Cart 3 item</h3>
@@ -203,7 +212,7 @@ function Cart({l, logout}) {
                     </div>
                 </div>
                 <div className="mt-4">
-                    <button
+                    <button onClick={()=>checkout()}
                         className="
               w-full
               py-2
@@ -214,10 +223,13 @@ function Cart({l, logout}) {
               hover:bg-blue-600
             "
                     >
+                       <Link to={'/checkout'}>
                         Proceed to Checkout
+                       </Link>
                     </button>
                 </div>
             </div>
+            }
         </div>
     )
 }

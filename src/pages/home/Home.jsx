@@ -8,14 +8,14 @@ import TopStoresCards from "../../components/top stores cards/TopStoresCards";
 import TopStoresLine from "../../components/top stores line/TopStoresLine";
 import Discount from "../../components/discount/Discount";
 import Footer from "../../components/footer/Footer";
-function Home({products, categories, topStores, loading, isLog, l}) {
+function Home({products, categories, topStores, loading, l, logout}) {
     if (loading === true)
     {return (
      <Loading/>
     )    }
      return (
         <div >
-            <Navbar loc={'home'} isLog={isLog} l={l}/>
+            <Navbar loc={'home'} l={l} logout={logout}/>
             <Hero/>
             <TopStoresLine topStores={topStores}/>
             <Card products={products}/>

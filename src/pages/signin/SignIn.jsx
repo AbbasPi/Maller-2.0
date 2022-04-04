@@ -4,19 +4,10 @@ import {useForm} from "react-hook-form";
 import axios from "axios";
 import {BASE_URL, TOKEN_KEY} from "../../utils/Constants";
 
-function SignIn({isLog, l}) {
+function SignIn({l, submitButton}) {
     const { register, handleSubmit, formState: { errors } } = useForm();
     const navigate = useNavigate()
-    const submitButton = data => {
-        axios.post(`${BASE_URL}/auth/signin`, data).then((res) => {
-            const data = res.data;
-            localStorage.setItem(TOKEN_KEY, JSON.stringify(data))
-            navigate('/')
-            isLog(true)
-        }).catch((error) => {
-            console.log(error)
-        });
-    }
+
     return (
         <div>
             <div className="bg-grey-lighter min-h-screen flex flex-col">

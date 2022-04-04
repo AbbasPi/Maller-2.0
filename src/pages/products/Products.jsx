@@ -5,16 +5,25 @@ import Footer from "../../components/footer/Footer";
 import Loading from "../../components/Loading";
 import ReactPaginate from "react-paginate";
 import './products.css'
-import {BASE_URL} from "../../utils/Constants";
+import {BASE_URL, TOKEN_STR} from "../../utils/Constants";
 import axios from "axios";
+import {useNavigate} from "react-router-dom";
 
-function Products({isLog, l}) {
+function Products({l, logout}) {
 
     const [pageCount, setpageCount] = useState(0);
     const [items, setItems] = useState([]);
     const [loading, setLoading] = useState(true)
     const [loading2, setLoading2] = useState(false)
+    const navigate = useNavigate()
     let limit = 12;
+    const addToCart = (object)=>{
+        console.log(object)
+        l ? axios.post(`${BASE_URL}/cart/my`, {  "product_id": object,"item_qty": 1},
+                { headers: {"Authorization" : `${TOKEN_STR.token.token_type} ${TOKEN_STR.token.access_token}`} })
+            : navigate("/login");
+
+    }
     useEffect(() => {
         const getProducts= () => {
                 setLoading(true)
@@ -51,10 +60,10 @@ function Products({isLog, l}) {
     if (loading === true)
     {return (
         <Loading/>
-    )    }
+    )}
     return (
         <div>
-                <Navbar loc='products' isLog={isLog} l={l}/>
+                <Navbar loc='products' l={l} logout={logout}/>
             <div className='mb-20'>
                 <div className='flex justify-between max-w-md mt-36 mx-8 lg:mx-auto'>
                     <p className="text-xl hover:text-cyan-500 hover:cursor-pointer transition duration-300">
@@ -70,7 +79,7 @@ function Products({isLog, l}) {
                 {
                     loading2 ? <Loading/>
                         :
-                <Card productsPage={true} products={items}/>
+                <Card productsPage={true} products={items} addToCart={addToCart}/>
                 }
                 <ReactPaginate
                     previousLabel={"<"}

@@ -7,7 +7,7 @@ import Navbar from "../../components/navbar/Navbar";
 import Card from "../../components/card/Card";
 import Footer from "../../components/footer/Footer";
 
-function Categories({isLog, l}) {
+function Categories({l, logout}) {
     const {categoryId} = useParams()
     const [products, setProducts] = useState()
     const [loading, setLoading] = useState(true)
@@ -28,7 +28,7 @@ function Categories({isLog, l}) {
     )    }
     return (
         <div>
-            <Navbar isLog={isLog} l={l}/>
+            <Navbar l={l} logout={logout}/>
             <div className='my-12'/>
             <h1 className='text-3xl mt-24'>Top {products[0].category.name} Products</h1>
             <Card productsPage={true} products={products}/>

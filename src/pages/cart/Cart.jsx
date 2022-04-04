@@ -6,9 +6,10 @@ import Footer from "../../components/footer/Footer";
 import Navbar from "../../components/navbar/Navbar";
 import './cart.css'
 import { BASE_URL, TOKEN_STR } from '../../../src/utils/Constants';
+import products from "../products/Products";
 
 
-function Cart() {
+function Cart({l, logout}) {
     const [total, setTotal] = useState([])
     const [status, setStatus] = useState(0)
     const [carts, setCarts] = useState([])
@@ -61,7 +62,7 @@ function Cart() {
     if(status === 404)
         return (
             <div>
-                <Navbar/>
+                <Navbar l={l} logout={logout}/>
                 <div class="empty-cart ">
                     <svg className='empty-cart'  viewBox="656 573 264 182" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
                         <rect id="bg-line" stroke="none" fill-opacity="0.2" fill="#04AA6D" fill-rule="evenodd" x="656" y="624" width="206" height="38" rx="19"></rect>
@@ -126,36 +127,97 @@ function Cart() {
             </div>
         )
     return (
-        <div>
-            <Navbar></Navbar>
+        <div className="container p-8 mx-auto mt-12">
+            <div className="w-full overflow-x-auto">
+                <div className="my-2">
+                    <h3 className="text-xl font-bold tracking-wider">Shopping Cart 3 item</h3>
+                </div>
+                <table className="w-full shadow-inner">
+                    <thead>
+                    <tr className="bg-gray-100">
+                        <th className="px-6 py-3 font-bold whitespace-nowrap">Image</th>
+                        <th className="px-6 py-3 font-bold whitespace-nowrap">Product</th>
+                        <th className="px-6 py-3 font-bold whitespace-nowrap">Qty</th>
+                        <th className="px-6 py-3 font-bold whitespace-nowrap">Price</th>
+                        <th className="px-6 py-3 font-bold whitespace-nowrap">Remove</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {
+                        carts.map((product, index)=>{
 
-            <div>
-                {
-                    carts.map((product, index)=>(
-                        <div key={index} className='cart'>
-                            <div className='cart2'>
-                                <img className='cart_img' src={product.product.images.map((img)=>(
+        return          (<tr>
+                        <td>
+                            <div className="flex justify-center my-3">
+                                <img className='object-cover h-28 w-28 rounded-2xl' src={product.product.images.map((img)=>(
                                     img.image
                                 ))} alt="" />
-                                <div className='cart_name'>
-                                    {product.product.name}
-                                </div>
-                                <QuantityPicker min={1} defaultValue={1} value={product.item_qty} onChange={(value)=>addQty(product.id, value, product.product.lowest)}/>
-                                <button className='fa fa-times cart_btn2' onClick={()=>removeFromCart(product.id)}></button>
-                                <div className='cart_price'>
-                                    $ {product.product.lowest}
-                                </div>
                             </div>
+                        </td>
+                        <td className="p-4 px-6 text-center w-96">{product.product.name}</td>
+                        <td className="p-4 px-6 text-center whitespace-nowrap">
+                            <QuantityPicker min={1} defaultValue={1} value={product.item_qty} onChange={(value)=>addQty(product.id, value, product.product.lowest)}/>
+                        </td>
+                        <td className="p-4 px-6 text-center whitespace-nowrap">${product.product.lowest}</td>
+                        <td className="p-4 px-6 text-center whitespace-nowrap">
+                            <button  onClick={()=>removeFromCart(product.id)}>
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    className="w-6 h-6 text-red-400"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth="2"
+                                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                                    />
+                                </svg>
+                            </button>
+                        </td>
+                  </tr>)
+                        })
+                    }
+
+                    </tbody>
+                </table>
+
+                <div className="mt-4">
+                    <div className="py-4 rounded-md shadow">
+                        <div
+                            className="
+                flex
+                items-center
+                justify-between
+                px-4
+                py-2
+                mt-3
+                border-t-2
+              "
+                        >
+                            <span className="text-xl font-bold">Total</span>
+                            <span className="text-2xl font-bold">${total}</span>
                         </div>
-                    ))
-                }
+                    </div>
+                </div>
+                <div className="mt-4">
+                    <button
+                        className="
+              w-full
+              py-2
+              text-center text-white
+              bg-blue-500
+              rounded-md
+              shadow
+              hover:bg-blue-600
+            "
+                    >
+                        Proceed to Checkout
+                    </button>
+                </div>
             </div>
-            <div className='cart-details'>
-                <p>Total: {total}</p>
-            </div>
-            <button onClick={()=>checkout()} className='checkout1'><Link style={{ textDecoration: 'none', color: 'white'}} to='/checkout-address'>Proceed to Checkout</Link></button>
-            <button className='checkout12'><Link style={{ textDecoration: 'none', color: 'black', backgroundColor: 'none'}} to='/products' >Continue Shopping</Link></button>
-            <Footer></Footer>
         </div>
     )
 }

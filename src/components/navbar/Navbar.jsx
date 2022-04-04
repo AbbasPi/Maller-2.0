@@ -5,12 +5,8 @@ import account from '../assets/media/account.png'
 import {Link} from "react-router-dom";
 import {TOKEN_KEY} from "../../utils/Constants";
 
-const Navbar = ({loc, isLog, l}) => {
-    const logout = () =>{
-        localStorage.removeItem(TOKEN_KEY);
-        isLog(false)
+const Navbar = ({loc, l, logout}) => {
 
-    }
     let [open,setOpen]=useState(false);
     return (
         <div className=' w-full z-50 bg-white fixed h-20 top-0 left-0'>
@@ -52,8 +48,8 @@ const Navbar = ({loc, isLog, l}) => {
                                     l ?
                                 <div className="dropdown-content1">
                                     <Link to="/profile">Profile</Link>
-                                    <Link to ='/login'>
-                                    <button onClick={() => logout()}>Log Out</button>
+                                    <Link to =''>
+                                    <button onClick={logout}>Log Out</button>
                                     </Link>
                                 </div>
                                         :

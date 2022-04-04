@@ -3,7 +3,7 @@ import {Link} from "react-router-dom";
 import {useEffect, useState} from "react";
 import axios from "axios";
 import {BASE_URL} from "../../utils/Constants";
-function Card({products, productsPage, store_id}) {
+function Card({products, productsPage, store_id, addToCart}) {
     const [pro, setPro] = useState([])
     useEffect(()=>{
         const getProducts = () =>{
@@ -56,7 +56,7 @@ function Card({products, productsPage, store_id}) {
                                 </div>
                             </div>
                                 <p className="mt-2 font-medium text-gray-900">${product.lowest}</p>
-                                <button className='border-2 rounded-md border-cyan-700 lg:absolute -bottom-14 btn mx-auto  mt-4
+                                <button onClick={()=>addToCart(product.id)} className='border-2 rounded-md border-cyan-700 lg:absolute -bottom-14 btn mx-auto  mt-4
                                   p-2 hover:bg-[#39818d] hover:text-white'>Add To Cart</button>
 
                         </div>

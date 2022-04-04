@@ -6,10 +6,10 @@ import Categories from "../categories/Categories";
 import categories from "../categories/Categories";
 import Category from "../../components/category/Category";
 
-function CategoriesPage({categories, l, isLog}) {
+function CategoriesPage({categories, l}) {
     return (
         <div>
-            <Navbar isLog={isLog} l={l}/>
+            <Navbar l={l}/>
             <div className='my-32'>
                 <Category categoriesPage={true} categories={categories}/>
             </div>

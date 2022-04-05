@@ -18,7 +18,7 @@ function Category({categories, categoriesPage}) {
                         <div key={category.id} className="">
                             <div  className="w-full category hover:cursor-pointer h-60 bg-gray-100 aspect-w-1 aspect-h-1 rounded-xl
                              overflow-hidden group-hover:cursor-cell lg:h-60 lg:aspect-none">
-                                <Link to={`category/${category.id}`}>
+                                <Link to={`/category/${category.id}`}>
 
                                 <img
                                     src={category.image}

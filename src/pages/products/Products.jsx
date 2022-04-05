@@ -54,7 +54,7 @@ function Products({l, logout}) {
     )}
     return (
         <div>
-                <Navbar loc='products' l={l} logout={logout}/>
+                {/*<Navbar loc='products' l={l} logout={logout}/>*/}
             <div className='mb-20'>
                 <div className='flex justify-between max-w-md mt-36 mx-8 lg:mx-auto'>
                     <p className="text-xl hover:text-cyan-500 hover:cursor-pointer transition duration-300">

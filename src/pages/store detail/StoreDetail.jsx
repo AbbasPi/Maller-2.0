@@ -69,7 +69,7 @@ function StoreDetail({l, logout}) {
 
     return (
         <div>
-            <Navbar l={l} logout={logout}/>
+            {/*<Navbar l={l} logout={logout}/>*/}
             {
                 store &&
         <section className="text-gray-600 body-font mt-12">

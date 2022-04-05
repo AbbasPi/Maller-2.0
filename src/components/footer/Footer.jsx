@@ -21,7 +21,7 @@ import {Link} from "react-router-dom";
                             <h1 className='text-6xl text-white'>MALLER</h1>
                         </Link>
                     </div>
-                    <div className="flex flex-col lg:flex-row justify-center items-center space-y- lg:space-y-0 lg:space-x-20">
+                    <div className="flex space-x-6 lg:flex-row justify-center items-center space-y- lg:space-y-0 lg:space-x-20">
                         <div>
                             <h2 className="text-left mb-6 text-sm font-semibold text-white uppercase">
                                 who are we

@@ -1,10 +1,11 @@
 import './App.css';
 import {BrowserRouter,Routes, Route, useNavigate} from 'react-router-dom';
+import {useEffect, useState} from "react";
+import SnackbarProvider from 'react-simple-snackbar'
+import axios from "axios";
+import {BASE_URL, TOKEN_KEY, TOKEN_STR} from "./utils/Constants";
 import Home from "./pages/home/Home";
 import Products from "./pages/products/Products";
-import {useEffect, useState} from "react";
-import axios from "axios";
-import {BASE_URL, TOKEN_KEY} from "./utils/Constants";
 import ProductDetail from "./pages/product detail/ProductDetail";
 import Stores from "./pages/stores/Stores";
 import StoreDetail from "./pages/store detail/StoreDetail";
@@ -13,8 +14,9 @@ import CategoriesPage from "./pages/categories page/CategoriesPage";
 import SignUp from "./pages/sign up/SignUp";
 import SignIn from "./pages/signin/SignIn";
 import Cart from "./pages/cart/Cart";
-import Navbar from "./components/navbar/Navbar";
 import Profile from "./pages/profile/Profile";
+import Navbar from "./components/navbar/Navbar";
+import {CartProvider} from "./contexts/CartContext";
 
 
 function App() {
@@ -23,8 +25,8 @@ function App() {
     const [isLog, setIsLog] = useState(false)
     const [categories, setCategories] = useState([])
     const [topStores, setTopStores] = useState([])
-    const [isLogged, setIsLogged] = useState(true)
-    const [t, setT] = useState(false)
+    const [count,setCount]=useState(false);
+
     useEffect(()=>{
         let token;
         try {
@@ -41,7 +43,7 @@ function App() {
             setIsLog(false)
         }
 
-    },[t])
+    },[])
     const logout = () =>{
         localStorage.removeItem(TOKEN_KEY);
         setIsLog(false)
@@ -76,9 +78,21 @@ function App() {
             console.log(error)
         });
     }
+
+    const getCount = () =>{
+        axios.get(`${BASE_URL}/cart/my`, { headers: {"Authorization" : `${TOKEN_STR.token.token_type} ${TOKEN_STR.token.access_token}`} })
+            .then((res)=>{
+                setCount(res.data.length)
+            })
+    }
+    getCount()
   return (
     <div className="App">
         <BrowserRouter>
+            <SnackbarProvider>
+                <CartProvider>
+
+                <Navbar  l={isLog} logout={logout}  loading={loading}/>
             <Routes>
                 <Route  path="/" element={<Home products={products.slice(0,4)} l={isLog} logout={logout}
                  topStores={topStores.slice(0,5)} categories={categories.slice(0,5)}  loading={loading}/>}/>
@@ -90,9 +104,11 @@ function App() {
                 <Route path="/category" element={<CategoriesPage categories={categories} l={isLog} logout={logout}/>} />
                 <Route path="/signup" element={<SignUp/>} />
                 <Route path="/login" element={<SignIn l={isLog} submitButton={submitButton} logout={logout}/>} />
-                <Route path="/cart" element={<Cart l={isLog} logout={logout}/>} />
+                <Route path="/cart" element={<Cart l={isLog} logout={logout} getCount={getCount}/>} />
                 <Route path="/profile" element={<Profile />} />
             </Routes>
+                </CartProvider>
+            </SnackbarProvider>
         </BrowserRouter>
     </div>
   );

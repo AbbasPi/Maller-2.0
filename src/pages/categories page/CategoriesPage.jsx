@@ -9,7 +9,7 @@ import Category from "../../components/category/Category";
 function CategoriesPage({categories, l}) {
     return (
         <div>
-            <Navbar l={l}/>
+            {/*<Navbar l={l}/>*/}
             <div className='my-32'>
                 <Category categoriesPage={true} categories={categories}/>
             </div>

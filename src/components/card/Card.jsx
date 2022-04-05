@@ -1,17 +1,39 @@
 import './card.css'
 import {Link, useNavigate} from "react-router-dom";
-import {useEffect, useState} from "react";
+import {useContext, useEffect, useState} from "react";
+import { useSnackbar } from 'react-simple-snackbar'
 import axios from "axios";
 import {BASE_URL, TOKEN_STR} from "../../utils/Constants";
+import CartContext from "../../contexts/CartContext";
 function Card({products, productsPage, store_id, l}) {
-    const [pro, setPro] = useState([])
-    const navigate = useNavigate()
-    const addToCart = (object)=>{
-        l ?
-        axios.post(`${BASE_URL}/cart/my`, {  "product_id": object,"item_qty": 1},
-                { headers: {"Authorization" : `${TOKEN_STR.token.token_type} ${TOKEN_STR.token.access_token}`} })
-        : navigate('/login')
+    const options = {
+        position: 'bottom-right',
+        style: {
+            backgroundColor: '#39818d',
+            border: '1px',
+            color: 'white',
+            fontFamily: 'Poppins',
+            fontSize: '17px',
+            textAlign: 'center',
+        },
+        closeStyle: {
+            color: 'red',
+            fontSize: '15px',
+        },
     }
+    const [pro, setPro] = useState([])
+    const [openSnackbar, closeSnackbar] = useSnackbar(options)
+    const navigate = useNavigate()
+    const {addToCarts} = useContext(CartContext)
+    // const addToCart = (object)=>{
+    //     if(l){
+    //     axios.post(`${BASE_URL}/cart/my`, {  "product_id": object,"item_qty": 1},
+    //             { headers: {"Authorization" : `${TOKEN_STR.token.token_type} ${TOKEN_STR.token.access_token}`} })
+    //     openSnackbar('Added To Cart Successfully')
+    //
+    //     }
+    //     else navigate('/login')
+    // }
     useEffect(()=>{
         const getProducts = () =>{
     if (store_id !== undefined && store_id !== null ){
@@ -63,8 +85,10 @@ function Card({products, productsPage, store_id, l}) {
                                 </div>
                             </div>
                                 <p className="mt-2 font-medium text-gray-900">${product.lowest}</p>
-                                <button onClick={()=>addToCart(product.id)} className='border-2 rounded-md border-cyan-700 lg:absolute -bottom-14 btn mx-auto  mt-4
+                                <button onClick={() => { addToCarts(product.id)}} className='border-2 rounded-md
+                                    border-cyan-700 lg:absolute -bottom-14 btn mx-auto  mt-4
                                   p-2 hover:bg-[#39818d] hover:text-white'>Add To Cart</button>
+
 
                         </div>
                     ))}

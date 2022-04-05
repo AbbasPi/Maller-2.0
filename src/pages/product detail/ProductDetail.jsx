@@ -1,14 +1,16 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import axios from "axios";
 import {Link, useNavigate, useParams} from 'react-router-dom';
 import {BASE_URL, TOKEN_STR} from "../../utils/Constants";
 import Loading from "../../components/Loading";
 import Navbar from "../../components/navbar/Navbar";
 import Footer from "../../components/footer/Footer";
+import CartContext from "../../contexts/CartContext";
 
 function ProductDetail({l, logout}) {
     const {productId} = useParams()
     const [product, setProduct] = useState();
+    const {addToCarts} = useContext(CartContext);
     const navigate = useNavigate()
     useEffect(()=>{
         axios.get(`${BASE_URL}/product/${productId}`).then((res)=>{
@@ -17,19 +19,12 @@ function ProductDetail({l, logout}) {
             console.log(err);
         })
     }, [])
-    const addToCart = (object)=>{
-        console.log(object)
-        l ? axios.post(`${BASE_URL}/cart/my`, {  "product_id": object,"item_qty": 1},
-                { headers: {"Authorization" : `${TOKEN_STR.token.token_type} ${TOKEN_STR.token.access_token}`} })
-            : navigate("/login");
-
-    }
     return (
         <div>
             {
                 product ?
                     <div>
-                    <Navbar l={l} logout={logout}/>
+                    {/*<Navbar l={l} logout={logout}/>*/}
             <section className="text-gray-700 mt-6 body-font overflow-hidden bg-white">
                 <div className="container px-5 py-24 mx-auto">
                     <div className="lg:w-4/5 mx-auto flex flex-wrap">
@@ -79,7 +74,7 @@ function ProductDetail({l, logout}) {
                                 </div>
                                 <div className="flex">
                                     <span className="title-font font-medium text-2xl text-gray-900">${product.lowest}</span>
-                                    <button onClick={()=>addToCart(product.id)}
+                                    <button onClick={()=>addToCarts(product.id)}
                                         className="flex ml-auto text-white bg-[#39818d] border-0 py-2 px-6
                                         focus:outline-none hover:bg-cyan-500 rounded-md">Add To Cart
                                     </button>

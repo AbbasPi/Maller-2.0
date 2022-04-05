@@ -5,19 +5,23 @@ import account from '../assets/media/account.png'
 import {Link} from "react-router-dom";
 import {BASE_URL, TOKEN_KEY, TOKEN_STR} from "../../utils/Constants";
 import axios from "axios";
+import CartContext from "../../contexts/CartContext";
 
-const Navbar = ({loc, l, logout}) => {
+const Navbar = ({loc, l, logout, loading}) => {
 
-    let [open,setOpen]=useState(false);
-    let [count,setCount]=useState(false);
+    const [open,setOpen]=useState(false);
+    const [c,setC]=useState(null);
+    const {count, getCart} = useContext(CartContext);
     useEffect(()=>{
-        axios.get(`${BASE_URL}/cart/my`, { headers: {"Authorization" : `${TOKEN_STR.token.token_type} ${TOKEN_STR.token.access_token}`} })
-            .then((res)=>{
-                setCount(res.data.length)
-        })
-    })
+    getCart()
+    setC(count)
+    }, [])
     return (
         <div className=' w-full z-50 bg-white fixed h-20 top-0 left-0'>
+            {
+                loading ? null
+                    :
+
             <div className='lg:flex items-center justify-between py-2 lg:px-10 px-7'>
                 <div className='font-bold text-2xl cursor-pointer flex items-center font-[Poppins] text-gray-800'>
                     <Link to='/' className={'w-24 m-auto lg:block'}>
@@ -75,6 +79,7 @@ const Navbar = ({loc, l, logout}) => {
                         </Link>
                     </div>
             </div>
+            }
         </div>
     )
 }

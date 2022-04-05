@@ -105,7 +105,7 @@ function StoreDetail({l, logout}) {
                     loading2 ?
                         <Loading/>
                     :
-                <Card products={items} productsPage={true}/>
+                <Card products={items} productsPage={true} l={l}/>
                 }
                 <ReactPaginate
                     previousLabel={"<"}

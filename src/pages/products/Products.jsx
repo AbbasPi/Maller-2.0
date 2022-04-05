@@ -7,23 +7,14 @@ import ReactPaginate from "react-paginate";
 import './products.css'
 import {BASE_URL, TOKEN_STR} from "../../utils/Constants";
 import axios from "axios";
-import {useNavigate} from "react-router-dom";
 
 function Products({l, logout}) {
-
     const [pageCount, setpageCount] = useState(0);
     const [items, setItems] = useState([]);
     const [loading, setLoading] = useState(true)
     const [loading2, setLoading2] = useState(false)
-    const navigate = useNavigate()
     let limit = 12;
-    const addToCart = (object)=>{
-        console.log(object)
-        l ? axios.post(`${BASE_URL}/cart/my`, {  "product_id": object,"item_qty": 1},
-                { headers: {"Authorization" : `${TOKEN_STR.token.token_type} ${TOKEN_STR.token.access_token}`} })
-            : navigate("/login");
 
-    }
     useEffect(() => {
         const getProducts= () => {
                 setLoading(true)
@@ -55,7 +46,7 @@ function Products({l, logout}) {
         let currentPage = data.selected + 1;
         fetchProducts(currentPage);
         // scroll to the top
-        // window.scrollTo(10, 0)
+        window.scrollTo(10, 0)
     };
     if (loading === true)
     {return (
@@ -79,7 +70,7 @@ function Products({l, logout}) {
                 {
                     loading2 ? <Loading/>
                         :
-                <Card productsPage={true} products={items} addToCart={addToCart}/>
+                <Card productsPage={true} products={items} l={l}/>
                 }
                 <ReactPaginate
                     previousLabel={"<"}

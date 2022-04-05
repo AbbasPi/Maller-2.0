@@ -29,7 +29,7 @@ function Category({categories, categoriesPage}) {
                             <div className="mt-4">
                                 <div>
                                     <h3 className="text-xl text-gray-700">
-                                        <Link to={`category/${category.id}`}>
+                                        <Link to={`/category/${category.id}`}>
                                             {category.name}
                                         </Link>
                                     </h3>

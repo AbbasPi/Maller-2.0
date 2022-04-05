@@ -8,7 +8,7 @@ import './cart.css'
 import { BASE_URL, TOKEN_STR } from '../../../src/utils/Constants';
 import products from "../products/Products";
 import Loading from "../../components/Loading";
-
+import x from '../../components/assets/svg/x-symbol.svg'
 
 function Cart({l, logout}) {
     const [total, setTotal] = useState([])
@@ -40,6 +40,7 @@ function Cart({l, logout}) {
                     `${TOKEN_STR.token.token_type} ${TOKEN_STR.token.access_token}`} })
         const newCart = carts.filter((item) => item.id !== id);
         setCarts(newCart);
+        setTotal(carts.reduce((total, item)=>total+(item.product.lowest*item.item_qty),0))
     })
 
     const addQty = ((id, qt)=>{
@@ -130,12 +131,15 @@ function Cart({l, logout}) {
             </div>
         )
     return (
+        <div>
 
-        <div className="container p-8 mx-auto mt-12">
             {
                 loading ?
                     <Loading/>
                     :
+                    <div>
+    <Navbar l={l}/>
+        <div className="container p-8 mx-auto mt-12">
 
             <div className="w-full overflow-x-auto">
                 <div className="my-2">
@@ -155,35 +159,28 @@ function Cart({l, logout}) {
                     {
                         carts.map((product, index)=>{
 
-        return          (<tr>
+        return          (<tr key={product.id}>
                         <td>
-                            <div className="flex justify-center my-3">
-                                <img className='object-cover h-28 w-28 rounded-2xl' src={product.product.images.map((img)=>(
-                                    img.image
-                                ))} alt="" />
-                            </div>
+                                <Link className='flex justify-center my-3' to={`/product/${product.product.id}`}>
+
+                                    <img
+                                        src={product.product.images.map((img)=>{
+                                            return img.image
+                                        })}
+                                        alt={product.product.name}
+                                        className="object-cover h-28 w-28 rounded-2xl"
+                                    />
+                                </Link>
+
                         </td>
                         <td className="p-4 px-6 text-center w-96">{product.product.name}</td>
                         <td className="p-4 px-6 text-center whitespace-nowrap">
-                            <QuantityPicker min={1} defaultValue={1} value={product.item_qty} onChange={(value)=>addQty(product.id, value, product.product.lowest)}/>
+                            <QuantityPicker  width='8rem' min={1} defaultValue={1} value={product.item_qty} onChange={(value)=>addQty(product.id, value, product.product.lowest)}/>
                         </td>
                         <td className="p-4 px-6 text-center whitespace-nowrap">${product.product.lowest}</td>
                         <td className="p-4 px-6 text-center whitespace-nowrap">
                             <button  onClick={()=>removeFromCart(product.id)}>
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    className="w-6 h-6 text-red-400"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    stroke="currentColor"
-                                >
-                                    <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth="2"
-                                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                                    />
-                                </svg>
+                                <img src={x} alt=""/>
                             </button>
                         </td>
                   </tr>)
@@ -229,8 +226,12 @@ function Cart({l, logout}) {
                     </button>
                 </div>
             </div>
+                </div>
+            <Footer/>
+                </div>
             }
         </div>
+
     )
 }
 

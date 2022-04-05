@@ -1,10 +1,17 @@
 import './card.css'
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
 import axios from "axios";
-import {BASE_URL} from "../../utils/Constants";
-function Card({products, productsPage, store_id, addToCart}) {
+import {BASE_URL, TOKEN_STR} from "../../utils/Constants";
+function Card({products, productsPage, store_id, l}) {
     const [pro, setPro] = useState([])
+    const navigate = useNavigate()
+    const addToCart = (object)=>{
+        l ?
+        axios.post(`${BASE_URL}/cart/my`, {  "product_id": object,"item_qty": 1},
+                { headers: {"Authorization" : `${TOKEN_STR.token.token_type} ${TOKEN_STR.token.access_token}`} })
+        : navigate('/login')
+    }
     useEffect(()=>{
         const getProducts = () =>{
     if (store_id !== undefined && store_id !== null ){
@@ -33,8 +40,8 @@ function Card({products, productsPage, store_id, addToCart}) {
                 <div className="mt-6 grid gap-y-24 gap-x-6 grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
                     {pro.map((product) => (
                         <div key={product.id} className="relative">
-                            <div className="w-full hover:cursor-pointer min-h-80 bg-gray-100 aspect-w-1 aspect-h-1
-                            rounded-md overflow-hidden group-hover:cursor-cell lg:h-80 lg:aspect-none">
+                            <div className="w-full p- hover:cursor-pointer min-h-80 bg-gray-100 aspect-w-1 aspect-h-1
+                            rounded-xl overflow-hidden group-hover:cursor-cell lg:h-80 lg:aspect-none">
                                 <Link to={`/product/${product.id}`}>
 
                                 <img
@@ -42,7 +49,7 @@ function Card({products, productsPage, store_id, addToCart}) {
                                        return img.image
                                     })}
                                     alt={product.name}
-                                    className="w-full  h-full object-center object-contain lg:w-full lg:h-full"
+                                    className="w-full rounded-xl h-full object-center object-contain lg:w-full lg:h-5/6 lg:mt-7"
                                 />
                                 </Link>
                             </div>

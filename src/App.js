@@ -14,6 +14,7 @@ import SignUp from "./pages/sign up/SignUp";
 import SignIn from "./pages/signin/SignIn";
 import Cart from "./pages/cart/Cart";
 import Navbar from "./components/navbar/Navbar";
+import Profile from "./pages/profile/Profile";
 
 
 function App() {
@@ -24,7 +25,6 @@ function App() {
     const [topStores, setTopStores] = useState([])
     const [isLogged, setIsLogged] = useState(true)
     const [t, setT] = useState(false)
-    // const navigate = useNavigate()
     useEffect(()=>{
         let token;
         try {
@@ -44,7 +44,7 @@ function App() {
     },[t])
     const logout = () =>{
         localStorage.removeItem(TOKEN_KEY);
-        setT(!t)
+        setIsLog(false)
     }
 
     useEffect(()=>{
@@ -70,7 +70,7 @@ function App() {
         axios.post(`${BASE_URL}/auth/signin`, data).then((res) => {
             const data = res.data;
             localStorage.setItem(TOKEN_KEY, JSON.stringify(data))
-            setT(!t)
+            setIsLog(true)
             // navigate('/')
         }).catch((error) => {
             console.log(error)
@@ -79,7 +79,6 @@ function App() {
   return (
     <div className="App">
         <BrowserRouter>
-                <Navbar logout={logout} l={isLog}/>
             <Routes>
                 <Route  path="/" element={<Home products={products.slice(0,4)} l={isLog} logout={logout}
                  topStores={topStores.slice(0,5)} categories={categories.slice(0,5)}  loading={loading}/>}/>
@@ -92,6 +91,7 @@ function App() {
                 <Route path="/signup" element={<SignUp/>} />
                 <Route path="/login" element={<SignIn l={isLog} submitButton={submitButton} logout={logout}/>} />
                 <Route path="/cart" element={<Cart l={isLog} logout={logout}/>} />
+                <Route path="/profile" element={<Profile />} />
             </Routes>
         </BrowserRouter>
     </div>

@@ -8,7 +8,7 @@ function TopStoresLine({topStores}) {
                 <h1 className='text-[#39818d] border-gray-600 border-r-2 pr-6 ml-32'>Top Stores</h1>
                 {
                     topStores.map((store)=>{
-                        return <Link to={`/store/${store.id}`} className='hover:text-[#39818d] text-gray-800' >{store.name}</Link>
+                        return <Link key={store.id} to={`/store/${store.id}`} className='hover:text-[#39818d] text-gray-800' >{store.name}</Link>
                     })
                 }
             </div>

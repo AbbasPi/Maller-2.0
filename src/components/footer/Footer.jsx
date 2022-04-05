@@ -27,8 +27,8 @@ import {Link} from "react-router-dom";
                                 who are we
                             </h2>
                             <ul className="flex flex-col items-start justify-start text-gray-300">
-                                {whoarewe.map((item)=>{
-                                   return <li >
+                                {whoarewe.map((item, index)=>{
+                                   return <li key={index}>
                                         <Link to="/" className="hover:underline">
                                             {item}
                                         </Link>
@@ -42,8 +42,8 @@ import {Link} from "react-router-dom";
                                 Customers service
                             </h2>
                             <ul className="flex flex-col items-start justify-start text-gray-300">
-                                {cus_service.map((item)=>{
-                                    return <li >
+                                {cus_service.map((item, index)=>{
+                                    return <li key={index}>
                                         <Link to="/" className="hover:underline">
                                             {item}
                                         </Link>

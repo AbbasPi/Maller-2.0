@@ -12,12 +12,12 @@ const Navbar = ({loc, loading}) => {
 
     const [open,setOpen]=useState(false);
     const [c,setC]=useState(null);
-    const {count, getCart} = useContext(CartContext);
+    const {count, getCart, getCount} = useContext(CartContext);
     const {logout, isAuth} = useContext(AuthContext)
     useEffect(()=>{
-    getCart()
+    // getCount()
     setC(count)
-    }, [ count])
+    }, [count])
     return (
         <div className=' w-full z-50 bg-white fixed h-20 top-0 left-0'>
             {

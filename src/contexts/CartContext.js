@@ -10,6 +10,7 @@ const initValue = {
     count:0,
     addToCarts:(obj)=>{},
     getCart:()=>{},
+    getCount:()=>{},
     removeCart:(id)=>{},
     addQty:(id,qt)=>{}
 }
@@ -37,9 +38,12 @@ const {isAuth} = useContext(AuthContext)
     const [total, setTotal] = useState(0)
     const [loading, setLoading] = useState(true)
     const [count, setCount] = useState(0)
+
+
     const getCart = () =>{
-        isAuth &&
-        axios.get(`${BASE_URL}/cart/my`, { headers: {"Authorization" : `${TOKEN_STR.token.token_type} ${TOKEN_STR.token.access_token}`} })
+        if(isAuth === true){
+        axios.get(`${BASE_URL}/cart/my`, { headers: {"Authorization" :
+                    `${TOKEN_STR.token.token_type} ${TOKEN_STR.token.access_token}`} })
             .then((res)=>{
                 setCarts([...res.data])
                 setLoading(false)
@@ -49,43 +53,63 @@ const {isAuth} = useContext(AuthContext)
             }).catch((err)=>[
                 console.log(err)
         ])
+        }
+    }
+
+
+    const getCount = () =>{
+    if(isAuth)
+    {
+        getCart()
+        setCount(carts?.length)
+    }
+        else if(!isAuth){
+            setCount(0)
+        }
 
     }
 
+
     useEffect(()=>{
-        setCount(carts?.length)
-        if(isAuth){
-            setCount(0)
-        }
-    }, [carts, isAuth])
+        getCount()
+    }, [isAuth])
+
+
     const addToCarts = (cart)=>{
         let cartsTemp = carts
         if(isAuth){
-            setMsg('Added To Cart Successfully')
+        openSnackbar('Added To Cart')
         cartsTemp.push(cart)
         setCarts([...cartsTemp])
         axios.post(`${BASE_URL}/cart/my`, {  "product_id": cart,"item_qty": 1},
             { headers: {"Authorization" : `${TOKEN_STR.token.token_type} ${TOKEN_STR.token.access_token}`} })
             .then((res)=>{
                 getCart()
-            })
-
+            }).catch((err)=>{
+                console.log(err)
+        })
+            setCount(count + 1)
         }
         if(!isAuth){
-            setMsg('Login To Add To Cart')
+            openSnackbar('Login To Add To Cart')
         }
-        openSnackbar(msg)
     }
+
+
     const removeCart = ((id)=>{
         isAuth &&
         axios.delete(`${BASE_URL}/cart/item/delete/${id}`, { headers: {"Authorization":
                     `${TOKEN_STR.token.token_type} ${TOKEN_STR.token.access_token}`} }).then(()=>{
+        }).catch((err)=>{
+            console.log(err)})
         setTotal(carts.reduce((total, item)=>total+(item.product.lowest*item.item_qty),0))
-
-        })
         let newCart = carts.filter((item) => item.id !== id);
         setCarts(newCart);
+        setCount(count-1)
     })
+
+
+
     const addQty = ((id, qt)=>{
         isAuth &&
         axios.post(`${BASE_URL}/cart/item/change-qty/${id}?new_qty=${qt}`, {params: {id: id, new_qty: qt}},
@@ -97,6 +121,8 @@ const {isAuth} = useContext(AuthContext)
             console.log(err)
         })
     })
+
+
     return <CartContext.Provider
         value={{
             carts:carts,
@@ -107,6 +133,7 @@ const {isAuth} = useContext(AuthContext)
             removeCart,
             addQty,
             getCart,
+            getCount,
         }}
     >
         {children}

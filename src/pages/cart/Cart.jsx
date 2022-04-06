@@ -23,8 +23,7 @@ function Cart({l, logout, getCount}) {
     if(!isAuth){
         navigate('/login')
     }
-    // getCart()
-    console.log(isAuth)
+    getCart()
     }, [isAuth])
     // useEffect(()=>{
     //     setLoading(true)

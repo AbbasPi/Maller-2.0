@@ -1,11 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import Card from "../../components/card/Card";
-import Navbar from "../../components/navbar/Navbar";
 import Footer from "../../components/footer/Footer";
 import Loading from "../../components/Loading";
 import ReactPaginate from "react-paginate";
 import './products.css'
-import {BASE_URL, TOKEN_STR} from "../../utils/Constants";
+import {BASE_URL} from "../../utils/Constants";
 import axios from "axios";
 
 function Products() {

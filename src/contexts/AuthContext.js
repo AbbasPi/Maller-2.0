@@ -2,7 +2,7 @@ import {createContext, useContext, useEffect, useReducer} from "react";
 import axios from '../utils/axios'
 import {BASE_URL, TOKEN_KEY} from '../utils/Constants'
 import {useNavigate} from "react-router-dom";
-import CartContext from "./CartContext";
+
 let initState = {
     isAuth:false,
     user:null,
@@ -41,12 +41,12 @@ export const AuthProvider = ({children})=>{
     }
     const login = (data)=>{
         axios.post(`${BASE_URL}/auth/signin`, data).then((response)=>{
-                console.log(response)
-                let data = response.data;
-                localStorage.setItem(TOKEN_KEY, JSON.stringify(data))
                 dispatch({
                     type:'LOGIN'
                 })
+                console.log(response)
+            let data = response.data;
+                localStorage.setItem(TOKEN_KEY, JSON.stringify(data))
                 navigate('/')
             })
             .catch((err)=>{

@@ -1,13 +1,20 @@
-import React, {useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {Link, useNavigate} from "react-router-dom";
 import {useForm} from "react-hook-form";
 import axios from "axios";
 import {BASE_URL, TOKEN_KEY} from "../../utils/Constants";
+import AuthContext from "../../contexts/AuthContext";
 
 function SignIn({l, submitButton}) {
     const { register, handleSubmit, formState: { errors } } = useForm();
     const navigate = useNavigate()
+    const {login, isAuth} = useContext(AuthContext)
+    useEffect(()=>{
+    if(isAuth){
+        navigate('/')
+    }
 
+    }, [isAuth])
     return (
         <div>
             <div className="bg-grey-lighter min-h-screen flex flex-col">
@@ -47,7 +54,7 @@ function SignIn({l, submitButton}) {
                         />
                         <button
                             type="submit"
-                            onClick={handleSubmit(submitButton)}
+                            onClick={handleSubmit(login)}
                             className="w-full text-center py-3 rounded bg-cyan-500 text-white hover:bg-cyan-300 my-1"
                         >Login</button>
                     </form>

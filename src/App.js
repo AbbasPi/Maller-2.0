@@ -17,6 +17,7 @@ import Cart from "./pages/cart/Cart";
 import Profile from "./pages/profile/Profile";
 import Navbar from "./components/navbar/Navbar";
 import {CartProvider} from "./contexts/CartContext";
+import {AuthProvider} from "./contexts/AuthContext";
 
 
 function App() {
@@ -79,16 +80,10 @@ function App() {
         });
     }
 
-    const getCount = () =>{
-        axios.get(`${BASE_URL}/cart/my`, { headers: {"Authorization" : `${TOKEN_STR.token.token_type} ${TOKEN_STR.token.access_token}`} })
-            .then((res)=>{
-                setCount(res.data.length)
-            })
-    }
-    getCount()
   return (
     <div className="App">
         <BrowserRouter>
+                <AuthProvider>
             <SnackbarProvider>
                 <CartProvider>
 
@@ -104,11 +99,12 @@ function App() {
                 <Route path="/category" element={<CategoriesPage categories={categories} l={isLog} logout={logout}/>} />
                 <Route path="/signup" element={<SignUp/>} />
                 <Route path="/login" element={<SignIn l={isLog} submitButton={submitButton} logout={logout}/>} />
-                <Route path="/cart" element={<Cart l={isLog} logout={logout} getCount={getCount}/>} />
+                <Route path="/cart" element={<Cart l={isLog} logout={logout}/>} />
                 <Route path="/profile" element={<Profile />} />
             </Routes>
                 </CartProvider>
             </SnackbarProvider>
+                </AuthProvider>
         </BrowserRouter>
     </div>
   );

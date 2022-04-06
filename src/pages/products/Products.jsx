@@ -8,7 +8,7 @@ import './products.css'
 import {BASE_URL, TOKEN_STR} from "../../utils/Constants";
 import axios from "axios";
 
-function Products({l, logout}) {
+function Products() {
     const [pageCount, setpageCount] = useState(0);
     const [items, setItems] = useState([]);
     const [loading, setLoading] = useState(true)
@@ -70,7 +70,7 @@ function Products({l, logout}) {
                 {
                     loading2 ? <Loading/>
                         :
-                <Card productsPage={true} products={items} l={l}/>
+                <Card productsPage={true} products={items}/>
                 }
                 <ReactPaginate
                     previousLabel={"<"}

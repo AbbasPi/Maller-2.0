@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, {useContext, useEffect, useState} from 'react';
 import { QuantityPicker } from 'react-qty-picker';
-import { Link } from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import Footer from "../../components/footer/Footer";
 import Navbar from "../../components/navbar/Navbar";
 import './cart.css'
@@ -10,15 +10,22 @@ import products from "../products/Products";
 import Loading from "../../components/Loading";
 import x from '../../components/assets/svg/x-symbol.svg'
 import CartContext from "../../contexts/CartContext";
+import AuthContext from "../../contexts/AuthContext";
 
 function Cart({l, logout, getCount}) {
     const [total, setTotal] = useState([])
     const [status, setStatus] = useState(0)
     const {carts, removeCart, loading, addQty, getCart} = useContext(CartContext)
-    useEffect(()=>{
-    getCart()
+    const {isAuth} = useContext(AuthContext)
+    const navigate = useNavigate()
 
-    })
+    useEffect(()=>{
+    if(!isAuth){
+        navigate('/login')
+    }
+    // getCart()
+    console.log(isAuth)
+    }, [isAuth])
     // useEffect(()=>{
     //     setLoading(true)
     //     axios.get(`${BASE_URL}/cart/my`, { headers: {"Authorization" : `${TOKEN_STR.token.token_type} ${TOKEN_STR.token.access_token}`} })
@@ -139,11 +146,11 @@ function Cart({l, logout, getCount}) {
         <div>
 
             {
-                loading ?
-                    <Loading/>
-                    :
+                // loading ?
+                //     <Loading/>
+                //     :
                     <div>
-    {/*<Navbar l={l}/>*/}
+    <Navbar l={l}/>
         <div className="container p-8 mx-auto mt-12">
 
             <div className="w-full overflow-x-auto">

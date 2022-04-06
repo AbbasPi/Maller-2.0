@@ -6,16 +6,18 @@ import {Link} from "react-router-dom";
 import {BASE_URL, TOKEN_KEY, TOKEN_STR} from "../../utils/Constants";
 import axios from "axios";
 import CartContext from "../../contexts/CartContext";
+import AuthContext from "../../contexts/AuthContext";
 
-const Navbar = ({loc, l, logout, loading}) => {
+const Navbar = ({loc, loading}) => {
 
     const [open,setOpen]=useState(false);
     const [c,setC]=useState(null);
     const {count, getCart} = useContext(CartContext);
+    const {logout, isAuth} = useContext(AuthContext)
     useEffect(()=>{
     getCart()
     setC(count)
-    }, [])
+    }, [ count])
     return (
         <div className=' w-full z-50 bg-white fixed h-20 top-0 left-0'>
             {
@@ -57,7 +59,7 @@ const Navbar = ({loc, l, logout, loading}) => {
                             <div className="dropdown1 hover:cursor-pointer">
                                 <img className={'w-8 mr-6 inline-block'} alt='' src={account}/>
                                 {
-                                    l ?
+                                    isAuth ?
                                 <div className="dropdown-content1">
                                     <Link to="/profile">Profile</Link>
                                     <Link to =''>

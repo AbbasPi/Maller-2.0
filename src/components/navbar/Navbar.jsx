@@ -2,7 +2,7 @@ import React, {useContext, useEffect, useState} from 'react';
 import './navbar.css'
 import logo from '../assets/media/logo.png'
 import account from '../assets/media/account.png'
-import {Link} from "react-router-dom";
+import {Link, useLocation} from "react-router-dom";
 import {BASE_URL, TOKEN_KEY, TOKEN_STR} from "../../utils/Constants";
 import axios from "axios";
 import CartContext from "../../contexts/CartContext";
@@ -14,8 +14,8 @@ const Navbar = ({loc, loading}) => {
     const [c,setC]=useState(null);
     const {count, getCart, getCount} = useContext(CartContext);
     const {logout, isAuth} = useContext(AuthContext)
+    const location = useLocation()
     useEffect(()=>{
-    // getCount()
     setC(count)
     }, [count])
     return (
@@ -41,16 +41,16 @@ const Navbar = ({loc, loading}) => {
                 <ul className={`lg:flex lg:items-center lg:pb-0 pb-12 absolute lg:static bg-white lg:z-auto z-[-1]
                  left-0 w-full lg:w-auto lg:pl-0 pl-9 transition-all duration-500 ease-in ${open ? 'top-20 ':'top-[-300px]'}`}>
                     <li className='lg:ml-8 text-xl lg:my-0 my-7'>
-                        <Link to={'/'} className={`text--800 hover:text-gray-400 duration-500 
-                                ${loc === 'home' && 'text-cyan-700 border-b-2 border-b-cyan-700'}  `}>Home</Link>
+                        <Link to={'/'} className={`text--800 hover:text-cyan-700 duration-100 
+                                ${location.pathname === '/' && 'text-cyan-700 border-b-2 border-b-cyan-700'}  `}>Home</Link>
                     </li>
                     <li className='lg:ml-8 text-xl lg:my-0 my-7'>
-                        <Link to={'/products'} className={`text--800 hover:text-gray-400 duration-500 
-                                ${loc === 'products' && 'text-cyan-700 border-b-2 border-b-cyan-700'}  `}>Products</Link>
+                        <Link to={'/products'} className={`text--800 hover:text-cyan-700 duration-100 
+                                ${location.pathname === '/products' && 'text-cyan-700 border-b-2 border-b-cyan-700'}  `}>Products</Link>
                     </li>
                     <li className='lg:ml-8 text-xl lg:my-0 my-7'>
-                        <Link to={'/stores'} className={`text--800 hover:text-gray-400 duration-500 
-                                ${loc === 'stores' && 'text-cyan-700 border-b-2 border-b-cyan-700'}  `}>Stores</Link>
+                        <Link to={'/stores'} className={`text--800 hover:text-cyan-700 duration-100 
+                                ${location.pathname === '/stores' && 'text-cyan-700 border-b-2 border-b-cyan-700'}  `}>Stores</Link>
                     </li>
                 </ul>
 

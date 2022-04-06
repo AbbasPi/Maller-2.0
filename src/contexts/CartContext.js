@@ -88,7 +88,10 @@ const {isAuth} = useContext(AuthContext)
             }).catch((err)=>{
                 console.log(err)
         })
-            setCount(count + 1)
+            if(carts.includes(cart)){
+                setCount(count)
+            }
+            else setCount(count + 1)
         }
         if(!isAuth){
             openSnackbar('Login To Add To Cart')

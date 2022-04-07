@@ -38,7 +38,7 @@ const {isAuth, user} = useContext(AuthContext)
     const [carts, setCarts] = useState([])
     const [total, setTotal] = useState(0)
     const [loading, setLoading] = useState(true)
-    const [empty, setEmpty] = useState(0)
+    const [empty, setEmpty] = useState(404)
     const [count, setCount] = useState(0)
 
 
@@ -51,8 +51,9 @@ const {isAuth, user} = useContext(AuthContext)
                 if(carts){
                 setLoading(false)
                 setEmpty(0)
-                setCount(res.data.length)
-                    console.log(count)
+                setCount(carts.length)
+                setTotal(carts.reduce((total, item)=>total+(item.product.lowest*item.item_qty),0))
+
                 }
             }).catch(function (error) {
                 if (error.response) {
@@ -65,25 +66,12 @@ const {isAuth, user} = useContext(AuthContext)
 
     useEffect(()=>{
         if(carts.length){
-        setCount(carts)
+        setCount(carts.length)
         }
         else {
             setCount(0)
         }
-    }, [isAuth, user])
-
-    // const getCount = () =>{
-    // if(isAuth === true)
-    // {
-    //     getCart()
-    //     setCount(carts?.length)
-    // }
-    //     else if(!isAuth){
-    //         setCount(0)
-    //         setCarts([])
-    //     }
-    //
-    // }
+    }, [isAuth, user, carts])
 
 
     const addToCarts = (cart)=>{
@@ -120,7 +108,7 @@ const {isAuth, user} = useContext(AuthContext)
         }).catch((err)=>{
             console.log(err)})
         setTotal(carts.reduce((total, item)=>total+(item.product.lowest*item.item_qty),0))
-        setCount(count-1)
+            setCount(count - 1)
         if(count === 0){
             setEmpty(404)
         }

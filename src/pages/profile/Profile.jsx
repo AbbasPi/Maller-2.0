@@ -37,7 +37,7 @@ function Profile() {
                         </div>
                         <input
                             type="text"
-                            className="block border active:border-black w-full p-3  rounded-xl mb-4"
+                            className="block focus:outline-none focus:ring focus:ring-cyan-300 border active:border-black w-full p-3  rounded-xl mb-4"
                             placeholder="First Name" defaultValue={info.first_name} {...register("first_name",
                             {required: true, max: 20, maxLength: 80})}
 
@@ -49,7 +49,7 @@ function Profile() {
                         </div>
                         <input
                             type="text"
-                            className="block border active:border-black w-full p-3  rounded-xl mb-4"
+                            className="block focus:outline-none focus:ring focus:ring-cyan-300 border active:border-black w-full p-3  rounded-xl mb-4"
                             placeholder="Last Name" defaultValue={info.last_name} {...register("last_name",
                             {required: true, maxLength: 100})}
                         />
@@ -63,7 +63,7 @@ function Profile() {
                         </div>
                         <input
                             type="email"
-                            className="block border active:border-black w-full p-3  rounded-xl mb-4"
+                            className="block border focus:outline-none focus:ring focus:ring-cyan-300 active:border-black w-full p-3  rounded-xl mb-4"
                             placeholder="Email" defaultValue={info.email} {...register("email",
                             {required: true, maxLength: 100})}
 
@@ -78,7 +78,7 @@ function Profile() {
                         </div>
                         <input
                             type="text"
-                            className="block border active:border-black w-full p-3  rounded-xl mb-4"
+                            className="block focus:outline-none focus:ring focus:ring-cyan-300 border active:border-black w-full p-3  rounded-xl mb-4"
                             placeholder="Phone number" defaultValue={info.phone_number} {...register("phone_number",
                             {required: true, pattern: /^(((?:\+|00)964)|(0)*)7\d{9}$/gm})}/>
                         <button

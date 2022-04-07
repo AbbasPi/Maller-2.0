@@ -3,9 +3,9 @@ import React from 'react';
 function Hero(props) {
     return (
         <div className={'lg:flex lg:justify-evenly border-b-2 py-8 '}>
-            <div className={'lg:mt-52 mx-auto lg:mx-0 mt-20 text-gray-800 capitalize lg:w-3/6'}>
-                <p className='text-4xl lg:text-6xl lg:text-justify'>Your choice matters</p>
-                <p className='text-2xl mx-12 lg:mx-0 text-gray-500 lg:w-10/12 text-justify'>Maller creates a new way for shopping
+            <div className={'lg:mt-40 mx-auto lg:mx-0 mt-20 text-gray-800 capitalize lg:w-3/6'}>
+                <p className='text-4xl lg:text-7xl lg:text-justify hero'>Your choice matters</p>
+                <p className='text-3xl mx-12 lg:mx-0 text-cyan-600 lg:w-10/12 text-justify'>Maller creates a new way for shopping
                     now you can shop from your favorite stores
                     in one order</p>
             </div>

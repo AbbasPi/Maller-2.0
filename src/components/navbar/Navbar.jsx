@@ -12,7 +12,7 @@ const Navbar = ({loading}) => {
 
     const [open,setOpen]=useState(false);
     const [coun,setCoun]=useState(0);
-    const {count, carts, getCart} = useContext(CartContext);
+    const {count, carts, getCart, setCount} = useContext(CartContext);
     const {logout, isAuth, user} = useContext(AuthContext)
     const location = useLocation()
     useEffect(()=>{
@@ -20,10 +20,10 @@ const Navbar = ({loading}) => {
             getCart()
         }
         if(carts.length) {
-            setCoun(carts.length)
+            setCount(carts.length)
         }
         if(isAuth === false){
-            setCoun(0)
+            setCount(0)
         }
     }, [count, isAuth, user])
     return (
@@ -70,7 +70,7 @@ const Navbar = ({loading}) => {
                                     isAuth ?
                                 <div className="dropdown-content1">
                                     <Link to="/profile">Profile</Link>
-                                    <Link to =''>
+                                    <Link to ='/login'>
                                     <button onClick={logout}>Log Out</button>
                                     </Link>
                                 </div>
@@ -83,7 +83,7 @@ const Navbar = ({loading}) => {
                             </div>
                         <Link  to='/cart' className={'w-8 -mb-2 mr-6 inline-block relative'} >
                             <span className='absolute bg-red-500 rounded-full px-1 text-white font-semibold ml-1'>
-                                {coun}
+                                {count}
                             </span>
                         <svg width="30" height="29" viewBox="0 0 30 29" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M1.36495 24.4577L0.0583607 24.3481L1.36495 24.4577ZM28.6351 24.4577L29.9417

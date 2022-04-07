@@ -22,7 +22,7 @@ function SignUp() {
                         </div>
                         <input
                             type="text"
-                            className="block border active:border-black w-full p-3 rounded mb-4"
+                            className=" focus:outline-none focus:ring focus:ring-cyan-300 block border active:border-black w-full p-3 rounded mb-4"
                             name="first_name"
                             placeholder="First Name"
                             {...register("first_name", {required: true, maxLength: 80})}
@@ -34,7 +34,7 @@ function SignUp() {
                         </div>
                         <input
                             type="text"
-                            className="block border active:border-black w-full p-3 rounded mb-4"
+                            className="block focus:outline-none focus:ring focus:ring-cyan-300 border active:border-black w-full p-3 rounded mb-4"
                             name="last_name"
                             placeholder="Last Name"
                             {...register("last_name", {required: true, maxLength: 80})}
@@ -49,7 +49,7 @@ function SignUp() {
                         </div>
                         <input
                             type="email"
-                            className="block border active:border-black w-full p-3 rounded mb-4"
+                            className="block focus:outline-none focus:ring focus:ring-cyan-300 border active:border-black w-full p-3 rounded mb-4"
                             name="email"
                             placeholder="Email"
                             {...register("email", {required: true, pattern: /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/})}
@@ -65,7 +65,7 @@ function SignUp() {
                         </div>
                         <input
                             type="text"
-                            className="block border active:border-black w-full p-3 rounded mb-4"
+                            className="block focus:outline-none focus:ring focus:ring-cyan-300 border active:border-black w-full p-3 rounded mb-4"
                             name="phone"
                             placeholder="Phone Number"
                             {...register("phone", {required: true, pattern: /^(((?:\+|00)964)|(0)*)7\d{9}$/gm})}/>
@@ -84,7 +84,7 @@ function SignUp() {
                         </div>
                         <input
                             type="password"
-                            className="block border active:border-black w-full p-3 rounded mb-4"
+                            className="block focus:outline-none focus:ring focus:ring-cyan-300 border active:border-black w-full p-3 rounded mb-4"
                             name="password1"
                             placeholder="Password"
                             {...register("password1", {required: true, min: 8, minLength: 8})}
@@ -92,7 +92,7 @@ function SignUp() {
 
                         <input
                             type="password"
-                            className="block border active:border-black w-full p-3 rounded mb-4"
+                            className="block focus:outline-none focus:ring focus:ring-cyan-300 border active:border-black w-full p-3 rounded mb-4"
                             name="password2"
                             placeholder="Confirm Password"
                             {...register("password2", {required: true, min: 8, minLength: 8})}

@@ -13,9 +13,9 @@ import CartContext from "../../contexts/CartContext";
 import AuthContext from "../../contexts/AuthContext";
 
 function Cart() {
-    const [total, setTotal] = useState([])
+    // const [total, setTotal] = useState([])
     const [status, setStatus] = useState(404)
-    const {carts, removeCart, count, addQty, getCart, empty, loading} = useContext(CartContext)
+    const {carts, removeCart, count, addQty, getCart, empty, loading, setCount, total} = useContext(CartContext)
     const {isAuth, user} = useContext(AuthContext)
     const navigate = useNavigate()
 
@@ -24,6 +24,7 @@ function Cart() {
         navigate('/login')
     }
         getCart()
+        setCount(carts.length)
         setStatus(empty)
     }, [isAuth, count, empty, user])
 
@@ -71,92 +72,73 @@ function Cart() {
     <Navbar/>
         <div className="container p-8 mx-auto mt-12">
             <div className="w-full overflow-x-auto">
-                <table className="w-full ">
-                    <thead>
-                    <tr className="border-b">
-                        <th className="px-6 py-3 font-bold whitespace-nowrap"/>
-                        <th className="px-6 py-3 font-bold whitespace-nowrap text-2xl">Product Description</th>
-                        <th className="px-6 py-3 font-bold whitespace-nowrap text-2xl">Quantity</th>
-                        <th className="px-6 py-3 font-bold whitespace-nowrap text-2xl">Remove</th>
-                        <th className="px-6 py-3 font-bold whitespace-nowrap text-2xl">Price</th>
-                    </tr>
-                    </thead>
-                    <tbody>
+                <div className="w-full">
+                    <div>
+                    <div className="border-b flex justify-between mx-16">
+                        <div className="px-6 py-3 font-medium text-gray-900 whitespace-nowrap text-2xl ">Product Image</div>
+                        <div className="px-6 py-3 font-medium text-gray-900 whitespace-nowrap text-2xl ">Product Description</div>
+                        <div className="px-6 py-3 font-medium text-gray-900 whitespace-nowrap text-2xl ml-24">Quantity</div>
+                        <div className="px-6 py-3 font-medium text-gray-900 whitespace-nowrap text-2xl">Remove</div>
+                        <div className="px-6 py-3 font-medium text-gray-900 whitespace-nowrap text-2xl">Price</div>
+                    </div>
+                    </div>
+                    <div>
                {
                 carts?.map((product)=>{
 
-                    return(<tr key={product?.id}>
-                            <td>
+                    return(
+                        <div key={product?.id} className='bg-gray-200 rounded-xl max-w-full mx-16 flex justify-between
+                         items-center p-6 mt-8'>
+                            <div>
 
-                                {/*<Link className='flex justify-center my-3' to={`/product/${product.product.id}`}>*/}
+                                <Link className='flex justify-center my-3' to={`/product/${product.product.id}`}>
 
                                     <img
                                         src={product?.product.images.map((img)=>{
                                             return img.image
                                         })}
                                         alt={product?.product.name}
-                                        className="object-contain h-28 w-32 rounded-2xl"
+                                        className="object-contain h-36 w-36 rounded-2xl bg-gray-100"
                                     />
-                                {/*</Link>*/}
+                                </Link>
 
-                        </td>
-            {/*<Link className='flex justify-center my-3' to={`/product/${product.product.id}`}>*/}
-                        <td className="p-6 px6 text-xl font-semibold text-center w-96">{product?.product.name}</td>
-            {/*</Link>*/}
-                        <td className="p-4 px-6 text-center font-semibold whitespace-nowrap">
-                            <QuantityPicker  width='8rem' min={1} defaultValue={1} value={product?.item_qty} onChange={(value)=>addQty(product.id, value, product.product.lowest)}/>
-                        </td>
-                        <td className="p-4 px-6 text-center whitespace-nowrap">
+                        </div>
+            <Link className='flex justify-center my-3' to={`/product/${product.product.id}`}>
+                        <div className=" text-xl font-semibold text-center w-96">{product?.product.name}</div>
+            </Link>
+                        <div className=" text-center font-semibold whitespace-nowrap">
+                            <QuantityPicker  width='5rem' min={1} defaultValue={1} value={product?.item_qty} onChange={(value)=>addQty(product.id, value, product.product.lowest)}/>
+                        </div>
+                        <div className="p-4 px-6 text-center whitespace-nowrap">
 
                             <button  onClick={()=>removeCart(product.id)}>
                                 <img className='border p-4' src={x} alt=""/>
                             </button>
-                        </td>
-                        <td className="p-4 px-6 text-2xl font-semibold text-center whitespace-nowrap">${product?.product.lowest}</td>
-                  </tr>)
+                        </div>
+                        <div className="p-4 px-6 text-2xl font-[Poppins] text-black text-center whitespace-nowrap">${product?.product.lowest}</div>
+                  </div>)
                         })
                     }
 
-                    </tbody>
-                </table>
-
-                <div className="mt-4">
-                    <div className="py-4 rounded-md shadow">
-                        <div
-                            className="
-                flex
-                items-center
-                justify-between
-                px-4
-                py-2
-                mt-3
-                border-t-2
-              "
-                        >
-                            <span className="text-xl font-bold">Total</span>
-                            <span className="text-2xl font-bold">${total}</span>
-                        </div>
                     </div>
                 </div>
-                <div className="mt-4">
+
+                <div className="mt-4 mx-auto max-w-7xl border-t-2 flex items-center">
+                    <div className="py-4">
+                        <div className="flex space-x-4 items-center px-4 py-2">
+                            <span className="text-xl text-gray-600 font-bold border-2 border-gray-300 p-3 py-4 uppercase">Total: ${total}</span>
                     <button onClick={()=>checkout()}
-                        className="
-              w-full
-              py-2
-              text-center text-white
-              bg-blue-500
-              rounded-md
-              shadow
-              hover:bg-blue-600
-            "
-                    >
+                        className="p-2 py-5 h- items-center text-center text-white bg-cyan-500 rounded-md shadow hover:bg-cyan-600">
                        <Link to={'/checkout'}>
                         Proceed to Checkout
                        </Link>
                     </button>
+                        </div>
+                    </div>
                 </div>
             </div>
                 </div>
+            <div className='mb-40'/>
             <Footer/>
                 </div>
             }

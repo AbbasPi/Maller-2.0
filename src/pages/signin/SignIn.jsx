@@ -11,7 +11,6 @@ function SignIn() {
     const {login, isAuth} = useContext(AuthContext)
     useEffect(()=>{
     if(isAuth === true){
-        console.log(isAuth)
         navigate('/')
     }
 
@@ -20,7 +19,7 @@ function SignIn() {
         <div>
             <div className="bg-grey-lighter min-h-screen flex flex-col">
                 <div className="container max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2">
-                    <form className="bg-white px-6 py-8  rounded-xl shadow-md text-black w-full">
+                    <form className="bg-white px-6 py-8  rounded-xl  shadow-md text-black w-full">
                         <h1 className="mb-8 text-3xl text-center">Login</h1>
                         <div className={`${errors.email?.type === 'required' ? 'block' : 'hidden'} bg-red-100 border border-red-400 text-red-700 px-4 py-3  rounded-xl relative`}
                              role="alert">
@@ -32,7 +31,7 @@ function SignIn() {
                         </div>
                         <input
                             type="email"
-                            className="block border active:border-black w-full p-3  rounded-xl mb-4"
+                            className="block border active:border-black w-full p-3  rounded-xl mb-4 focus:outline-none focus:ring focus:ring-cyan-300 "
                             name="email"
                             placeholder="Email"
                             {...register("email", {required: true, pattern: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/})}
@@ -48,7 +47,7 @@ function SignIn() {
                         </div>
                         <input
                             type="password"
-                            className="block border active:border-black w-full p-3  rounded-xl mb-4"
+                            className="block border active:border-black w-full p-3 focus:outline-none focus:ring focus:ring-cyan-300  rounded-xl mb-4"
                             name="password"
                             placeholder="Password"
                             {...register("password", {required: true, min: 8, minLength: 8})}

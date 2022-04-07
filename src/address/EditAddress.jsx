@@ -1,12 +1,14 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import { useForm } from 'react-hook-form';
 import { BASE_URL, TOKEN_STR } from '../utils/Constants';
 import {Link, useNavigate} from 'react-router-dom';
 import Footer from "../components/footer/Footer";
 import Navbar from "../components/navbar/Navbar";
+import AuthContext from "../contexts/AuthContext";
 
 function AddressEdit() {
+    const {isAuth, user} = useContext(AuthContext)
     const [city, setCity] = useState([]);
     const [info, setInfo] = useState([]);
     const [address, setAddress] = useState([]);
@@ -17,6 +19,8 @@ function AddressEdit() {
         axios.put(`${BASE_URL}/address/${address[0].id}`, data, { headers: {"Authorization" : `${TOKEN_STR.token.token_type} ${TOKEN_STR.token.access_token}`} })
     }
     useEffect(()=>{
+        !isAuth  ? navigate('/login')
+            :
         axios.get(`${BASE_URL}/address/city/all`, { headers: {"Authorization" : `${TOKEN_STR.token.token_type} ${TOKEN_STR.token.access_token}`} }).then((res)=>{
             setCity(res.data)
         }).catch((err)=>{
@@ -39,6 +43,7 @@ function AddressEdit() {
     return (
 
         <div>
+            <Navbar/>
             <div className="bg-grey-lighter mt-6 min-h-screen flex flex-col">
                 <div className="container max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2">
                     <form className="bg-white px-6 py-8  rounded-xl shadow-md text-black w-full">
@@ -98,7 +103,9 @@ function AddressEdit() {
                     </form>
                 </div>
             </div>
+        <Footer/>
         </div>
+
     );
 }
 

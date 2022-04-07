@@ -6,17 +6,18 @@ import AuthContext from "./AuthContext";
 const initValue = {
     carts:[],
     loading:true,
+    empty:0,
     total:0,
     count:0,
     addToCarts:(obj)=>{},
     getCart:()=>{},
-    getCount:()=>{},
+    // getCount:()=>{},
     removeCart:(id)=>{},
     addQty:(id,qt)=>{}
 }
 const CartContext = createContext(initValue)
 export const CartProvider = ({children})=>{
-const {isAuth} = useContext(AuthContext)
+const {isAuth, user} = useContext(AuthContext)
     const options = {
         position: 'bottom-right',
         style: {
@@ -26,6 +27,7 @@ const {isAuth} = useContext(AuthContext)
             fontFamily: 'Poppins',
             fontSize: '17px',
             textAlign: 'center',
+            padding: '1px'
         },
         closeStyle: {
             color: 'red',
@@ -34,45 +36,45 @@ const {isAuth} = useContext(AuthContext)
     }
     const [openSnackbar, closeSnackbar] = useSnackbar(options)
     const [carts, setCarts] = useState([])
-    const [msg, setMsg] = useState(null)
     const [total, setTotal] = useState(0)
     const [loading, setLoading] = useState(true)
+    const [empty, setEmpty] = useState(0)
     const [count, setCount] = useState(0)
 
 
     const getCart = () =>{
-        if(isAuth === true){
+        if(user || isAuth === true){
         axios.get(`${BASE_URL}/cart/my`, { headers: {"Authorization" :
-                    `${TOKEN_STR.token.token_type} ${TOKEN_STR.token.access_token}`} })
+                    `${user.token_type} ${user.access_token}`} })
             .then((res)=>{
                 setCarts([...res.data])
-                setLoading(false)
                 if(carts){
+                setLoading(false)
+                setEmpty(0)
                 setCount(res.data.length)
+                    console.log(count)
                 }
-            }).catch((err)=>[
-                console.log(err)
-        ])
+            }).catch(function (error) {
+                if (error.response) {
+                    setEmpty(error.response.status)
+                }
+            })
         }
     }
 
 
-    const getCount = () =>{
-    if(isAuth)
-    {
-        getCart()
-        setCount(carts?.length)
-    }
-        else if(!isAuth){
-            setCount(0)
-        }
-
-    }
-
-
-    useEffect(()=>{
-        getCount()
-    }, [isAuth])
+    // const getCount = () =>{
+    // if(isAuth === true)
+    // {
+    //     getCart()
+    //     setCount(carts?.length)
+    // }
+    //     else if(!isAuth){
+    //         setCount(0)
+    //         setCarts([])
+    //     }
+    //
+    // }
 
 
     const addToCarts = (cart)=>{
@@ -82,9 +84,10 @@ const {isAuth} = useContext(AuthContext)
         cartsTemp.push(cart)
         setCarts([...cartsTemp])
         axios.post(`${BASE_URL}/cart/my`, {  "product_id": cart,"item_qty": 1},
-            { headers: {"Authorization" : `${TOKEN_STR.token.token_type} ${TOKEN_STR.token.access_token}`} })
+            { headers: {"Authorization" : `${user.token_type} ${user.access_token}`} })
             .then((res)=>{
                 getCart()
+                setEmpty(0)
             }).catch((err)=>{
                 console.log(err)
         })
@@ -102,13 +105,16 @@ const {isAuth} = useContext(AuthContext)
     const removeCart = ((id)=>{
         isAuth &&
         axios.delete(`${BASE_URL}/cart/item/delete/${id}`, { headers: {"Authorization":
-                    `${TOKEN_STR.token.token_type} ${TOKEN_STR.token.access_token}`} }).then(()=>{
+                    `${user.token_type} ${user.access_token}`} }).then(()=>{
+        let newCart = carts.filter((item) => item.id !== id);
+        setCarts(newCart);
         }).catch((err)=>{
             console.log(err)})
         setTotal(carts.reduce((total, item)=>total+(item.product.lowest*item.item_qty),0))
-        let newCart = carts.filter((item) => item.id !== id);
-        setCarts(newCart);
         setCount(count-1)
+        if(count === 0){
+            setEmpty(404)
+        }
     })
 
 
@@ -116,7 +122,7 @@ const {isAuth} = useContext(AuthContext)
     const addQty = ((id, qt)=>{
         isAuth &&
         axios.post(`${BASE_URL}/cart/item/change-qty/${id}?new_qty=${qt}`, {params: {id: id, new_qty: qt}},
-            { headers: {"Authorization": `${TOKEN_STR.token.token_type} ${TOKEN_STR.token.access_token}`} })
+            { headers: {"Authorization": `${user.token_type} ${user.access_token}`} })
             .then((res)=>{
             setCarts(res.data)
             setTotal(carts.reduce((total, item)=>total+(item.product.lowest*item.item_qty),0))
@@ -132,11 +138,12 @@ const {isAuth} = useContext(AuthContext)
             loading:loading,
             total:total,
             count:count,
+            empty:empty,
             addToCarts,
             removeCart,
             addQty,
             getCart,
-            getCount,
+            // getCount,
         }}
     >
         {children}

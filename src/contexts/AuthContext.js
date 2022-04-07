@@ -1,7 +1,8 @@
-import {createContext, useContext, useEffect, useReducer} from "react";
+import {createContext, useContext, useEffect, useReducer, useState} from "react";
 import axios from '../utils/axios'
-import {BASE_URL, TOKEN_KEY} from '../utils/Constants'
+import {BASE_URL, TOKEN_KEY, TOKEN_STR} from '../utils/Constants'
 import {useNavigate} from "react-router-dom";
+import CartContext from "./CartContext";
 
 let initState = {
     isAuth:false,
@@ -30,23 +31,24 @@ const reducer = (oldState, action)=>{
 
 export const AuthProvider = ({children})=>{
     const navigate = useNavigate()
-    const [state, dispatch] = useReducer(reducer,initState)
-
+    const [user, setUser] = useState({})
+    const [state, dispatch] = useReducer(reducer, initState)
+    const {getCart} = useContext(CartContext)
     const logout = ()=>{
         localStorage.removeItem(TOKEN_KEY);
-        console.log('logout event')
         dispatch({
             type:'LOGOUT'
         })
     }
     const login = (data)=>{
         axios.post(`${BASE_URL}/auth/signin`, data).then((response)=>{
-                dispatch({
+            dispatch({
                     type:'LOGIN'
                 })
-                console.log(response)
-            let data = response.data;
+                let data = response.data;
                 localStorage.setItem(TOKEN_KEY, JSON.stringify(data))
+                setUser(data.token)
+            console.log(user)
                 navigate('/')
             })
             .catch((err)=>{
@@ -56,9 +58,9 @@ export const AuthProvider = ({children})=>{
     }
     useEffect(()=>{
         let data = JSON.parse(localStorage.getItem(TOKEN_KEY))
-        console.log('use effect , data is : ',data)
         if(data)
         {
+            setUser(data.token)
             dispatch({
                 type:'LOGIN'
             })
@@ -68,7 +70,8 @@ export const AuthProvider = ({children})=>{
         value={{
             ...state,
             login,
-            logout
+            logout,
+            user:user
         }}
     >
 

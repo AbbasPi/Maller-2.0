@@ -23,32 +23,8 @@ import {AuthProvider} from "./contexts/AuthContext";
 function App() {
     const [products, setProducts] = useState([])
     const [loading, setLoading] = useState(true)
-    const [isLog, setIsLog] = useState(false)
     const [categories, setCategories] = useState([])
     const [topStores, setTopStores] = useState([])
-    const [count,setCount]=useState(false);
-
-    useEffect(()=>{
-        let token;
-        try {
-            token = JSON.parse(localStorage.getItem('token'))
-            if(!token) {
-                setIsLog(false)
-            }
-            else {
-                setIsLog(true)
-            }
-
-        } catch (error) {
-            console.log(error)
-            setIsLog(false)
-        }
-
-    },[])
-    const logout = () =>{
-        localStorage.removeItem(TOKEN_KEY);
-        setIsLog(false)
-    }
 
     useEffect(()=>{
         axios.get(`${BASE_URL}/category/all`).then((res)=>{
@@ -69,41 +45,30 @@ function App() {
             setLoading(false)
         })
     }, [])
-    const submitButton = data => {
-        axios.post(`${BASE_URL}/auth/signin`, data).then((res) => {
-            const data = res.data;
-            localStorage.setItem(TOKEN_KEY, JSON.stringify(data))
-            setIsLog(true)
-            // navigate('/')
-        }).catch((error) => {
-            console.log(error)
-        });
-    }
 
   return (
     <div className="App">
         <BrowserRouter>
                 <AuthProvider>
-            <SnackbarProvider>
-                <CartProvider>
-
-                <Navbar  l={isLog} logout={logout}  loading={loading}/>
+                    <SnackbarProvider>
+                        <CartProvider>
+                <Navbar loading={loading}/>
             <Routes>
-                <Route  path="/" element={<Home products={products.slice(0,4)} l={isLog} logout={logout}
+                <Route  path="/" element={<Home products={products.slice(0,4)}
                  topStores={topStores.slice(0,5)} categories={categories.slice(0,5)}  loading={loading}/>}/>
-                <Route  path='/products' element={<Products loading={loading} l={isLog} logout={logout}/>}/>
-                <Route path="/product/:productId" element={<ProductDetail l={isLog} logout={logout}/>} />
-                <Route path="/stores" element={<Stores stores={topStores} l={isLog} logout={logout}/>} />
-                <Route path="/store/:storeId" element={<StoreDetail l={isLog} logout={logout}/>}/>
-                <Route path="/category/:categoryId" element={<Categories l={isLog} logout={logout}/> }/>
-                <Route path="/category" element={<CategoriesPage categories={categories} l={isLog} logout={logout}/>} />
+                <Route  path='/products' element={<Products loading={loading}  />}/>
+                <Route path="/product/:productId" element={<ProductDetail  />} />
+                <Route path="/stores" element={<Stores stores={topStores}  />} />
+                <Route path="/store/:storeId" element={<StoreDetail  />}/>
+                <Route path="/category/:categoryId" element={<Categories  /> }/>
+                <Route path="/category" element={<CategoriesPage categories={categories}  />} />
                 <Route path="/signup" element={<SignUp/>} />
-                <Route path="/login" element={<SignIn l={isLog} submitButton={submitButton} logout={logout}/>} />
-                <Route path="/cart" element={<Cart l={isLog} logout={logout}/>} />
+                <Route path="/login" element={<SignIn/>} />
+                <Route path="/cart" element={<Cart/>} />
                 <Route path="/profile" element={<Profile />} />
             </Routes>
                 </CartProvider>
-            </SnackbarProvider>
+        </SnackbarProvider>
                 </AuthProvider>
         </BrowserRouter>
     </div>

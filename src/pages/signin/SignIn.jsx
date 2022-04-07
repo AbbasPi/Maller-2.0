@@ -5,12 +5,13 @@ import axios from "axios";
 import {BASE_URL, TOKEN_KEY} from "../../utils/Constants";
 import AuthContext from "../../contexts/AuthContext";
 
-function SignIn({l, submitButton}) {
+function SignIn() {
     const { register, handleSubmit, formState: { errors } } = useForm();
     const navigate = useNavigate()
     const {login, isAuth} = useContext(AuthContext)
     useEffect(()=>{
-    if(isAuth){
+    if(isAuth === true){
+        console.log(isAuth)
         navigate('/')
     }
 
@@ -19,7 +20,7 @@ function SignIn({l, submitButton}) {
         <div>
             <div className="bg-grey-lighter min-h-screen flex flex-col">
                 <div className="container max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2">
-                    <form onSubmit={submitButton} className="bg-white px-6 py-8 rounded shadow-md text-black w-full">
+                    <form className="bg-white px-6 py-8 rounded shadow-md text-black w-full">
                         <h1 className="mb-8 text-3xl text-center">Login</h1>
                         <div className={`${errors.email?.type === 'required' ? 'block' : 'hidden'} bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative`}
                              role="alert">
@@ -34,7 +35,7 @@ function SignIn({l, submitButton}) {
                             className="block border active:border-black w-full p-3 rounded mb-4"
                             name="email"
                             placeholder="Email"
-                            {...register("email", {required: true, pattern: /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/})}
+                            {...register("email", {required: true, pattern: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/})}
 
                         />
                         <div className={`${errors.password1?.type === 'required' ? 'block' : 'hidden'} bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative`}

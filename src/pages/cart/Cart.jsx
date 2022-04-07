@@ -70,10 +70,10 @@ function Cart() {
                     :
         <div>
     <Navbar/>
-        <div className="container p-8 mx-auto mt-12">
-            <div className="w-full overflow-x-auto">
+        <div className="container p-8 max-w-full mx-auto mt-12">
+            <div className="w-full ">
                 <div className="w-full">
-                    <div>
+                    <div className='hidden lg:block'>
                     <div className="border-b flex justify-between mx-16">
                         <div className="px-6 py-3 font-medium text-gray-900 whitespace-nowrap text-2xl ">Product Image</div>
                         <div className="px-6 py-3 font-medium text-gray-900 whitespace-nowrap text-2xl ">Product Description</div>
@@ -87,7 +87,7 @@ function Cart() {
                 carts?.map((product)=>{
 
                     return(
-                        <div key={product?.id} className='bg-gray-200 rounded-xl max-w-full mx-16 flex justify-between
+                        <div key={product?.id} className='bg-gray-200 rounded-xl max-w-full lg:mx-16 lg:flex justify-between
                          items-center p-6 mt-8'>
                             <div>
 
@@ -98,7 +98,7 @@ function Cart() {
                                             return img.image
                                         })}
                                         alt={product?.product.name}
-                                        className="object-contain h-36 w-36 rounded-2xl bg-gray-100"
+                                        className="object-contain w-96 h-36 lg:w-36 rounded-2xl bg-gray-100"
                                     />
                                 </Link>
 
@@ -106,16 +106,16 @@ function Cart() {
             <Link className='flex justify-center my-3' to={`/product/${product.product.id}`}>
                         <div className=" text-xl font-semibold text-center w-96">{product?.product.name}</div>
             </Link>
-                        <div className=" text-center font-semibold whitespace-nowrap">
+                        <div className="text-center font-semibold lg:whitespace-nowrap">
                             <QuantityPicker  width='5rem' min={1} defaultValue={1} value={product?.item_qty} onChange={(value)=>addQty(product.id, value, product.product.lowest)}/>
                         </div>
-                        <div className="p-4 px-6 text-center whitespace-nowrap">
+                        <div className="p-4 px-6 text-center lg:whitespace-nowrap">
 
                             <button  onClick={()=>removeCart(product.id)}>
                                 <img className='border p-4' src={x} alt=""/>
                             </button>
                         </div>
-                        <div className="p-4 px-6 text-2xl font-[Poppins] text-black text-center whitespace-nowrap">${product?.product.lowest}</div>
+                        <div className="lg:p-4 lg:px-6 text-3xl font-[Poppins] text-black text-center lg:whitespace-nowrap">${product?.product.lowest}</div>
                   </div>)
                         })
                     }
@@ -123,7 +123,7 @@ function Cart() {
                     </div>
                 </div>
 
-                <div className="mt-4 mx-auto max-w-7xl border-t-2 flex items-center">
+                <div className="mt-4 mx-auto max-w-sm lg:max-w-7xl border-t-2 flex items-center">
                     <div className="py-4">
                         <div className="flex space-x-4 items-center px-4 py-2">
                             <span className="text-xl text-gray-600 font-bold border-2 border-gray-300 p-3 py-4 uppercase">Total: ${total}</span>

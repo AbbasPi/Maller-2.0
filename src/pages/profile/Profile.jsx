@@ -1,23 +1,28 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {Link, useNavigate} from "react-router-dom";
 import axios from "axios";
 import { useForm } from "react-hook-form";
 import {BASE_URL, TOKEN_KEY, TOKEN_STR} from "../../utils/Constants";
+import AuthContext from "../../contexts/AuthContext";
 
 function Profile() {
+    const navigate = useNavigate()
     const [info, setInfo] = useState([]);
     const { register, handleSubmit, formState : {errors} } = useForm();
+    const {isAuth, user} = useContext(AuthContext)
     const onSubmit = data => {
-        axios.put(`${BASE_URL}/auth/me`, data, { headers: {"Authorization" : `${TOKEN_STR.token.token_type} ${TOKEN_STR.token.access_token}`} })
+        axios.put(`${BASE_URL}/auth/me`, data, { headers: {"Authorization" : `${user.token_type} ${user.access_token}`} })
     }
     useEffect(()=>{
-        axios.get(`${BASE_URL}/auth/me`,   { headers: {"Authorization" : `${TOKEN_STR.token.token_type} ${TOKEN_STR.token.access_token}`}}).then((res)=>{
+    !isAuth  ? navigate('/login')
+        :
+        (axios.get(`${BASE_URL}/auth/me`,   { headers: {"Authorization" : `${user.token_type} ${user.access_token}`}}).then((res)=>{
             setInfo(res.data)
         }).catch((err)=>{
             console.log(err)
         })
-
-    }, [])
+)
+    }, [isAuth, user])
 
 
     return (

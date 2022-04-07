@@ -7,7 +7,9 @@ import CartContext from "./CartContext";
 let initState = {
     isAuth:false,
     user:null,
+    passwordAlert:false,
     login:()=>{},
+    signup:()=>{},
     logout: ()=>{}
 }
 const AuthContext = createContext(initState)
@@ -31,6 +33,7 @@ const reducer = (oldState, action)=>{
 
 export const AuthProvider = ({children})=>{
     const navigate = useNavigate()
+    const [passwordAlert, setPasswordAlert] = useState(false)
     const [user, setUser] = useState({})
     const [state, dispatch] = useReducer(reducer, initState)
     const {getCart} = useContext(CartContext)
@@ -46,9 +49,8 @@ export const AuthProvider = ({children})=>{
                     type:'LOGIN'
                 })
                 let data = response.data;
-                localStorage.setItem(TOKEN_KEY, JSON.stringify(data))
                 setUser(data.token)
-            console.log(user)
+                localStorage.setItem(TOKEN_KEY, JSON.stringify(data))
                 navigate('/')
             })
             .catch((err)=>{
@@ -56,6 +58,27 @@ export const AuthProvider = ({children})=>{
 
             })
     }
+
+    const signup = data => {
+        if (data.password1 !== data.password2) {
+            setPasswordAlert(true)
+            return 0
+        } else setPasswordAlert(false)
+        axios.post(`${BASE_URL}/auth/signup`, data).then((res) => {
+            dispatch({
+                type:'LOGIN'
+            })
+            const data = res.data;
+            setUser(data.token)
+            localStorage.setItem(TOKEN_KEY, JSON.stringify(data))
+            navigate('/')
+        }).catch((error) => {
+            console.log(error)
+        });
+    }
+
+
+
     useEffect(()=>{
         let data = JSON.parse(localStorage.getItem(TOKEN_KEY))
         if(data)
@@ -71,7 +94,9 @@ export const AuthProvider = ({children})=>{
             ...state,
             login,
             logout,
-            user:user
+            signup,
+            user:user,
+            passwordAlert:passwordAlert,
         }}
     >
 

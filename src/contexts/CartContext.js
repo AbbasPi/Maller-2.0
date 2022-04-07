@@ -63,6 +63,15 @@ const {isAuth, user} = useContext(AuthContext)
     }
 
 
+    useEffect(()=>{
+        if(carts.length){
+        setCount(carts)
+        }
+        else {
+            setCount(0)
+        }
+    }, [isAuth, user])
+
     // const getCount = () =>{
     // if(isAuth === true)
     // {
@@ -143,6 +152,7 @@ const {isAuth, user} = useContext(AuthContext)
             removeCart,
             addQty,
             getCart,
+            setCount,
             // getCount,
         }}
     >

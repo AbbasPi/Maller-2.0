@@ -18,6 +18,8 @@ import Profile from "./pages/profile/Profile";
 import Navbar from "./components/navbar/Navbar";
 import {CartProvider} from "./contexts/CartContext";
 import {AuthProvider} from "./contexts/AuthContext";
+import EditAddress from "./address/EditAddress";
+import AddAddress from "./address/AddAddress";
 
 
 function App() {
@@ -66,6 +68,8 @@ function App() {
                 <Route path="/login" element={<SignIn/>} />
                 <Route path="/cart" element={<Cart/>} />
                 <Route path="/profile" element={<Profile />} />
+                <Route path="/edit-address" element={<EditAddress />} />
+                <Route path="/address" element={<AddAddress />} />
             </Routes>
                 </CartProvider>
         </SnackbarProvider>

@@ -1,33 +1,20 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {Link, useNavigate} from "react-router-dom";
 import axios from "axios";
 import { useForm } from "react-hook-form";
 import {BASE_URL, TOKEN_KEY} from "../../utils/Constants";
+import AuthContext from "../../contexts/AuthContext";
 
 function SignUp() {
     const { register, handleSubmit, formState: { errors } } = useForm();
     const navigate = useNavigate()
-    const [passwordAlert, setPasswordAlert] = useState(false)
-    const submitButton = data => {
-        if (data.password1 !== data.password2) {
-            setPasswordAlert(true)
-            return 0
-        } else setPasswordAlert(false)
-        axios.post(`${BASE_URL}/auth/signup`, data).then((res) => {
-            const data = res.data;
-            localStorage.setItem(TOKEN_KEY, JSON.stringify(data))
-            navigate('/')
-        }).catch((error) => {
-            console.log(error)
-        });
-    }
-
+    const {signup, passwordAlert} = useContext(AuthContext)
 
     return (
         <div>
-            <div className="bg-grey-lighter min-h-screen flex flex-col">
+            <div className="bg-grey-lighter mt-12 min-h-screen flex flex-col">
                 <div className="container max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2">
-                    <form onSubmit={submitButton} className="bg-white px-6 py-8 rounded shadow-md text-black w-full">
+                    <form className="bg-white px-6 py-8 rounded shadow-md text-black w-full">
                         <h1 className="mb-8 text-3xl text-center">Sign up</h1>
                         <div className={`${errors.first_name?.type === 'required' ? 'block' : 'hidden'} bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative`}
                              role="alert">
@@ -113,7 +100,7 @@ function SignUp() {
 
                         <button
                             type="submit"
-                            onClick={handleSubmit(submitButton)}
+                            onClick={handleSubmit(signup)}
                             className="w-full text-center py-3 rounded bg-cyan-500 text-white hover:bg-cyan-300 my-1"
                         >Create Account</button>
 

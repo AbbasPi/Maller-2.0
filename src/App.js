@@ -20,6 +20,7 @@ import {CartProvider} from "./contexts/CartContext";
 import {AuthProvider} from "./contexts/AuthContext";
 import EditAddress from "./address/EditAddress";
 import AddAddress from "./address/AddAddress";
+import Checkout from "./pages/checkout/Checkout";
 
 
 function App() {
@@ -70,6 +71,7 @@ function App() {
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/edit-address" element={<EditAddress />} />
                 <Route path="/address" element={<AddAddress />} />
+                <Route path="/checkout" element={<Checkout />} />
             </Routes>
                 </CartProvider>
         </SnackbarProvider>

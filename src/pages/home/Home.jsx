@@ -15,10 +15,9 @@ function Home({products, categories, topStores, loading, l, logout}) {
     )    }
      return (
         <div >
-            {/*<Navbar loc={'home'} l={l} logout={logout}/>*/}
             <Hero/>
             <TopStoresLine topStores={topStores}/>
-            <Card products={products} l={l}/>
+            <Card products={products}/>
             <Category categories={categories}/>
             <TopStoresCards stores={topStores}/>
             <Discount/>

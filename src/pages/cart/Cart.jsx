@@ -5,8 +5,7 @@ import {Link, useNavigate} from 'react-router-dom';
 import Footer from "../../components/footer/Footer";
 import Navbar from "../../components/navbar/Navbar";
 import './cart.css'
-import { BASE_URL, TOKEN_STR } from '../../../src/utils/Constants';
-import products from "../products/Products";
+import { BASE_URL, TOKEN_STR } from '../../utils/Constants';
 import Loading from "../../components/Loading";
 import x from '../../components/assets/svg/x-symbol.svg'
 import CartContext from "../../contexts/CartContext";
@@ -87,7 +86,7 @@ function Cart() {
                 carts?.map((product)=>{
 
                     return(
-                        <div key={product?.id} className='bg-gray-200 rounded-xl max-w-full lg:mx-16 lg:flex justify-between
+                        <div key={product?.id} className='bg-gray-100 rounded-xl max-w-full lg:mx-16 lg:flex justify-between
                          items-center p-6 mt-8'>
                             <div>
 
@@ -128,7 +127,7 @@ function Cart() {
                         <div className="flex space-x-4 items-center px-4 py-2">
                             <span className="text-xl text-gray-600 font-bold border-2 border-gray-300 p-3 py-4 uppercase">Total: ${total}</span>
                     <button onClick={()=>checkout()}
-                        className="p-2 py-5 h- items-center text-center text-white bg-cyan-500 rounded-md shadow hover:bg-cyan-600">
+                        className="p-2 border border-cyan-500 py-4 text-xl items-center text-center text-white bg-cyan-500 rounded-md shadow hover:bg-cyan-600">
                        <Link to={'/checkout'}>
                         Proceed to Checkout
                        </Link>

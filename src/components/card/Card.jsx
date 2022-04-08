@@ -1,11 +1,10 @@
 import './card.css'
-import {Link, useNavigate} from "react-router-dom";
+import {Link} from "react-router-dom";
 import {useContext, useEffect, useState} from "react";
-import { useSnackbar } from 'react-simple-snackbar'
 import axios from "axios";
 import {BASE_URL, TOKEN_STR} from "../../utils/Constants";
 import CartContext from "../../contexts/CartContext";
-function Card({products, productsPage, store_id, l}) {
+function Card({products, productsPage, store_id}) {
     const options = {
         position: 'bottom-right',
         style: {
@@ -22,18 +21,8 @@ function Card({products, productsPage, store_id, l}) {
         },
     }
     const [pro, setPro] = useState([])
-    const [openSnackbar, closeSnackbar] = useSnackbar(options)
-    const navigate = useNavigate()
     const {addToCarts} = useContext(CartContext)
-    // const addToCart = (object)=>{
-    //     if(l){
-    //     axios.post(`${BASE_URL}/cart/my`, {  "product_id": object,"item_qty": 1},
-    //             { headers: {"Authorization" : `${TOKEN_STR.token.token_type} ${TOKEN_STR.token.access_token}`} })
-    //     openSnackbar('Added To Cart Successfully')
-    //
-    //     }
-    //     else navigate('/login')
-    // }
+
     useEffect(()=>{
         const getProducts = () =>{
     if (store_id !== undefined && store_id !== null ){
@@ -50,7 +39,7 @@ function Card({products, productsPage, store_id, l}) {
     }, [products, store_id])
     return (
         <div className="bg-white">
-            <div className="max-w-2xl  mx-auto px-4 py-14 sm:px-6 lg:max-w-7xl lg:px-8">
+            <div className="max-w-2xl  mx-auto px-4 pt-12 pb-6 sm:px-6 lg:max-w-7xl lg:px-8">
                 {
                  !productsPage &&
                 <div className='flex justify-between'>
@@ -59,11 +48,11 @@ function Card({products, productsPage, store_id, l}) {
                 <Link to={'/products'} className="text-2xl text-gray-900">Browse ></Link>
                 </div>
                 }
-                <div className="mt-6 grid gap-y-24 gap-x-6 grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
+                <div className="mt-6 grid gap-y-24  gap-x-6 grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
                     {pro.map((product) => (
                         <div key={product.id} className="relative">
-                            <div className="w-full p- hover:cursor-pointer min-h-80 bg-gray-100 aspect-w-1 aspect-h-1
-                            rounded-xl overflow-hidden group-hover:cursor-cell lg:h-80 lg:aspect-none">
+                            <div className="w-full p-4 hover:cursor-pointer min-h-80 bg-gray-100 aspect-w-1 aspect-h-1
+                            rounded-xl overflow-hidden lg:h-80 lg:aspect-none">
                                 <Link to={`/product/${product.id}`}>
 
                                 <img
@@ -71,25 +60,26 @@ function Card({products, productsPage, store_id, l}) {
                                        return img.image
                                     })}
                                     alt={product.name}
-                                    className="w-full rounded-xl h-full object-center object-contain lg:w-full lg:h-5/6 lg:mt-7"
+                                    className="w-full h-48 overflow-hidden rounded-xl object-center object-contain
+                                     lg:w-full lg:h-5/6 lg:mt-7"
                                 />
                                 </Link>
                             </div>
                             <div className="mt-4">
                                 <div>
-                                    <h3 className="text-md text-gray-700">
+                                    <h3 className="text-md font-medium text-gray-700 text-left">
                                         <Link to={`/product/${product.id}`}>
                                             {product.name}
                                         </Link>
                                     </h3>
                                 </div>
                             </div>
-                                <p className="mt-2 font-medium text-gray-900">${product.lowest}</p>
-                                <button onClick={() => { addToCarts(product.id)}} className='border-2 rounded-md
-                                    border-cyan-700 lg:absolute -bottom-14 btn mx-auto  mt-4
-                                  p-2 hover:bg-[#39818d] hover:text-white'>Add To Cart</button>
-
-
+                            <div className='flex justify-between'>
+                                <p className="mt-2 font-medium lg:text-2xl font-[Poppins] text-gray-900">${product.lowest}</p>
+                            </div>
+                                <button onClick={() => { addToCarts(product.id)}} className='border-2 rounded-xl
+                                    border-gray-300 uppercase text-[#39818d]  absolute -bottom-14 btn mx-auto mt-4
+                                  p-2 hover:bg-[#39818d] hover:text-white hover:border-[#39818d]'>Add To Cart</button>
                         </div>
                     ))}
                 </div>

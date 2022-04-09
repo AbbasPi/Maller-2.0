@@ -11,7 +11,6 @@ const initValue = {
     count:0,
     addToCarts:(obj)=>{},
     getCart:()=>{},
-    // getCount:()=>{},
     removeCart:(id)=>{},
     addQty:(id,qt)=>{}
 }
@@ -141,7 +140,6 @@ const {isAuth, user} = useContext(AuthContext)
             addQty,
             getCart,
             setCount,
-            // getCount,
         }}
     >
         {children}

@@ -12,7 +12,6 @@ import CartContext from "../../contexts/CartContext";
 import AuthContext from "../../contexts/AuthContext";
 
 function Cart() {
-    // const [total, setTotal] = useState([])
     const [status, setStatus] = useState(404)
     const {carts, removeCart, count, addQty, getCart, empty, loading, setCount, total} = useContext(CartContext)
     const {isAuth, user} = useContext(AuthContext)
@@ -27,14 +26,13 @@ function Cart() {
         setStatus(empty)
     }, [isAuth, count, empty, user])
 
-    console.log(carts)
     const checkout = (()=>{
         const item = []
         carts.map((i)=>{
             item.push(i.id)
         })
         axios.post(`${BASE_URL}/order`, {items :item}, { headers: {"Authorization":
-                    `${TOKEN_STR.token.token_type} ${TOKEN_STR.token.access_token}`} })
+                    `${user.token_type} ${user.access_token}`} })
             .catch((err)=>{
                 console.log(err)
             })
@@ -53,7 +51,7 @@ function Cart() {
                     </button>
                     <p className='ecp'>Have an Active Order? </p>
                     <button className='bg-white border p-2 my-2 rounded-md hover:bg-gray-200'>
-                        <Link style={{ textDecoration: 'none', color: 'black'}} to='/checkout-info' >My Order</Link>
+                        <Link style={{ textDecoration: 'none', color: 'black'}} to='/checkout' >My Order</Link>
                     </button>
                     </div>
                     <Footer/>

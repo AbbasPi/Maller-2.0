@@ -84,7 +84,8 @@ function SignUp() {
                         </div>
                         <input
                             type="password"
-                            className="block focus:outline-none focus:ring focus:ring-cyan-300 border active:border-black w-full p-3 rounded mb-4"
+                            className="block focus:outline-none focus:ring focus:ring-cyan-300 border active:border-black
+                             w-full p-3 rounded mb-4"
                             name="password1"
                             placeholder="Password"
                             {...register("password1", {required: true, min: 8, minLength: 8})}

@@ -1,9 +1,9 @@
 import './App.css';
-import {BrowserRouter,Routes, Route, useNavigate} from 'react-router-dom';
+import {BrowserRouter, Routes, Route} from 'react-router-dom';
 import {useEffect, useState} from "react";
 import SnackbarProvider from 'react-simple-snackbar'
 import axios from "axios";
-import {BASE_URL, TOKEN_KEY, TOKEN_STR} from "./utils/Constants";
+import {BASE_URL} from "./utils/Constants";
 import Home from "./pages/home/Home";
 import Products from "./pages/products/Products";
 import ProductDetail from "./pages/product detail/ProductDetail";
@@ -28,6 +28,11 @@ function App() {
     const [loading, setLoading] = useState(true)
     const [categories, setCategories] = useState([])
     const [topStores, setTopStores] = useState([])
+    const [query, setQuery] = useState('');
+
+    const getQuery = (inputValue) =>{
+        setQuery(inputValue)
+    }
 
     useEffect(()=>{
         axios.get(`${BASE_URL}/category/all`).then((res)=>{
@@ -55,13 +60,13 @@ function App() {
                 <AuthProvider>
                     <SnackbarProvider>
                         <CartProvider>
-                <Navbar loading={loading}/>
+                <Navbar loading={loading} query={getQuery}/>
             <Routes>
                 <Route  path="/" element={<Home products={products.slice(0,4)}
                  topStores={topStores.slice(0,5)} categories={categories.slice(0,5)}  loading={loading}/>}/>
-                <Route  path='/products' element={<Products loading={loading}  />}/>
+                <Route  path='/products' element={<Products loading={loading} query={query}/>}/>
                 <Route path="/product/:productId" element={<ProductDetail  />} />
-                <Route path="/stores" element={<Stores stores={topStores}  />} />
+                <Route path="/stores" element={<Stores stores={topStores} loading={loading}  />} />
                 <Route path="/store/:storeId" element={<StoreDetail  />}/>
                 <Route path="/category/:categoryId" element={<Categories  /> }/>
                 <Route path="/category" element={<CategoriesPage categories={categories}  />} />

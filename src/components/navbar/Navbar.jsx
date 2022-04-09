@@ -2,16 +2,14 @@ import React, {useContext, useEffect, useState} from 'react';
 import './navbar.css'
 import logo from '../assets/media/logo.png'
 import account from '../assets/media/account.png'
-import {Link, useLocation} from "react-router-dom";
-import {BASE_URL, TOKEN_KEY, TOKEN_STR} from "../../utils/Constants";
-import axios from "axios";
+import search from '../assets/svg/icons8-search.svg'
+import {Link, useLocation, useNavigate} from "react-router-dom";
 import CartContext from "../../contexts/CartContext";
 import AuthContext from "../../contexts/AuthContext";
 
-const Navbar = ({loading}) => {
-
+const Navbar = ({loading, query}) => {
+    const navigate = useNavigate()
     const [open,setOpen]=useState(false);
-    const [coun,setCoun]=useState(0);
     const {count, carts, getCart, setCount} = useContext(CartContext);
     const {logout, isAuth, user} = useContext(AuthContext)
     const location = useLocation()
@@ -26,13 +24,21 @@ const Navbar = ({loading}) => {
             setCount(0)
         }
     }, [count, isAuth, user])
-    return (
+
+
+        const handleKeyDown = (event) => {
+            if (event.key === 'Enter') {
+                navigate('/products')
+            }
+        }
+
+        return (
         <div className=' w-full z-50 bg-white fixed h-20 top-0 left-0'>
             {
                 loading ? null
                     :
 
-            <div className='lg:flex items-center justify-between py-2 lg:px-10 px-7'>
+            <div className='font-[Poppins] lg:flex items-center justify-between py-2 lg:px-10 px-7'>
                 <div className='font-bold text-2xl cursor-pointer flex items-center font-[Poppins] text-gray-800'>
                     <Link to='/' className={'w-24 m-auto lg:block'}>
                     <img src={logo} alt=""/>
@@ -61,8 +67,15 @@ const Navbar = ({loading}) => {
                                 ${location.pathname === '/stores' && 'text-cyan-700 border-b-2 border-b-cyan-700'}  `}>Stores</Link>
                     </li>
                 </ul>
-
-                <input placeholder={'SEARCH'} className={'border-cyan-700 border-2 w-72 rounded-2xl p-1 pl-3 hidden lg:block'} type="text"/>
+                <div className='relative'>
+                <input placeholder='SEARCH' className='w-80 rounded-2xl pl-3 py-2 hidden lg:block
+                                          focus:outline-none focus:ring focus:ring-cyan-500 border'
+                       type="text" onChange={(e)=>query(e.target.value)}
+                onKeyDown={handleKeyDown}/>
+                    <Link to='/products'>
+                <img src={search} className='absolute right-3 top-1 w-8 hover:cursor-pointer'/>
+                    </Link>
+                </div>
                     <div className='flex -mt-14 lg:mt-0 lg:block'>
                             <div className="dropdown1 hover:cursor-pointer">
                                 <img className={'w-8 mr-6 inline-block'} alt='' src={account}/>

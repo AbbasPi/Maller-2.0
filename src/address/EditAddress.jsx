@@ -44,7 +44,7 @@ function AddressEdit() {
 
         <div>
             <Navbar/>
-            <div className="bg-grey-lighter mt-6 min-h-screen flex flex-col">
+            <div className="font-[Poppins] bg-grey-lighter mt-6 min-h-screen flex flex-col">
                 <div className="container max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2">
                     <form className="bg-white px-6 py-8  rounded-xl shadow-md text-black w-full">
 
@@ -58,11 +58,11 @@ function AddressEdit() {
                             <span className="block sm:inline">Address Is Required</span>
                         </div>
                                     <h1 className='text-justify font-semibold p-1'>Address 1</h1>
-                                    <input className='block border active:border-black w-full p-3  rounded-xl mb-4'
+                                    <input className='block focus:outline-none focus:ring focus:ring-cyan-300 border w-full p-3 rounded-2xl mb-4'
                                            type="text" placeholder="Address 1" defaultValue={address.address1}
                                            {...register("address1", {max: 20, maxLength: 80})} />
                                     <h1 className='text-justify font-semibold p-1'>Address 2</h1>
-                                    <input className='block border active:border-black w-full p-3  rounded-xl mb-4'
+                                    <input className='block focus:outline-none focus:ring focus:ring-cyan-300 border w-full p-3 rounded-2xl mb-4'
                                            type="text" placeholder="Address 2" defaultValue={address.address2}
                                            {...register("address2", {required: true, maxLength: 100})} />
                         <div className={`${errors.phone?.type === 'required' ? 'block' : 'hidden'} bg-red-100 border border-red-400 text-red-700 px-4 py-3  rounded-xl relative`}
@@ -74,14 +74,14 @@ function AddressEdit() {
                             <span className="block sm:inline">Invalid Phone Number</span>
                         </div>
                                     <h1 className='text-justify font-semibold p-1'>Phone Number</h1>
-                                    <input className='block border active:border-black w-full p-3 rounded-xl mb-4'
+                                    <input className='block focus:outline-none focus:ring focus:ring-cyan-300 border w-full p-3 rounded-2xl mb-4'
                                            type="text" placeholder="Phone number" defaultValue={address.phone}
                                            {...register("phone", {required: true, pattern: /^(((?:\+|00)964)|(0)*)7\d{9}$/gm})} />
                                 </div>
                             })
                         }
                         <div className='flex flex-col'>
-                            <select className='float-left border p-2 font-medium bg-gray-100  rounded-xl mb-5'  {...register("city_id", { required: true })}>
+                            <select className='float-left border block focus:outline-none focus:ring focus:ring-cyan-300 w-full p-3 rounded-2xl mb-4 p-2 font-medium bg-gray-100'  {...register("city_id", { required: true })}>
                             <option className='py-12 rounded-xl' hidden >City</option>
                             {
                                 city.map((city)=>{

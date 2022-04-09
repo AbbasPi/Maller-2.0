@@ -16,17 +16,17 @@ function Checkout() {
     const navigate = useNavigate()
     const { register, handleSubmit, formState: errors } = useForm();
     const onSubmit = data => {
-        axios.put(`${BASE_URL}/address/${address[0].id}`, data, { headers: {"Authorization" : `${TOKEN_STR.token.token_type} ${TOKEN_STR.token.access_token}`} })
+        axios.put(`${BASE_URL}/address/${address[0].id}`, data, { headers: {"Authorization" : `${user.token_type} ${user.access_token}`} })
     }
     useEffect(()=>{
         !isAuth  ? navigate('/login')
             :
-            axios.get(`${BASE_URL}/address/city/all`, { headers: {"Authorization" : `${TOKEN_STR.token.token_type} ${TOKEN_STR.token.access_token}`} }).then((res)=>{
+            axios.get(`${BASE_URL}/address/city/all`, { headers: {"Authorization" : `${user.token_type} ${user.access_token}`} }).then((res)=>{
                 setCity(res.data)
             }).catch((err)=>{
                 console.log(err)
             })
-        axios.get(`${BASE_URL}/address/address`, { headers: {"Authorization" : `${TOKEN_STR.token.token_type} ${TOKEN_STR.token.access_token}`} } ).then((res)=>{
+        axios.get(`${BASE_URL}/address/address`, { headers: {"Authorization" : `${user.token_type} ${user.access_token}`} } ).then((res)=>{
             setAddress(res.data)
         }).catch(function (error) {
             if (error.response) {
@@ -34,16 +34,16 @@ function Checkout() {
                 setStatus(error.response.status)
             }
         })
-        axios.get(`${BASE_URL}/order`, { headers: {"Authorization" : `${TOKEN_STR.token.token_type} ${TOKEN_STR.token.access_token}`} })
+        axios.get(`${BASE_URL}/order`, { headers: {"Authorization" : `${user.token_type} ${user.access_token}`} })
             .then((res)=>{
                 setOrder(res.data)
             }).catch((err)=>{
             console.log(err);
         })
-    }, [])
+    }, [isAuth, user])
 
     const checkout = (()=>{
-        axios.post(`${BASE_URL}/order/checkout`, null, { headers: {"Authorization" : `${TOKEN_STR.token.token_type} ${TOKEN_STR.token.access_token}`} })
+        axios.post(`${BASE_URL}/order/checkout`, null, { headers: {"Authorization" : `${user.token_type} ${user.access_token}`} })
         setOrder(null)
         navigate("/")
 
@@ -60,7 +60,6 @@ function Checkout() {
                     <div className="min-h flex flex-col">
                         <div className="container max-w-full mx-auto flex flex-col items-center justify-center px-2">
                             <form className="bg-white px-6 py-8 rounded-xl text-black w-full">
-
                                 {
                                     address.map((address)=>{
                                         return <div>

@@ -24,8 +24,7 @@ function ProductDetail({l, logout}) {
             {
                 product ?
                     <div>
-                    {/*<Navbar l={l} logout={logout}/>*/}
-            <section className="text-gray-700 mt-6 body-font overflow-hidden bg-white">
+            <section className="font-[Poppins] text-gray-700 mt-6 body-font overflow-hidden bg-white">
                 <div className="container px-5 py-24 mx-auto">
                     <div className="lg:w-4/5 mx-auto flex flex-wrap">
                         <img alt={product.images[0].alt_text}

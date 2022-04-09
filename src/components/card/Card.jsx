@@ -37,6 +37,7 @@ function Card({products, productsPage, store_id}) {
         }
         getProducts()
     }, [products, store_id])
+
     return (
         <div className="bg-white">
             <div className="max-w-2xl  mx-auto px-4 pt-12 pb-6 sm:px-6 lg:max-w-7xl lg:px-8">
@@ -67,7 +68,7 @@ function Card({products, productsPage, store_id}) {
                             </div>
                             <div className="mt-4">
                                 <div>
-                                    <h3 className="text-md font-medium text-gray-700 text-left">
+                                    <h3 className="text-sm font-medium text-gray-700 text-left">
                                         <Link to={`/product/${product.id}`}>
                                             {product.name}
                                         </Link>
@@ -75,10 +76,28 @@ function Card({products, productsPage, store_id}) {
                                 </div>
                             </div>
                             <div className='flex justify-between'>
-                                <p className="mt-2 font-medium lg:text-2xl font-[Poppins] text-gray-900">${product.lowest}</p>
+                                <div className="mt-2 font-medium lg:text-xl font-[Poppins] text-gray-900">
+                                    {
+                                        product.label.name === 'SPECIAL OFFERS' ?
+                                            product.lowest_discounted ? <div>
+                                                <p className='opacity-40 line-through'>
+                                                    ${product.lowest}
+                                                </p>
+                                                 <p>
+                                                    ${product.lowest_discounted}
+                                                </p>
+                                    </div>
+                                        : <p className=''>
+                                                    ${product.lowest}
+                                                </p>      : <p className=''>
+                                                    ${product.lowest}
+                                                </p>
+                                            }
+                                </div>
                             </div>
                                 <button onClick={() => { addToCarts(product.id)}} className='border-2 rounded-xl
-                                    border-gray-300 uppercase text-[#39818d]  absolute -bottom-14 btn mx-auto mt-4
+                                    border-gray-300 uppercase text-[#39818d]  absolute lg:left-20 left-6
+                                    -bottom-14 mx-auto mt-4
                                   p-2 hover:bg-[#39818d] hover:text-white hover:border-[#39818d]'>Add To Cart</button>
                         </div>
                     ))}

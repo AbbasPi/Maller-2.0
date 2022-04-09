@@ -7,31 +7,41 @@ import './products.css'
 import {BASE_URL} from "../../utils/Constants";
 import axios from "axios";
 
-function Products() {
+function Products({query}) {
     const [pageCount, setpageCount] = useState(0);
     const [items, setItems] = useState([]);
     const [loading, setLoading] = useState(true)
     const [loading2, setLoading2] = useState(false)
+    const [labels, setLabels] = useState([])
+    const [labelId, setLabelId] = useState(null)
     let limit = 12;
-
     useEffect(() => {
         const getProducts= () => {
                 setLoading(true)
-                axios.get(`${BASE_URL}/product/all`, {params : {per_page: limit, page: 1}}).then((res)=>{
-                    const data = res.data.data
-                    setpageCount(res.data.page_count);
-                    setItems(data);
-                    setLoading(false)
-                }).catch((err)=>{
-                    console.log(err);
-                })
+                    axios.get(`${BASE_URL}/product/all`, {params : {per_page: limit, page: 1, search: query, label_id: labelId}}).then((res)=>{
+                        const data = res.data.data
+                        setpageCount(res.data.page_count);
+                        setItems(data);
+                        setLoading(false)
+                    }).catch((err)=>{
+                        console.log(err)
+                    })
+
             }
+       const getLabels = () =>{
+            axios.get(`${BASE_URL}/label/all`).then(res=>{
+                setLabels(res.data)
+            }).catch(err=>{
+                console.log(err)
+            })
+       }
+        getLabels();
         getProducts();
-    },[limit])
+    },[limit, query, labelId])
 
     const fetchProducts= (currentPage) => {
         setLoading2(true)
-        axios.get(`${BASE_URL}/product/all`, {params : {per_page: limit, page: currentPage}}).then((res)=>{
+        axios.get(`${BASE_URL}/product/all`, {params : {per_page: limit, page: currentPage, search: query}}).then((res)=>{
             const data = res.data.data
             setItems(data)
             setpageCount(res.data.page_count);
@@ -40,6 +50,15 @@ function Products() {
             console.log(err);
         })
     };
+
+    const getLabelId = (id) => {
+    if(labelId === id){
+        setLabelId(null)
+    }
+    else {
+        setLabelId(id)
+    }
+    }
 
     const handlePageClick = (data) => {
         let currentPage = data.selected + 1;
@@ -52,19 +71,18 @@ function Products() {
         <Loading/>
     )}
     return (
-        <div>
-                {/*<Navbar loc='products' l={l} logout={logout}/>*/}
+        <div className='font-[Poppins]'>
             <div className='mb-20'>
-                <div className='flex justify-between max-w-md mt-36 mx-8 lg:mx-auto'>
-                    <p className="text-xl hover:text-cyan-500 hover:cursor-pointer transition duration-300">
-                        New Arrivals
-                    </p>
-                    <p className="text-xl hover:text-cyan-500 hover:cursor-pointer transition duration-300">
-                        Best Of
-                    </p>
-                    <p className="text-xl hover:text-cyan-500 hover:cursor-pointer transition duration-300">
-                        Discount
-                    </p>
+                <div className='flex justify-between max-w-xl mt-36 mx-8 lg:mx-auto'>
+                    {
+                        labels.map((label)=>{
+                    return <button onClick={()=>getLabelId(label.id)} className={`text-xl hover:text-cyan-500
+                     hover:cursor-pointer transition duration-300 ${label.id === labelId && 'text-cyan-600'}`}>
+                        {label.name}
+                    </button>
+
+                        })
+                    }
                 </div>
                 {
                     loading2 ? <Loading/>

@@ -73,7 +73,7 @@ const Navbar = ({loading, query}) => {
                        type="text" onChange={(e)=>query(e.target.value)}
                 onKeyDown={handleKeyDown}/>
                     <Link to='/products'>
-                <img src={search} className='absolute right-3 top-1 w-8 hover:cursor-pointer'/>
+                <img src={search} className='absolute hidden lg:block right-3 top-1 w-8 hover:cursor-pointer'/>
                     </Link>
                 </div>
                     <div className='flex -mt-14 lg:mt-0 lg:block'>

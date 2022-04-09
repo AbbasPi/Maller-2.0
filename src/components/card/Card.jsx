@@ -40,7 +40,7 @@ function Card({products, productsPage, store_id}) {
 
     return (
         <div className="bg-white">
-            <div className="max-w-2xl  mx-auto px-4 pt-12 pb-6 sm:px-6 lg:max-w-7xl lg:px-8">
+            <div className="max-w-2xl mx-auto px-4 pt-12 pb-6 sm:px-6 lg:max-w-7xl lg:px-8">
                 {
                  !productsPage &&
                 <div className='flex justify-between'>

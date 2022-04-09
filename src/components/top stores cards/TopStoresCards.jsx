@@ -4,7 +4,7 @@ import {Link} from "react-router-dom";
 function TopStoresCards({stores, StoresPage}) {
     return (
         <div className="bg-white">
-            <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:max-w-7xl lg:px-8">
+            <div className="max-w-2xl mx-auto px-4 sm:px-6 mb-12 lg:mb-0 lg:max-w-7xl lg:px-8">
                 {
                  !StoresPage &&
                 <div className='flex justify-between'>

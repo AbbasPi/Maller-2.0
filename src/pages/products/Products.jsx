@@ -6,6 +6,7 @@ import ReactPaginate from "react-paginate";
 import './products.css'
 import {BASE_URL} from "../../utils/Constants";
 import axios from "axios";
+import NotFound from "../../components/NotFound";
 
 function Products({query}) {
     const [pageCount, setpageCount] = useState(0);
@@ -14,6 +15,7 @@ function Products({query}) {
     const [loading2, setLoading2] = useState(false)
     const [labels, setLabels] = useState([])
     const [labelId, setLabelId] = useState(null)
+    const [status, setStatus] = useState(0)
     let limit = 12;
     useEffect(() => {
         const getProducts= () => {
@@ -23,10 +25,13 @@ function Products({query}) {
                         setpageCount(res.data.page_count);
                         setItems(data);
                         setLoading(false)
-                    }).catch((err)=>{
-                        console.log(err)
+                        setStatus(0)
+                    }).catch(function (error) {
+                        if (error.response) {
+                            console.log(error.response.status);
+                            setStatus(error.response.status)
+                        }
                     })
-
             }
        const getLabels = () =>{
             axios.get(`${BASE_URL}/label/all`).then(res=>{
@@ -66,17 +71,22 @@ function Products({query}) {
         // scroll to the top
         window.scrollTo(10, 0)
     };
+
+    if(status === 404){
+        return <NotFound/>
+    }
     if (loading === true)
     {return (
         <Loading/>
     )}
+    if(status !== 404)
     return (
         <div className='font-[Poppins]'>
             <div className='mb-20'>
-                <div className='flex justify-between max-w-xl mt-36 mx-8 lg:mx-auto'>
+                <div className='flex mx-5 justify-between max-w-xl mt-36 lg:mx-auto'>
                     {
                         labels.map((label)=>{
-                    return <button onClick={()=>getLabelId(label.id)} className={`text-xl hover:text-cyan-500
+                    return <button onClick={()=>getLabelId(label.id)} className={`lg:text-xl text-sm  hover:text-cyan-500
                      hover:cursor-pointer transition duration-300 ${label.id === labelId && 'text-cyan-600'}`}>
                         {label.name}
                     </button>

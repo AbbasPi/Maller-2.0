@@ -5,7 +5,7 @@ import './category.css'
 function Category({categories, categoriesPage}) {
     return (
         <div className="bg-white">
-            <div className="max-w-2xl mx-auto px-4 py-32 sm:px-6 lg:max-w-7xl lg:px-8">
+            <div className="max-w-2xl mx-auto px-4 py-24 sm:px-6 lg:max-w-7xl lg:px-8">
                 {
                     !categoriesPage &&
                 <div className='flex justify-between'>

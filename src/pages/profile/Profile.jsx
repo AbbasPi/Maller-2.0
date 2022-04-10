@@ -4,10 +4,12 @@ import axios from "axios";
 import { useForm } from "react-hook-form";
 import {BASE_URL, TOKEN_KEY, TOKEN_STR} from "../../utils/Constants";
 import AuthContext from "../../contexts/AuthContext";
+import Loading from "../../components/Loading";
 
 function Profile() {
     const navigate = useNavigate()
     const [info, setInfo] = useState([]);
+    const [loading, setLoading] = useState(true);
     const { register, handleSubmit, formState : {errors} } = useForm();
     const {isAuth, user} = useContext(AuthContext)
     const onSubmit = data => {
@@ -17,14 +19,17 @@ function Profile() {
     !isAuth  ? navigate('/login')
         :
         (axios.get(`${BASE_URL}/auth/me`,   { headers: {"Authorization" : `${user.token_type} ${user.access_token}`}}).then((res)=>{
+            setLoading(true)
             setInfo(res.data)
+                setLoading(false)
         }).catch((err)=>{
             console.log(err)
         })
 )
     }, [isAuth, user])
-
-
+    if(loading === true){
+        return <Loading/>
+    }
     return (
         <div>
             <div className="font-[Poppins] bg-grey-lighter min-h-screen flex flex-col">

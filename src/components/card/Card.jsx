@@ -78,8 +78,7 @@ function Card({products, productsPage, store_id}) {
                             <div className='flex justify-between'>
                                 <div className="mt-2 font-medium lg:text-xl font-[Poppins] text-gray-900">
                                     {
-                                        product.label.name === 'SPECIAL OFFERS' ?
-                                            product.lowest_discounted ? <div>
+                                            product.lowest_discounted < product.lowest ? <div>
                                                 <p className='opacity-40 line-through'>
                                                     ${product.lowest}
                                                 </p>
@@ -89,13 +88,11 @@ function Card({products, productsPage, store_id}) {
                                     </div>
                                         : <p className=''>
                                                     ${product.lowest}
-                                                </p>      : <p className=''>
-                                                    ${product.lowest}
                                                 </p>
                                             }
                                 </div>
                             </div>
-                                <button onClick={() => { addToCarts(product.id)}} className='border-2 rounded-xl
+                                <button onClick={()=>{ addToCarts(product.id)}} className='border-2 rounded-xl
                                     border-gray-300 uppercase text-[#39818d]  absolute lg:left-20 left-6
                                     -bottom-14 mx-auto mt-4
                                   p-2 hover:bg-[#39818d] hover:text-white hover:border-[#39818d]'>Add To Cart</button>

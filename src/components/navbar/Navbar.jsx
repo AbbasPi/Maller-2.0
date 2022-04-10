@@ -44,6 +44,7 @@ const Navbar = ({loading, query}) => {
                     <img src={logo} alt=""/>
                         {/*<h3>MALLER</h3>*/}
                     </Link>
+
                 </div>
                  <div onClick={()=>setOpen(!open)} className='text-3xl absolute right-8 top-6 cursor-pointer lg:hidden'>
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24"
@@ -54,26 +55,35 @@ const Navbar = ({loading, query}) => {
 
                 <ul className={`lg:flex lg:items-center lg:pb-0 pb-12 absolute lg:static bg-white lg:z-auto z-[-1]
                  left-0 w-full lg:w-auto lg:pl-0 pl-9 transition-all duration-500 ease-in ${open ? 'top-20 ':'top-[-300px]'}`}>
-                    <li className='lg:ml-8 text-xl lg:my-0 my-7'>
+                    <div className='relative lg:hidden mr-12 mt-2' >
+                        <input placeholder='SEARCH' className='w-80  rounded-2xl pl-3 py-2
+                                          focus:outline-none focus:ring focus:ring-cyan-500 border'
+                               type="text" onChange={(e)=>query(e.target.value)}
+                               onKeyDown={handleKeyDown}/>
+                        <Link to='/products'>
+                            <img src={search} className={`${open ? 'top-1 ':'top-[-300px]'} absolute  lg:hidden right-0 w-8 hover:cursor-pointer`}/>
+                        </Link>
+                    </div>
+                    <li onClick={()=>setOpen(!open)} className='lg:ml-8 text-xl lg:my-0 my-7'>
                         <Link to={'/'} className={`text--800 hover:text-cyan-700 duration-100 
                                 ${location.pathname === '/' && 'text-cyan-700 border-b-2 border-b-cyan-700'}  `}>Home</Link>
                     </li>
-                    <li className='lg:ml-8 text-xl lg:my-0 my-7'>
+                    <li onClick={()=>setOpen(!open)} className='lg:ml-8 text-xl lg:my-0 my-7'>
                         <Link to={'/products'} className={`text--800 hover:text-cyan-700 duration-100 
                                 ${location.pathname === '/products' && 'text-cyan-700 border-b-2 border-b-cyan-700'}  `}>Products</Link>
                     </li>
-                    <li className='lg:ml-8 text-xl lg:my-0 my-7'>
+                    <li onClick={()=>setOpen(!open)} className='lg:ml-8 text-xl lg:my-0 my-7'>
                         <Link to={'/stores'} className={`text--800 hover:text-cyan-700 duration-100 
                                 ${location.pathname === '/stores' && 'text-cyan-700 border-b-2 border-b-cyan-700'}  `}>Stores</Link>
                     </li>
                 </ul>
-                <div className='relative'>
-                <input placeholder='SEARCH' className='w-80 rounded-2xl pl-3 py-2 hidden lg:block
+                <div className='relative hidden lg:block'>
+                <input placeholder='SEARCH' className='w-96 rounded-2xl pl-3 py-2 hidden lg:block
                                           focus:outline-none focus:ring focus:ring-cyan-500 border'
                        type="text" onChange={(e)=>query(e.target.value)}
                 onKeyDown={handleKeyDown}/>
                     <Link to='/products'>
-                <img src={search} className='absolute hidden lg:block right-3 top-1 w-8 hover:cursor-pointer'/>
+                <img src={search} className={` absolute transition-all top-2 right-2 w-7 hover:cursor-pointer`}/>
                     </Link>
                 </div>
                     <div className='flex -mt-14 lg:mt-0 lg:block'>

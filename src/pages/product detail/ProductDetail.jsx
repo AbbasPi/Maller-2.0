@@ -72,10 +72,22 @@ function ProductDetail({l, logout}) {
                                         </Link></span>
                                 </div>
                                 <div className="flex">
-                                    <span className="title-font font-medium text-2xl text-gray-900">${product.lowest}</span>
+                                    <span className="title-font font-medium text-2xl text-gray-900">{
+                                        product.lowest_discounted < product.lowest ? <div>
+                                                <p className='opacity-40 line-through'>
+                                                    ${product.lowest}
+                                                </p>
+                                                <p>
+                                                    ${product.lowest_discounted}
+                                                </p>
+                                            </div>
+                                            : <p className=''>
+                                                ${product.lowest}
+                                            </p>
+                                    }</span>
                                     <button onClick={()=>addToCarts(product.id)}
                                         className="flex ml-auto text-white bg-[#39818d] border-0 py-2 px-6
-                                        focus:outline-none hover:bg-cyan-500 rounded-md">Add To Cart
+                                        focus:outline-none hover:bg-cyan-500 h-10 rounded-md">Add To Cart
                                     </button>
             {/*                        <button*/}
             {/*                            className="rounded-full w-10 h-10 bg-gray-200 p-0 border-0 inline-flex*/}

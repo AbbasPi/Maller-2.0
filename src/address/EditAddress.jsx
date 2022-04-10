@@ -6,42 +6,56 @@ import {Link, useNavigate} from 'react-router-dom';
 import Footer from "../components/footer/Footer";
 import Navbar from "../components/navbar/Navbar";
 import AuthContext from "../contexts/AuthContext";
+import Loading from "../components/Loading";
 
 function AddressEdit() {
     const {isAuth, user} = useContext(AuthContext)
     const [city, setCity] = useState([]);
-    const [info, setInfo] = useState([]);
+    const [cityAddress, setCityAddress] = useState('');
     const [address, setAddress] = useState([]);
+    const [loading, setLoading] = useState(true);
     const [status, setStatus] = useState(0)
     const navigate = useNavigate()
     const { register, handleSubmit, formState: errors } = useForm();
     const onSubmit = data => {
-        axios.put(`${BASE_URL}/address/${address[0].id}`, data, { headers: {"Authorization" : `${TOKEN_STR.token.token_type} ${TOKEN_STR.token.access_token}`} })
+        axios.put(`${BASE_URL}/address/${address[0].id}`, data, { headers: {"Authorization" : `${user.token_type} ${user.access_token}`} })
     }
     useEffect(()=>{
-        !isAuth  ? navigate('/login')
-            :
-        axios.get(`${BASE_URL}/address/city/all`, { headers: {"Authorization" : `${TOKEN_STR.token.token_type} ${TOKEN_STR.token.access_token}`} }).then((res)=>{
+        if(isAuth === false){
+            navigate('/login')
+        }
+        else{
+
+        axios.get(`${BASE_URL}/address/city/all`, { headers: {"Authorization" : `${user.token_type} ${user.access_token}`} }).then((res)=>{
+            setLoading(true)
             setCity(res.data)
+            setLoading(false)
         }).catch((err)=>{
             console.log(err)
         })
-        axios.get(`${BASE_URL}/address/address`, { headers: {"Authorization" : `${TOKEN_STR.token.token_type} ${TOKEN_STR.token.access_token}`} } ).then((res)=>{
+        axios.get(`${BASE_URL}/address/address`, { headers: {"Authorization" : `${user.token_type} ${user.access_token}`} } ).then((res)=>{
+            setLoading(true)
             setAddress(res.data)
+            if(address.length > 0){
+                setCityAddress(address[0]?.city.name)
+            }
+            setLoading(false)
         }).catch(function (error) {
             if (error.response) {
-                console.log(error.response.status);
                 setStatus(error.response.status)
             }
         })
-    }, [])
+        }
+    }, [isAuth, user])
 
 
     if(status === 404){
         navigate("/address")
     }
+    if(loading === true){
+        return <Loading/>
+    }
     return (
-
         <div>
             <Navbar/>
             <div className="font-[Poppins] bg-grey-lighter mt-6 min-h-screen flex flex-col">
@@ -82,7 +96,7 @@ function AddressEdit() {
                         }
                         <div className='flex flex-col'>
                             <select className='float-left border block focus:outline-none focus:ring focus:ring-cyan-300 w-full p-3 rounded-2xl mb-4 p-2 font-medium bg-gray-100'  {...register("city_id", { required: true })}>
-                            <option className='py-12 rounded-xl' hidden >City</option>
+                                <option className='py-12 rounded-xl' hidden >City</option>
                             {
                                 city.map((city)=>{
                                     return  <option className='py-12 rounded-xl' key={city.id} value={city.id}>{city.name}</option>

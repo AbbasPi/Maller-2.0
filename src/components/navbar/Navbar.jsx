@@ -33,7 +33,7 @@ const Navbar = ({loading, query}) => {
         }
 
         return (
-        <div className=' w-full z-50 bg-white fixed h-20 top-0 left-0'>
+        <div className=' w-full z-50 bg-gray-100 shadow fixed h-20 top-0 left-0'>
             {
                 loading ? null
                     :
@@ -53,7 +53,7 @@ const Navbar = ({loading, query}) => {
                     </svg>
                 </div>
 
-                <ul className={`lg:flex lg:items-center lg:pb-0 pb-12 absolute lg:static bg-white lg:z-auto z-[-1]
+                <ul className={`lg:flex lg:items-center lg:pb-0 pb-12 absolute lg:static bg-gray-100 lg:z-auto z-[-1]
                  left-0 w-full lg:w-auto lg:pl-0 pl-9 transition-all duration-500 ease-in ${open ? 'top-20 ':'top-[-300px]'}`}>
                     <div className='relative lg:hidden mr-12 mt-2' >
                         <input placeholder='SEARCH' className='w-80  rounded-2xl pl-3 py-2
@@ -66,15 +66,18 @@ const Navbar = ({loading, query}) => {
                     </div>
                     <li onClick={()=>setOpen(!open)} className='lg:ml-8 text-xl lg:my-0 my-7'>
                         <Link to={'/'} className={`text--800 hover:text-cyan-700 duration-100 
-                                ${location.pathname === '/' && 'text-cyan-700 border-b-2 border-b-cyan-700'}  `}>Home</Link>
+                                ${location.pathname === '/' && 'text-cyan-700 border-b-2 border-b-cyan-700'}  `}>
+                            Home</Link>
                     </li>
                     <li onClick={()=>setOpen(!open)} className='lg:ml-8 text-xl lg:my-0 my-7'>
                         <Link to={'/products'} className={`text--800 hover:text-cyan-700 duration-100 
-                                ${location.pathname === '/products' && 'text-cyan-700 border-b-2 border-b-cyan-700'}  `}>Products</Link>
+                                ${location.pathname === '/products' && 'text-cyan-700 border-b-2 border-b-cyan-700'}  `}>
+                            Products</Link>
                     </li>
                     <li onClick={()=>setOpen(!open)} className='lg:ml-8 text-xl lg:my-0 my-7'>
                         <Link to={'/stores'} className={`text--800 hover:text-cyan-700 duration-100 
-                                ${location.pathname === '/stores' && 'text-cyan-700 border-b-2 border-b-cyan-700'}  `}>Stores</Link>
+                                ${location.pathname === '/stores' && 'text-cyan-700 border-b-2 border-b-cyan-700'}  `}>
+                            Stores</Link>
                     </li>
                 </ul>
                 <div className='relative hidden lg:block'>

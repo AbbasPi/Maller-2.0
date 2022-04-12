@@ -20,7 +20,7 @@ const {isAuth, user} = useContext(AuthContext)
     const options = {
         position: 'bottom-right',
         style: {
-            backgroundColor: '#39818d',
+            backgroundColor: '#5D90E8',
             border: '1px',
             color: 'white',
             fontFamily: 'Poppins',
@@ -29,7 +29,7 @@ const {isAuth, user} = useContext(AuthContext)
             padding: '1px'
         },
         closeStyle: {
-            color: 'red',
+            color: 'white',
             fontSize: '15px',
         },
     }

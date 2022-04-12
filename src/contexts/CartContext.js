@@ -1,7 +1,7 @@
 import {createContext, useContext, useEffect, useState} from "react";
 import axios from "axios";
 import { useSnackbar } from 'react-simple-snackbar'
-import {BASE_URL, TOKEN_STR} from "../utils/Constants";
+import {BASE_URL} from "../utils/Constants";
 import AuthContext from "./AuthContext";
 const initValue = {
     carts:[],
@@ -65,12 +65,13 @@ const {isAuth, user} = useContext(AuthContext)
 
     useEffect(()=>{
         if(carts.length){
+        setTotal(carts.reduce((total, item)=>total+(item.product.lowest*item.item_qty),0))
         setCount(carts.length)
         }
         else {
             setCount(0)
         }
-    }, [isAuth, user, carts])
+    }, [isAuth, user, carts, total])
 
 
     const addToCarts = (cart)=>{

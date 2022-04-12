@@ -51,7 +51,7 @@ function Checkout() {
     }, [isAuth, user, promoMsg])
 
     const checkout = ()=>{
-        axios.post(`${BASE_URL}/order/checkout`,{ headers: {"Authorization" : `${user.token_type} ${user.access_token}`} }).then(()=>{
+        axios.post(`${BASE_URL}/order/checkout`, null,{ headers: {"Authorization" : `${user.token_type} ${user.access_token}`} }).then(()=>{
         setOrder(null)
         navigate("/")
 

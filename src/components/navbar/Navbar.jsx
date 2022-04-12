@@ -33,15 +33,16 @@ const Navbar = ({loading, query}) => {
         }
 
         return (
-        <div className=' w-full z-50 bg-gray-100 shadow fixed h-20 top-0 left-0'>
+            <div>
             {
                 loading ? null
                     :
+        <div className='w-full z-50 bg-gray-100 shadow fixed h-20 top-0 left-0'>
 
             <div className='font-[Poppins] lg:flex items-center justify-between py-2 lg:px-10 px-7'>
                 <div className='font-bold text-2xl cursor-pointer flex items-center font-[Poppins] text-gray-800'>
                     <Link to='/' className={'w-24 m-auto lg:block'}>
-                    <img src={logo} alt=""/>
+                    <img src={logo} alt={'logo'}/>
                         {/*<h3>MALLER</h3>*/}
                     </Link>
 
@@ -54,14 +55,15 @@ const Navbar = ({loading, query}) => {
                 </div>
 
                 <ul className={`lg:flex lg:items-center lg:pb-0 pb-12 absolute lg:static bg-gray-100 lg:z-auto z-[-1]
-                 left-0 w-full lg:w-auto lg:pl-0 pl-9 transition-all duration-500 ease-in ${open ? 'top-20 ':'top-[-300px]'}`}>
-                    <div className='relative lg:hidden mr-12 mt-2' >
+                 left-0 w-full lg:w-auto lg:pl-0 transition-all duration-500 ease-in ${open ? 'top-20 ':'top-[-300px]'}`}>
+                    <div className='relative lg:hidden mt-2' >
                         <input placeholder='SEARCH' className='w-80  rounded-2xl pl-3 py-2
                                           focus:outline-none focus:ring focus:ring-cyan-500 border'
                                type="text" onChange={(e)=>query(e.target.value)}
                                onKeyDown={handleKeyDown}/>
                         <Link to='/products'>
-                            <img src={search} className={`${open ? 'top-1 ':'top-[-300px]'} absolute  lg:hidden right-0 w-8 hover:cursor-pointer`}/>
+                            <img src={search} className={`${open ? 'top-1 ':'top-[-300px]'} absolute  lg:hidden right-14
+                             w-8 hover:cursor-pointer`}/>
                         </Link>
                     </div>
                     <li onClick={()=>setOpen(!open)} className='lg:ml-8 text-xl lg:my-0 my-7'>
@@ -118,9 +120,11 @@ const Navbar = ({loading, query}) => {
                         </Link>
                     </div>
             </div>
-            }
         </div>
+            }
+            </div>
     )
+
 }
 
 export default Navbar;

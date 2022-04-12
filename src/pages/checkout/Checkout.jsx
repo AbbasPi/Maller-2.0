@@ -30,6 +30,7 @@ function Checkout() {
                 setCity(res.data)
             }).catch((err)=>{
                 console.log(err)
+
             })
         axios.get(`${BASE_URL}/address/address`, { headers: {"Authorization" : `${user.token_type} ${user.access_token}`} } ).then((res)=>{
             setAddress(res.data)

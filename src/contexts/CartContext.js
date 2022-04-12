@@ -65,18 +65,18 @@ const {isAuth, user} = useContext(AuthContext)
 
     useEffect(()=>{
         if(carts.length){
-        setTotal(carts.reduce((total, item)=>total+(item.product.lowest*item.item_qty),0))
+        // setTotal(carts.reduce((total, item)=>total+(item.product.lowest*item.item_qty),0))
         setCount(carts.length)
         }
-        else {
+        else  {
             setCount(0)
         }
-    }, [isAuth, user, carts, total])
+    }, [isAuth, user, carts])
 
 
     const addToCarts = (cart)=>{
         let cartsTemp = carts
-        if(isAuth){
+        if(isAuth === true){
         openSnackbar('Added To Cart')
         cartsTemp.push(cart)
         setCarts([...cartsTemp])
@@ -93,7 +93,7 @@ const {isAuth, user} = useContext(AuthContext)
             }
             else setCount(count + 1)
         }
-        if(!isAuth){
+        if(isAuth === false){
             openSnackbar('Login To Add To Cart')
         }
     }

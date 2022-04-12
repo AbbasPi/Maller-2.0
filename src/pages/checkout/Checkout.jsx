@@ -13,7 +13,7 @@ function Checkout() {
     const [city, setCity] = useState([]);
     const [order, setOrder] = useState([])
     const [address, setAddress] = useState([]);
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [status, setStatus] = useState(0)
     const [promoMsg, setPromoMsg] = useState('')
     const [promo, setPromo] = useState('')
@@ -27,13 +27,17 @@ function Checkout() {
         !isAuth  ? navigate('/login')
             :
             axios.get(`${BASE_URL}/address/city/all`, { headers: {"Authorization" : `${user.token_type} ${user.access_token}`} }).then((res)=>{
+                setLoading(true)
                 setCity(res.data)
+                setLoading(false)
             }).catch((err)=>{
                 console.log(err)
 
             })
         axios.get(`${BASE_URL}/address/address`, { headers: {"Authorization" : `${user.token_type} ${user.access_token}`} } ).then((res)=>{
+            setLoading(true)
             setAddress(res.data)
+            setLoading(false)
         }).catch(function (error) {
             if (error.response) {
                 console.log(error.response.status);
@@ -42,8 +46,10 @@ function Checkout() {
         })
         axios.get(`${BASE_URL}/order`, { headers: {"Authorization" : `${user.token_type} ${user.access_token}`} })
             .then((res)=>{
+                setLoading(true)
                 setOrder(res.data)
                 setTotal(order[0].order_total)
+                setLoading(false)
             }).catch(function (error) {
             if (error.response.status === 404) {
                 navigate('/')
@@ -51,29 +57,33 @@ function Checkout() {
         })
     }, [isAuth, user, promoMsg])
 
+<<<<<<< HEAD
     const checkout = ()=>{
         axios.post(`${BASE_URL}/order/checkout`, null,{ headers: {"Authorization" : `${user.token_type} ${user.access_token}`} }).then(()=>{
         setOrder(null)
+=======
+    const checkout = (()=>{
+        if (order && address){
+        axios.post(`${BASE_URL}/order/${address[0].id}/update_address`, null,
+            { params: {order_pk: order[0].id, address_pk: address[0].id}, headers: {"Authorization" : `${user.token_type} ${user.access_token}`} }).then(()=>{
+        axios.post(`${BASE_URL}/order/checkout`, null, { headers: {"Authorization" : `${user.token_type} ${user.access_token}`} })
+        // setOrder(null)
+>>>>>>> parent of f133cfb (search)
         navigate("/")
-
         })
-    }
+        }
+
+    })
 
     const addPromo = () =>{
-        if(promo === ''){
-            setPromoMsg('')
-        }
-       else{
-
-       axios.post(`${BASE_URL}/order/promo` ,  {promo_code: promo, order_id: order[0].id},
+        axios.post(`${BASE_URL}/order/promo` ,  {promo_code: promo, order_id: order[0].id},
             {headers: {"Authorization" : `${user.token_type} ${user.access_token}`} }).then((res)=>{
-                    setPromoMsg(res.data.message)
+                    setPromoMsg('Promo Code Apllied Successfully')
         }).catch(function (error) {
             if (error.response) {
                 setPromoMsg('Invalid Promo Code')
             }
         })
-        }
     }
 
     const handleKeyDown = (event) => {
@@ -159,8 +169,7 @@ function Checkout() {
                                 <button
                                     type="submit"
                                     onClick={handleSubmit(onSubmit)}
-                                    className="w-full text-center text-2xl py-3 text-white rounded-xl ext-white hover:border-[#39818d] bg-[#39818d] rounded-xl px-6 border border-white font-[Poppins] hover:bg-white
-                         hover:text-[#39818d] my-1"
+                                    className="w-full text-center py-3  rounded-xl bg-cyan-500 text-white hover:bg-cyan-300 my-1"
                                 >Confirm</button>
                             </form>
                         </div>
@@ -171,13 +180,13 @@ function Checkout() {
 
 
                 <div className='col-span-2 max-w-7xl bg-gray-100 rounded-xl'>
-                    <p className={`${promoMsg === '' ? 'hidden' : 'block'} ${promoMsg === 'promo code is not valid or used' ? 'bg-green-600' : 'bg-red-500' }
-                     rounded-2xl p-2 text-xl text-white uppercase`}>{promoMsg}</p>
+                    <p className={`${promoMsg === '' ? 'hidden' : 'block'} ${promoMsg === 'Invalid Promo Code' ? 'bg-red-600' : 'bg-green-500' }
+                     rounded-2xl p-2 text-xl text-white`}>{promoMsg}</p>
                     <div className='text-left m-4 text-2xl flex justify-between border-b border-gray-400 uppercase pb-3'>
                     <input value={promo} type={"text"} placeholder={"Discount Code"} onKeyDown={handleKeyDown}
                            onChange={(e)=>setPromo(e.target.value)}
                            className={'p-3 lg:w-full w-60 focus:outline-none focus:ring focus:ring-cyan-300 border w-full p-3 rounded-2xl'}/>
-                        <button onClick={()=>addPromo()} className='bg-[#39818d] rounded-xl px-6 border border-white hover:bg-white
+                        <button onClick={()=>addPromo()} className='bg-[#39818d] rounded-xl px-6 border border-white font-[Poppins] hover:bg-white
                          hover:text-[#39818d]  w-28 lg:ml-4 text-white hover:border-[#39818d]'>Apply</button>
                     </div>
                     <div className='text-justify m-4 text-xl space-y-4 border-b border-gray-400 uppercase pb-3'>

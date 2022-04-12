@@ -57,18 +57,15 @@ function Checkout() {
         })
     }, [isAuth, user, promoMsg])
 
-<<<<<<< HEAD
     const checkout = ()=>{
         axios.post(`${BASE_URL}/order/checkout`, null,{ headers: {"Authorization" : `${user.token_type} ${user.access_token}`} }).then(()=>{
         setOrder(null)
-=======
     const checkout = (()=>{
         if (order && address){
         axios.post(`${BASE_URL}/order/${address[0].id}/update_address`, null,
             { params: {order_pk: order[0].id, address_pk: address[0].id}, headers: {"Authorization" : `${user.token_type} ${user.access_token}`} }).then(()=>{
         axios.post(`${BASE_URL}/order/checkout`, null, { headers: {"Authorization" : `${user.token_type} ${user.access_token}`} })
         // setOrder(null)
->>>>>>> parent of f133cfb (search)
         navigate("/")
         })
         }

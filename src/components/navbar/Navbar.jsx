@@ -10,21 +10,14 @@ import AuthContext from "../../contexts/AuthContext";
 const Navbar = ({loading, query}) => {
     const navigate = useNavigate()
     const [open,setOpen]=useState(false);
-    const {count, carts, getCart, setCount} = useContext(CartContext);
+    const {count, carts, getCart, empty, setCount} = useContext(CartContext);
     const {logout, isAuth, user} = useContext(AuthContext)
     const location = useLocation()
-    useEffect(()=>{
-        if (isAuth){
-            getCart()
-        }
-        if(carts.length) {
-            setCount(carts.length)
-        }
-        if(isAuth === false){
-            setCount(0)
-        }
-    }, [count, isAuth, user])
 
+    useEffect(()=>{
+        getCart()
+        setCount(carts.length)
+    }, [isAuth, empty, user])
 
         const handleKeyDown = (event) => {
             if (event.key === 'Enter') {

@@ -1,19 +1,19 @@
 import axios from 'axios';
 import React, {useContext, useEffect, useState} from 'react';
-import { QuantityPicker } from 'react-qty-picker';
 import {Link, useNavigate} from 'react-router-dom';
+import plus from '../../components/assets/svg/plus.png'
+import minus from '../../components/assets/svg/minus.png'
 import Footer from "../../components/footer/Footer";
 import Navbar from "../../components/navbar/Navbar";
 import './cart.css'
-import { BASE_URL, TOKEN_STR } from '../../utils/Constants';
+import { BASE_URL } from '../../utils/Constants';
 import Loading from "../../components/Loading";
 import x from '../../components/assets/svg/x-symbol.svg'
 import CartContext from "../../contexts/CartContext";
 import AuthContext from "../../contexts/AuthContext";
 
 function Cart() {
-    const [status, setStatus] = useState(404)
-    const {carts, removeCart, count, addQty, getCart, empty, loading, setCount, total} = useContext(CartContext)
+    const {carts, removeCart, increaseQty, reduceQty, getCart, empty, loading, setCount, total, count, setEmpty} = useContext(CartContext)
     const {isAuth, user} = useContext(AuthContext)
     const navigate = useNavigate()
 
@@ -23,8 +23,10 @@ function Cart() {
     }
         getCart()
         setCount(carts.length)
-        setStatus(empty)
-    }, [isAuth, count, empty, user])
+        if(count === 0){
+            setEmpty(404)
+        }
+    }, [isAuth, empty, user])
 
     const checkout = (()=>{
         const item = []
@@ -37,13 +39,12 @@ function Cart() {
                 console.log(err)
             })
     })
-    if(status === 404)
+    if(empty === 404)
     {
         return (
                 <div>
                 <Navbar/>
                     <div className='my-64'>
-
                     <h3 className='ech3'>Your Cart Is Empty</h3>
                     <p className='ecp'>Add Some Products</p>
                     <button className='bg-cyan-500 p-2 my-2 hover:bg-cyan-700 rounded-md'>
@@ -87,9 +88,7 @@ function Cart() {
                         <div key={product?.id} className='bg-gray-100 rounded-xl max-w-full lg:mx-16 lg:flex justify-between
                          items-center p-6 mt-8'>
                             <div>
-
                                 <Link className='flex justify-center my-3' to={`/product/${product.product.id}`}>
-
                                     <img
                                         src={product?.product.images.map((img)=>{
                                             return img.image
@@ -103,8 +102,10 @@ function Cart() {
             <Link className='flex justify-center my-3' to={`/product/${product.product.id}`}>
                         <div className=" text-xl font-semibold text-center w-96">{product?.product.name}</div>
             </Link>
-                        <div className="text-center font-semibold lg:whitespace-nowrap">
-                            <QuantityPicker  width='5rem' min={1} defaultValue={1} value={product?.item_qty} onChange={(value)=>addQty(product.id, value, product.product.lowest)}/>
+                        <div className="flex items-center justify-between space-x-6 font-semibold ">
+                            <img onClick={()=>increaseQty(product.id)} src={plus} className='w-8 hover:cursor-pointer' />
+                            <span className='text-3xl font-[Poppins] text-black text-center lg:whitespace-nowrap'>{product.item_qty}</span>
+                            <img onClick={()=>reduceQty(product.id)} src={minus} className='w-8 hover:cursor-pointer' />
                         </div>
                         <div className="p-4 px-6 text-center lg:whitespace-nowrap">
 

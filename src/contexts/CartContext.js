@@ -12,7 +12,8 @@ const initValue = {
     addToCarts:(obj)=>{},
     getCart:()=>{},
     removeCart:(id)=>{},
-    addQty:(id,qt)=>{}
+    increaseQty:(id)=>{},
+    reduceQty:(id)=>{},
 }
 const CartContext = createContext(initValue)
 export const CartProvider = ({children})=>{
@@ -42,7 +43,7 @@ const {isAuth, user} = useContext(AuthContext)
 
 
     const getCart = () =>{
-        if(user || isAuth === true){
+        if(isAuth === true){
         axios.get(`${BASE_URL}/cart/my`, { headers: {"Authorization" :
                     `${user.token_type} ${user.access_token}`} })
             .then((res)=>{
@@ -50,28 +51,28 @@ const {isAuth, user} = useContext(AuthContext)
                 if(carts){
                 setLoading(false)
                 setEmpty(0)
-                setCount(carts.length)
+                    console.log(count)
                 setTotal(carts.reduce((total, item)=>total+(item.product.lowest*item.item_qty),0))
-
                 }
             }).catch(function (error) {
                 if (error.response) {
                     setEmpty(error.response.status)
                 }
             })
+                setCount(carts.length)
         }
     }
 
 
     useEffect(()=>{
+
         if(carts.length){
-        // setTotal(carts.reduce((total, item)=>total+(item.product.lowest*item.item_qty),0))
-        setCount(carts.length)
+            setCount(carts.length)
         }
         else  {
             setCount(0)
         }
-    }, [isAuth, user, carts])
+    }, [isAuth, user, empty])
 
 
     const addToCarts = (cart)=>{
@@ -103,12 +104,13 @@ const {isAuth, user} = useContext(AuthContext)
         isAuth &&
         axios.delete(`${BASE_URL}/cart/item/delete/${id}`, { headers: {"Authorization":
                     `${user.token_type} ${user.access_token}`} }).then(()=>{
-        let newCart = carts.filter((item) => item.id !== id);
-        setCarts(newCart);
+        getCart()
         }).catch((err)=>{
-            console.log(err)})
+            console.log(err)
+        })
+        setCarts(carts.filter((item) => item.id !== id));
         setTotal(carts.reduce((total, item)=>total+(item.product.lowest*item.item_qty),0))
-            setCount(count - 1)
+        setCount(count - 1)
         if(count === 0){
             setEmpty(404)
         }
@@ -116,15 +118,37 @@ const {isAuth, user} = useContext(AuthContext)
 
 
 
-    const addQty = ((id, qt)=>{
+    const increaseQty = ((id)=>{
         isAuth &&
-        axios.post(`${BASE_URL}/cart/item/change-qty/${id}?new_qty=${qt}`, {params: {id: id, new_qty: qt}},
+        axios.post(`${BASE_URL}/cart/item/increase/${id}`, {params: {id: id}},
             { headers: {"Authorization": `${user.token_type} ${user.access_token}`} })
             .then((res)=>{
-            setCarts(res.data)
+            getCart()
             setTotal(carts.reduce((total, item)=>total+(item.product.lowest*item.item_qty),0))
         }).catch((err)=>{
             console.log(err)
+        })
+        carts.forEach((item)=>{
+            if (item.id === id){
+                item.item_qty ++
+            }
+        })
+    })
+
+    const reduceQty = ((id)=>{
+        isAuth &&
+        axios.post(`${BASE_URL}/cart/item/reduce/${id}`, {params: {id: id}},
+            { headers: {"Authorization": `${user.token_type} ${user.access_token}`} })
+            .then((res)=>{
+                getCart()
+                setTotal(carts.reduce((total, item)=>total+(item.product.lowest*item.item_qty),0))
+            }).catch((err)=>{
+            console.log(err)
+        })
+        carts.forEach((item)=>{
+            if (item.id === id){
+                item.item_qty --
+            }
         })
     })
 
@@ -138,9 +162,11 @@ const {isAuth, user} = useContext(AuthContext)
             empty:empty,
             addToCarts,
             removeCart,
-            addQty,
+            reduceQty,
+            increaseQty,
             getCart,
             setCount,
+            setEmpty,
         }}
     >
         {children}

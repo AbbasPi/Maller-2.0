@@ -51,7 +51,6 @@ const {isAuth, user} = useContext(AuthContext)
                 if(carts){
                 setLoading(false)
                 setEmpty(0)
-                    console.log(count)
                 setTotal(carts.reduce((total, item)=>total+(item.product.lowest*item.item_qty),0))
                 }
             }).catch(function (error) {
@@ -59,6 +58,7 @@ const {isAuth, user} = useContext(AuthContext)
                     setEmpty(error.response.status)
                 }
             })
+
                 setCount(carts.length)
         }
     }
@@ -90,11 +90,11 @@ const {isAuth, user} = useContext(AuthContext)
                 console.log(err)
         })
             if(carts.includes(cart)){
-                setCount(count)
+                setCount(prevState => prevState)
             }
-            else setCount(count + 1)
+            else if(!carts.includes(cart)) setCount((prev)=>prev + 1)
         }
-        if(isAuth === false){
+        else if(isAuth === false){
             openSnackbar('Login To Add To Cart')
         }
     }
@@ -105,12 +105,12 @@ const {isAuth, user} = useContext(AuthContext)
         axios.delete(`${BASE_URL}/cart/item/delete/${id}`, { headers: {"Authorization":
                     `${user.token_type} ${user.access_token}`} }).then(()=>{
         getCart()
+        setTotal(carts.reduce((total, item)=>total+(item.product.lowest*item.item_qty),0))
         }).catch((err)=>{
             console.log(err)
         })
         setCarts(carts.filter((item) => item.id !== id));
-        setTotal(carts.reduce((total, item)=>total+(item.product.lowest*item.item_qty),0))
-        setCount(count - 1)
+        setCount((prev)=> prev - 1)
         if(count === 0){
             setEmpty(404)
         }
@@ -167,6 +167,7 @@ const {isAuth, user} = useContext(AuthContext)
             getCart,
             setCount,
             setEmpty,
+            setCarts
         }}
     >
         {children}

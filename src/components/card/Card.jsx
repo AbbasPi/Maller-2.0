@@ -52,8 +52,9 @@ function Card({products, productsPage, store_id}) {
                 <div className="mt-6 grid gap-y-24  gap-x-6 grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
                     {pro.map((product) => (
                         <div key={product.id} className="relative">
-                            <div className="w-full p-4 hover:cursor-pointer min-h-80 bg-gray-100 aspect-w-1 aspect-h-1
-                            rounded-xl overflow-hidden lg:h-80 lg:aspect-none">
+                            <div className="bg-gray-100 hover:bg-white hover:shadow-xl transition-shadow duration-500
+                                  hover:cursor-pointer ease-out w-full p-4 min-h-80 bg-gray-100 aspect-w-1 aspect-h-1
+                                  rounded-xl overflow-hidden lg:h-80 lg:aspect-none">
                                 <Link to={`/product/${product.id}`}>
 
                                 <img

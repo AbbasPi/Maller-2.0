@@ -49,7 +49,7 @@ function Products({query}) {
         axios.get(`${BASE_URL}/product/all`, {params : {per_page: limit, page: currentPage, search: query}}).then((res)=>{
             const data = res.data.data
             setItems(data)
-            setpageCount(res.data.page_count);
+            setpageCount(res.data.page_count)
         setLoading2(false)
         }).catch((err)=>{
             console.log(err);
@@ -90,7 +90,6 @@ function Products({query}) {
                      hover:cursor-pointer transition duration-300 ${label.id === labelId && 'text-cyan-600'}`}>
                         {label.name}
                     </button>
-
                         })
                     }
                 </div>

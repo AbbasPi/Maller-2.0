@@ -168,7 +168,7 @@ function Checkout() {
                                     <select
                                         className='float-left border p-2 font-medium bg-gray-100  rounded-xl mb-5'
                                         {...register("city_id", {required: true})}>
-                                        <option className='py-12 rounded-xl' hidden>City</option>
+                                        <option className='py-12 rounded-xl' hidden>{order[0]?.address.city.name}</option>
                                         {
                                             city.map((city) => {
                                                 return <option className='py-12 rounded-xl' key={city.id}
@@ -195,8 +195,10 @@ function Checkout() {
                 </div>
 
 
-                <div className='col-span-2 max-w-7xl bg-gray-100 rounded-xl'>
 
+
+
+                <div className='col-span-2 max-w-7xl bg-gray-100 rounded-xl'>
                     <p className={`${promoMsg === '' ? 'hidden' : 'block'} ${promoMsg === 'Invalid Promo Code' ? 'bg-red-600' : 'bg-green-500'}
                      rounded-2xl p-2 text-xl text-white`}>{promoMsg}</p>
                     <div
@@ -215,7 +217,7 @@ function Checkout() {
                             <h1>${order[0]?.order_total}</h1>
                         </div>
                         <div className='flex justify-between'>
-                            <h1>Shipping</h1>
+                            <h1>Shipping To ({order[0]?.address.city.name})</h1>
                             <h1>${order[0]?.order_shipment}</h1>
                         </div>
                         <div className='flex justify-between'>

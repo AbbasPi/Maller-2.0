@@ -63,12 +63,12 @@ function Cart() {
     return (
         <div>
             {
-                loading ?
+                !carts.length ?
                     <Loading/>
                     :
         <div>
     <Navbar/>
-        <div className="container p-8 max-w-full mx-auto mt-12">
+        <div className="container p-8 max-w-full mx-auto mt-20">
             <div className="w-full ">
                 <div className="w-full">
                     <div className='hidden lg:block'>

@@ -21,6 +21,7 @@ import {AuthProvider} from "./contexts/AuthContext";
 import EditAddress from "./address/EditAddress";
 import AddAddress from "./address/AddAddress";
 import Checkout from "./pages/checkout/Checkout";
+import Footer from "./components/footer/Footer";
 
 
 function App() {

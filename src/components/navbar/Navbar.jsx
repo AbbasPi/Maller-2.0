@@ -31,7 +31,7 @@ const Navbar = ({loading, query}) => {
             {
                 loading ? null
                     :
-        <div className='w-full z-50 bg-[#DFEBEC] shadow fixed h-20 top-0 left-0'>
+        <div className='w-full z-50 bg-[#DFEBEC] shadow fixed h-20 top-0  relative'>
 
             <div className='font-[Poppins] lg:flex items-center justify-between py-2 lg:px-10 px-7'>
                 <div className='font-bold text-2xl cursor-pointer flex items-center font-[Poppins] text-gray-800'>
@@ -41,7 +41,7 @@ const Navbar = ({loading, query}) => {
                     </Link>
 
                 </div>
-                 <div onClick={()=>setOpen(!open)} className='text-3xl absolute right-8 top-6 cursor-pointer lg:hidden'>
+                 <div onClick={()=>setOpen(!open)} className='text-3xl absolute left-8 top-6 cursor-pointer lg:hidden'>
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24"
                          stroke="currentColor" strokeWidth="2">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
@@ -51,7 +51,6 @@ const Navbar = ({loading, query}) => {
                 <ul className={`lg:flex lg:items-center lg:pb-0 pb-12 absolute lg:static bg-[#DFEBEC] lg:z-auto z-[-1]
                  left-0 w-full lg:w-auto lg:pl-0 transition-all duration-500 ease-in ${open ? 'top-20 ':'top-[-300px]'}`}>
                     <div className='relative lg:hidden mt-2' >
-
                         <input placeholder='SEARCH' className='w-80  rounded-2xl pl-3 py-2
                                           focus:outline-none focus:ring focus:ring-cyan-500 border'
                                type="text" onChange={(e)=>query(e.target.value)}
@@ -83,7 +82,7 @@ const Navbar = ({loading, query}) => {
                 <img src={search} className={` absolute transition-all top-2 right-2 w-7 hover:cursor-pointer`}/>
                     </Link>
                 </div>
-                    <div className='flex -mt-14 lg:mt-0 lg:block'>
+                    <div className='flex -mt-14 lg:mt-0 lg:block absolute right-0 lg:relative'>
                             <div className="dropdown1 hover:cursor-pointer">
                                 <img className={'w-8 mr-6 inline-block'} alt='' src={account}/>
                                 {

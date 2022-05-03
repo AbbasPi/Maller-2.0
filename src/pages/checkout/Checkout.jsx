@@ -98,7 +98,7 @@ function Checkout() {
         navigate("/address")
     }
 
-    if (loading === true) {
+    if (!order.length) {
         return <Loading/>
     }
 

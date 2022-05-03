@@ -11,20 +11,17 @@ import NotFound from "../../components/NotFound";
 function Products({query}) {
     const [pageCount, setpageCount] = useState(0);
     const [items, setItems] = useState([]);
-    const [loading, setLoading] = useState(true)
-    const [loading2, setLoading2] = useState(false)
+    const [loading, setLoading] = useState(false)
     const [labels, setLabels] = useState([])
     const [labelId, setLabelId] = useState(null)
     const [status, setStatus] = useState(0)
     let limit = 12;
     useEffect(() => {
         const getProducts= () => {
-                setLoading(true)
                     axios.get(`${BASE_URL}/product/all`, {params : {per_page: limit, page: 1, search: query, label_id: labelId}}).then((res)=>{
                         const data = res.data.data
                         setpageCount(res.data.page_count);
                         setItems(data);
-                        setLoading(false)
                         setStatus(0)
                     }).catch(function (error) {
                         if (error.response) {
@@ -45,12 +42,12 @@ function Products({query}) {
     },[limit, query, labelId])
 
     const fetchProducts= (currentPage) => {
-        setLoading2(true)
+        setLoading(true)
         axios.get(`${BASE_URL}/product/all`, {params : {per_page: limit, page: currentPage, search: query}}).then((res)=>{
             const data = res.data.data
             setItems(data)
             setpageCount(res.data.page_count)
-        setLoading2(false)
+        setLoading(false)
         }).catch((err)=>{
             console.log(err);
         })
@@ -75,7 +72,7 @@ function Products({query}) {
     if(status === 404){
         return <NotFound/>
     }
-    if (loading === true)
+    if (items.length === 0)
     {return (
         <Loading/>
     )}
@@ -94,7 +91,7 @@ function Products({query}) {
                     }
                 </div>
                 {
-                    loading2 ? <Loading/>
+                    loading ? <Loading/>
                         :
                 <Card productsPage={true} products={items}/>
                 }

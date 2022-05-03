@@ -26,7 +26,7 @@ function TopStoresCards({stores, StoresPage}) {
                                 {
                                  StoresPage &&
                                 <div>
-                                    <h3 className="text-xl  text-gray-700">
+                                    <h3 className="text-xl mt-6 text-gray-700">
                                         <Link to={`/store/${store.id}`}>
                                             {store.name}
                                         </Link>

@@ -8,8 +8,8 @@ import TopStoresCards from "../../components/top stores cards/TopStoresCards";
 import TopStoresLine from "../../components/top stores line/TopStoresLine";
 import Discount from "../../components/discount/Discount";
 import Footer from "../../components/footer/Footer";
-function Home({products, categories, topStores, loading, l, logout}) {
-    if (loading === true)
+function Home({products, categories, topStores, loading}) {
+    if (products.length === 0 || categories.length === 0 || topStores.length === 0)
     {return (
      <Loading/>
     )    }

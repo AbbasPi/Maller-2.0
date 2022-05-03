@@ -21,12 +21,29 @@ function Checkout() {
     const [total, setTotal] = useState(0)
     const navigate = useNavigate()
     const {register, handleSubmit, formState: errors} = useForm();
+        const getOrder = ()=>{
+        axios.get(`${BASE_URL}/order`, {headers: {"Authorization": `${user.token_type} ${user.access_token}`}})
+            .then((res) => {
+                // setLoading(true)
+                setOrder(res.data)
+                order[0] &&
+                setTotal(order[0]?.order_total)
+                setLoading(false)
+            }).catch(function (error) {
+            if (error.response) {
+                setStatus(error.response.status)
+            }
+        })
+        }
     const onSubmit = data => {
-        axios.put(`${BASE_URL}/address/${address[0].id}`, data, {headers: {"Authorization": `${user.token_type} ${user.access_token}`}})
+        axios.put(`${BASE_URL}/address/${address[0].id}`, data, {headers: {"Authorization": `${user.token_type} ${user.access_token}`}}).then(()=>{
+            getOrder()
+        })
     }
     useEffect(() => {
         !isAuth ? navigate('/login')
             :
+            getOrder()
             axios.get(`${BASE_URL}/address/city/all`, {headers: {"Authorization": `${user.token_type} ${user.access_token}`}}).then((res) => {
                 // setLoading(true)
                 setCity(res.data)
@@ -42,18 +59,6 @@ function Checkout() {
         }).catch(function (error) {
             if (error.response) {
                 console.log(error.response.status);
-                setStatus(error.response.status)
-            }
-        })
-        axios.get(`${BASE_URL}/order`, {headers: {"Authorization": `${user.token_type} ${user.access_token}`}})
-            .then((res) => {
-                // setLoading(true)
-                setOrder(res.data)
-                order[0] &&
-                setTotal(order[0]?.order_total)
-                setLoading(false)
-            }).catch(function (error) {
-            if (error.response) {
                 setStatus(error.response.status)
             }
         })
@@ -107,11 +112,11 @@ function Checkout() {
         <div className='mt-32 font-[Poppins]'>
             <div className='max-w-7xl mx-auto grid lg:grid-cols-5 '>
                 <div className='col-span-3'>
-                    <h1 className='text-justify m-4 text-2xl font-[Poppins] font-medium'>Shipping Info</h1>
+                    <h1 className='text-justify m-4 text-2xl font-[Poppins] ml-7 font-medium'>Shipping Info</h1>
                     <div className="min-h flex flex-col">
                         <div
                             className="container max-w-full mx-auto flex flex-col items-center justify-center px-2">
-                            <form className="bg-white px-6 py-8 rounded-xl text-black w-full">
+                            <form className="bg-white px-6 rounded-xl text-black w-full">
                                 {
                                     address.map((address) => {
                                         return <div key={address.id}>
@@ -165,10 +170,10 @@ function Checkout() {
                                          role="alert">
                                         <span className="block sm:inline">City Is Required</span>
                                     </div>
-                                    <select
+                                    <select id='city'
                                         className='float-left border p-2 font-medium bg-gray-100  rounded-xl mb-5'
                                         {...register("city_id", {required: true})}>
-                                        <option className='py-12 rounded-xl' hidden>{order[0]?.address.city.name}</option>
+                                        <option  className='py-12 rounded-xl' hidden>{order[0]?.address.city.name}</option>
                                         {
                                             city.map((city) => {
                                                 return <option className='py-12 rounded-xl' key={city.id}
@@ -186,8 +191,9 @@ function Checkout() {
                                 <button
                                     type="submit"
                                     onClick={handleSubmit(onSubmit)}
-                                    className="w-full text-center py-3  rounded-xl bg-cyan-500 text-white hover:bg-cyan-300 my-1"
-                                >Confirm
+                                    className="bg-[#39818d] rounded-xl px-6 border border-white font-[Poppins] hover:bg-white
+                         hover:text-[#39818d] py-3 w-full text-white hover:border-[#39818d]"
+                                >Confirm Address
                                 </button>
                             </form>
                         </div>
@@ -211,13 +217,17 @@ function Checkout() {
                          hover:text-[#39818d]  w-28 lg:ml-4 text-white hover:border-[#39818d]'>Apply
                         </button>
                     </div>
-                    <div className='text-justify m-4 text-xl space-y-4 border-b border-gray-400 uppercase pb-3'>
+                    <div className='text-justify m-4 text-xl space-y-4 border-b border-gray-400 text-gray-800 uppercase pb-3'>
                         <div className='flex justify-between'>
                             <h1>Subtotal</h1>
                             <h1>${order[0]?.order_total}</h1>
                         </div>
                         <div className='flex justify-between'>
-                            <h1>Shipping To ({order[0]?.address.city.name})</h1>
+                            <h1>Shipping To
+                                <a href='#city' className='text-black font-semibold ml-2'>
+                                {order[0]?.address.city.name}
+                            </a>
+                            </h1>
                             <h1>${order[0]?.order_shipment}</h1>
                         </div>
                         <div className='flex justify-between'>
@@ -261,7 +271,7 @@ function Checkout() {
                                                     </h1>
                                                 </div>
                                                 <div className='w-10'>
-                                                    <h1 className='font-[Poppins] text-xl'>
+                                                    <h1 className='text-xl'>
                                                         ${
                                                         item.product.lowest
                                                     }

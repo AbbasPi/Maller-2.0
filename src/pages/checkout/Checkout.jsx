@@ -228,7 +228,7 @@ function Checkout() {
                                 {order[0]?.address.city.name}
                             </a>
                             </h1>
-                            <h1>${order[0]?.order_shipment}</h1>
+                            <h1>+ ${order[0]?.order_shipment}</h1>
                         </div>
                         <div className='flex justify-between'>
                             <h1>Total</h1>

@@ -2,23 +2,37 @@ import React, {useContext, useEffect, useState} from 'react';
 import axios from "axios";
 import {Link, useNavigate, useParams} from 'react-router-dom';
 import {BASE_URL, TOKEN_STR} from "../../utils/Constants";
+import Rate from '../../Rate'
 import Loading from "../../components/Loading";
-import Navbar from "../../components/navbar/Navbar";
 import Footer from "../../components/footer/Footer";
 import CartContext from "../../contexts/CartContext";
+import AuthContext from "../../contexts/AuthContext";
 
-function ProductDetail({l, logout}) {
+function ProductDetail() {
+    const {isAuth, user} = useContext(AuthContext)
     const {productId} = useParams()
     const [product, setProduct] = useState();
+    const [rate, setRate] = useState(0);
+    const [count, setCount] = useState(0);
     const {addToCarts} = useContext(CartContext);
     const navigate = useNavigate()
+
     useEffect(()=>{
         axios.get(`${BASE_URL}/product/${productId}`).then((res)=>{
             setProduct(res.data);
         }).catch((err)=>{
             console.log(err);
         })
-    }, [])
+        isAuth &&
+        axios.get(`${BASE_URL}/product-rating/all/${productId}`).then((res)=>{
+                setRate(res.data)
+                setCount(res.data.length)
+        }).catch((err)=>{
+            console.log(err)
+        })
+    }, [user, isAuth])
+
+
     return (
         <div>
             {
@@ -32,37 +46,24 @@ function ProductDetail({l, logout}) {
                              src={product.images[0].image}/>
                             <div className="lg:w-1/2 w-full lg:pl-10 lg:py-6 mt-6 lg:mt-0">
                                 <h1 className="text-gray-900 text-3xl title-font font-medium mb-1">{product.name}</h1>
-    {/*                            <div className="flex mb-4">*/}
-    {/*      <span className="flex items-center">*/}
-    {/*        <svg fill="currentColor" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"*/}
-    {/*             strokeWidth="2" className="w-4 h-4 text-red-500" viewBox="0 0 24 24">*/}
-    {/*          <path*/}
-    {/*d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>*/}
-    {/*        </svg>*/}
-    {/*        <svg fill="currentColor" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"*/}
-    {/*             strokeWidth="2" className="w-4 h-4 text-red-500" viewBox="0 0 24 24">*/}
-    {/*          <path*/}
-    {/*d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>*/}
-    {/*        </svg>*/}
-    {/*        <svg fill="currentColor" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"*/}
-    {/*             strokeWidth="2" className="w-4 h-4 text-red-500" viewBox="0 0 24 24">*/}
-    {/*          <path*/}
-    {/*d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>*/}
-    {/*        </svg>*/}
-    {/*        <svg fill="currentColor" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"*/}
-    {/*             strokeWidth="2" className="w-4 h-4 text-red-500" viewBox="0 0 24 24">*/}
-    {/*          <path*/}
-    {/*d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>*/}
-    {/*        </svg>*/}
-    {/*        <svg fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"*/}
-    {/*             className="w-4 h-4 text-red-500" viewBox="0 0 24 24">*/}
-    {/*          <path*/}
-    {/*d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>*/}
-    {/*        </svg>*/}
-    {/*        <span className="text-gray-600 ml-3">4 Reviews</span>*/}
-    {/*      </span>*/}
+                                <div className='flex justify-between'>
+                                <div className="flex items-center">
+                                    <svg className="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"
+                                         xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1
+                                     1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197
+                                     -1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                                    </svg>
+                                    <p className="ml-2 text-sm font-bold text-gray-900">{product.average_rating}</p>
+                                    <span className="w-1 h-1 mx-1.5 bg-gray-500 rounded-full dark:bg-gray-400"/>
+                                    <a href="#"
+                                       className="text-sm font-medium text-gray-900 underline hover:no-underline">
+                                        {count} reviews</a>
 
-    {/*                            </div>*/}
+                                </div>
+                                    <Rate productId={productId}/>
+                                </div>
                                 <div dangerouslySetInnerHTML={{__html: product.description }}/>
                                 <div className="flex mt-6 items-center pb-5 border-b-2 border-gray-200 mb-5">
                                 <Link to={`/store/${product.vendor.id}`} className="text-2xl font-semibold hover:text-cyan-500 text-cyan-700 items-center tracking-widest">

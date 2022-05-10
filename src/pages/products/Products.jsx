@@ -18,11 +18,13 @@ function Products({query}) {
     let limit = 12;
     useEffect(() => {
         const getProducts= () => {
+            setLoading(true)
                     axios.get(`${BASE_URL}/product/all`, {params : {per_page: limit, page: 1, search: query, label_id: labelId}}).then((res)=>{
                         const data = res.data.data
                         setpageCount(res.data.page_count);
                         setItems(data);
                         setStatus(0)
+                        setLoading(false)
                     }).catch(function (error) {
                         if (error.response) {
                             console.log(error.response.status);

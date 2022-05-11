@@ -204,7 +204,7 @@ function Checkout() {
 
 
 
-                <div className='col-span-2 max-w-7xl bg-gray-100 rounded-xl'>
+                <div className='lg:col-span-2 col-span-3 mx-8 mt-8 lg:mt-0 max-w-7xl bg-gray-100 rounded-xl'>
                     <p className={`${promoMsg === '' ? 'hidden' : 'block'} ${promoMsg === 'Invalid Promo Code' ? 'bg-red-600' : 'bg-green-500'}
                      rounded-2xl p-2 text-xl text-white`}>{promoMsg}</p>
                     <div
@@ -260,10 +260,10 @@ function Checkout() {
                                                     <img src={item.product.images.map((img) => (
                                                         img.image
                                                     ))}
-                                                         className=' h-28 w-36 object-contain bg-white object-center rounded-xl'/>
+                                                         className=' lg:h-28 lg:w-36 h-24 w-28 object-contain bg-white object-center rounded-xl'/>
                                                     <span className='absolute -top-1 -right-2 bg-gray-900 text-white px-2 py-1 rounded-full'>{item.item_qty}</span>
                                                 </div>
-                                                <div className='w-60 text-lg text-left'>
+                                                <div className='w-60 ml-4 text-lg text-left'>
                                                     <h1>
                                                         {
                                                             item.product.name

@@ -60,9 +60,11 @@ function ProductDetail() {
                                     <a href="#"
                                        className="text-sm font-medium text-gray-900 underline hover:no-underline">
                                         {count} reviews</a>
-
                                 </div>
+                                    {
+                                     isAuth &&
                                     <Rate productId={productId}/>
+                                    }
                                 </div>
                                 <div dangerouslySetInnerHTML={{__html: product.description }}/>
                                 <div className="flex mt-6 items-center pb-5 border-b-2 border-gray-200 mb-5">

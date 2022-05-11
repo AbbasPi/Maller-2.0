@@ -7,19 +7,23 @@ import Loading from "../../components/Loading";
 import Footer from "../../components/footer/Footer";
 import CartContext from "../../contexts/CartContext";
 import AuthContext from "../../contexts/AuthContext";
+import {array} from "prop-types";
 
 function ProductDetail() {
     const {isAuth, user} = useContext(AuthContext)
     const {productId} = useParams()
     const [product, setProduct] = useState();
+    const [main, setMain] = useState('')
     const [rate, setRate] = useState(0);
     const [count, setCount] = useState(0);
+    const [trigger, setTrigger] = useState(0);
     const {addToCarts} = useContext(CartContext);
     const navigate = useNavigate()
 
     useEffect(()=>{
         axios.get(`${BASE_URL}/product/${productId}`).then((res)=>{
             setProduct(res.data);
+
         }).catch((err)=>{
             console.log(err);
         })
@@ -29,8 +33,14 @@ function ProductDetail() {
         }).catch((err)=>{
             console.log(err)
         })
-    }, [user, isAuth])
 
+
+    }, [user, isAuth, trigger])
+
+    useEffect(()=>{
+        setMain(product?.images[0]?.image)
+        console.log(main)
+    }, [product])
 
     return (
         <div>
@@ -42,7 +52,7 @@ function ProductDetail() {
                     <div className="lg:w-4/5 mx-auto flex flex-wrap">
                         <img alt={product.images[0].alt_text}
                              className="lg:w-1/2 lg:h-96  w-full object-contain object-center rounded border border-gray-200"
-                             src={product.images[0].image}/>
+                             src={main}/>
                             <div className="lg:w-1/2 w-full lg:pl-10 lg:py-6 mt-6 lg:mt-0">
                                 <h1 className="text-gray-900 text-3xl title-font font-medium mb-1">{product.name}</h1>
                                 <div className='flex justify-between'>
@@ -62,7 +72,7 @@ function ProductDetail() {
                                 </div>
                                     {
                                      isAuth &&
-                                    <Rate productId={productId}/>
+                                    <Rate setTrigger={setTrigger} productId={productId}/>
                                     }
                                 </div>
                                 <div dangerouslySetInnerHTML={{__html: product.description }}/>
@@ -103,6 +113,18 @@ function ProductDetail() {
             {/*                        </button>*/}
                                 </div>
                             </div>
+                        <div className='flex space-x-4 mt-4 rounded-2xl'>
+                            {
+                                product.images.map((i)=>{
+                                    return <button onClick={()=>setMain(i.image)}>
+
+                                    <img alt={product.images[0].alt_text}
+                                                className="w-28 h-24 w-full object-contain object-center rounded border border-gray-200"
+                                                src={i.image}/>
+                                    </button>
+                                })
+                            }
+                        </div>
                     </div>
                 </div>
             </section>

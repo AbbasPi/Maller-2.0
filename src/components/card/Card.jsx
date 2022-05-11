@@ -58,9 +58,7 @@ function Card({products, productsPage, store_id}) {
                                 <Link to={`/product/${product.id}`}>
 
                                 <img
-                                    src={product.images.map((img)=>{
-                                       return img.image
-                                    })}
+                                    src={product.images[0].image}
                                     alt={product.name}
                                     className="w-full h-48 overflow-hidden rounded-xl object-center object-contain
                                      lg:w-full lg:h-5/6 lg:mt-7"

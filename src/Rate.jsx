@@ -5,7 +5,7 @@ import { useSnackbar } from 'react-simple-snackbar'
 import {BASE_URL} from "./utils/Constants";
 import axios from "axios";
 import AuthContext from "./contexts/AuthContext";
-const Rate = ({productId}) => {
+const Rate = ({productId, setTrigger}) => {
     const [rate, setRate] = useState(0);
     const [userRating, setUserRating] = useState(0);
     const {isAuth, user} = useContext(AuthContext)
@@ -55,6 +55,7 @@ const Rate = ({productId}) => {
                             onClick={() => {
                                 setUserRating(givenRating)
                                 addRating(givenRating)
+                                setTrigger(prev=> prev+1)
                             }}
                         />
                         <Rating>

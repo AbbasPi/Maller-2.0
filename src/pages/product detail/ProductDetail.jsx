@@ -23,7 +23,6 @@ function ProductDetail() {
         }).catch((err)=>{
             console.log(err);
         })
-        isAuth &&
         axios.get(`${BASE_URL}/product-rating/all/${productId}`).then((res)=>{
                 setRate(res.data)
                 setCount(res.data.length)

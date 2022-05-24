@@ -3,7 +3,7 @@ import axios from "axios";
 import {BASE_URL} from "../utils/Constants";
 import AuthContext from "../contexts/AuthContext";
 import Footer from "../components/footer/Footer";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import Loading from "../components/Loading";
 import CartContext from "../contexts/CartContext";
 import x from '../components/assets/svg/x-symbol.svg'
@@ -14,6 +14,7 @@ import plus from "../components/assets/svg/plus.png";
 import minus from "../components/assets/svg/minus.png";
 
 function Wishlist() {
+        const navigate = useNavigate()
     const {isAuth, user} = useContext(AuthContext)
     const {addToCarts} = useContext(CartContext);
     const [loading, setLoading] = useState(true)
@@ -32,14 +33,18 @@ function Wishlist() {
         setLoading(false)
     })
     useEffect(()=>{
+    !isAuth ?
+        navigate('/login')
+        :
         getWishList()
     }, [isAuth, user])
 
     const removeProduct = id =>{
         setProduct(product.filter((item) => item.id !== id));
         axios.delete(`${BASE_URL}/wishlist/remove/`,
-            {headers: {"Authorization": `${user.token_type} ${user.access_token}`}, params: {id: id}})
+            {headers: {"Authorization": `${user.token_type} ${user.access_token}`}, params: {id: id}}).then(()=>{
         getWishList()
+        })
     }
 
     if(status === 404) {

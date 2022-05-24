@@ -1,17 +1,16 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react'
 import axios from "axios";
 import {BASE_URL} from "../utils/Constants";
 import AuthContext from "../contexts/AuthContext";
 import Footer from "../components/footer/Footer";
 import {Link, useNavigate} from "react-router-dom";
 import Loading from "../components/Loading";
+import WishlistEmpty from "../WishlistEmpty";
 import CartContext from "../contexts/CartContext";
 import x from '../components/assets/svg/x-symbol.svg'
 import cart from '../components/assets/svg/icons8-add-to-cart-32.png'
-import NotFound from "../components/NotFound";
-import WishlistEmpty from "../WishlistEmpty";
-import plus from "../components/assets/svg/plus.png";
-import minus from "../components/assets/svg/minus.png";
+import copy from '../components/assets/svg/icons8-copy-64.png'
+import ReactTooltip from 'react-tooltip';;
 
 function Wishlist() {
         const navigate = useNavigate()
@@ -19,12 +18,15 @@ function Wishlist() {
     const {addToCarts} = useContext(CartContext);
     const [loading, setLoading] = useState(true)
     const [product, setProduct] = useState([])
+    const [wishlistId, setWishlistId] = useState('')
     const [status, setStatus] = useState(0)
+    const [msg, setMsg] = useState('dark')
     const getWishList = (()=>{
         setLoading(true)
         axios.get(`${BASE_URL}/wishlist`,
             {headers: {'Authorization': `${user.token_type} ${user.access_token}`}}).then((res) => {
             setProduct(res.data.product)
+            setWishlistId(res.data.id)
         }).catch(function (error) {
             if (error.response) {
                 setStatus(error.response.status)
@@ -47,6 +49,10 @@ function Wishlist() {
         })
     }
 
+    const clickCopy = () =>{
+        navigator.clipboard.writeText(wishlistId)
+    }
+
     if(status === 404) {
         return (
             <WishlistEmpty/>
@@ -61,6 +67,10 @@ function Wishlist() {
     return (
          <div>
         <div className='container p-8 max-w-full mx-auto mt-20 font-[Poppins]'>
+             <button data-tip={'click to copy'} onClick={clickCopy} className='absolute right-20'>
+                 <img className='w-8' src={copy}/>
+                 <ReactTooltip place="top" type="dark" effect="solid"/>
+             </button>
             <h1 className='font-bold text-3xl'>
                 Your Wishlist
             </h1>

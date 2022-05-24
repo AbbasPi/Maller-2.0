@@ -21,7 +21,7 @@ import {AuthProvider} from "./contexts/AuthContext";
 import EditAddress from "./address/EditAddress";
 import AddAddress from "./address/AddAddress";
 import Checkout from "./pages/checkout/Checkout";
-import Footer from "./components/footer/Footer";
+import Wishlist from "./pages/Wishlist";
 
 
 function App() {
@@ -78,6 +78,7 @@ function App() {
                 <Route path="/edit-address" element={<EditAddress />} />
                 <Route path="/address" element={<AddAddress />} />
                 <Route path="/checkout" element={<Checkout />} />
+                <Route path="/wishlist" element={<Wishlist />} />
             </Routes>
                 </CartProvider>
         </SnackbarProvider>

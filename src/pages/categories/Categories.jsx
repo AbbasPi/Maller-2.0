@@ -28,7 +28,6 @@ function Categories({l, logout}) {
     )    }
     return (
         <div>
-            {/*<Navbar l={l} logout={logout}/>*/}
             <div className='my-12'/>
             <h1 className='text-3xl mt-24'>Top {products[0].category.name} Products</h1>
             <Card productsPage={true} products={products} l={l}/>

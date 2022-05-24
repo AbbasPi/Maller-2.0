@@ -1,7 +1,7 @@
 import React from 'react';
 import {Link} from "react-router-dom";
 
-function NotFound(props) {
+function WishlistEmpty(props) {
     return (<div>
         <div className="flex items-center justify-center w-screen h-screen">
             <div className="px-4 lg:py-12">
@@ -13,14 +13,14 @@ function NotFound(props) {
                         <p
                             className="mb-2 text-2xl font-bold text-center text-gray-800 md:text-3xl"
                         >
-                            <span className="text-red-500">Oops!</span> Product not found
+                            Your wishlist empty
                         </p>
                         <p className="mb-8 text-center text-gray-500 md:text-lg">
-                            The product you’re looking for doesn’t exist.
+                            Hit the heart button to start saving your favorite products.
                         </p>
-                        <Link to="/" className="px-8 py-2 text-sm font-semibold text-cyan-800 hover:bg-cyan-500
+                        <Link to="/products" className="px-8 py-2 text-sm font-semibold text-cyan-800 hover:bg-cyan-500 mt-4
                                                     rounded-xl bg-cyan-200">
-                            Go home
+                            ADD NOW
                         </Link>
                     </div>
 
@@ -30,4 +30,4 @@ function NotFound(props) {
     </div>);
 }
 
-export default NotFound;
+export default WishlistEmpty;

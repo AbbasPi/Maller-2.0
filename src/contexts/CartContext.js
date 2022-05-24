@@ -5,6 +5,7 @@ import {BASE_URL} from "../utils/Constants";
 import AuthContext from "./AuthContext";
 const initValue = {
     carts:[],
+    main: '',
     loading:true,
     empty:0,
     total:0,
@@ -40,6 +41,7 @@ const {isAuth, user} = useContext(AuthContext)
     const [loading, setLoading] = useState(true)
     const [empty, setEmpty] = useState(404)
     const [count, setCount] = useState(0)
+    const [main, setMain] = useState('')
 
 
     const getCart = () =>{
@@ -62,7 +64,6 @@ const {isAuth, user} = useContext(AuthContext)
                 setCount(carts.length)
         }
     }
-
 
     useEffect(()=>{
 
@@ -167,7 +168,8 @@ const {isAuth, user} = useContext(AuthContext)
             getCart,
             setCount,
             setEmpty,
-            setCarts
+            setCarts,
+            main
         }}
     >
         {children}

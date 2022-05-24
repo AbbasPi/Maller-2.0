@@ -30,7 +30,6 @@ const Rate = ({productId, setTrigger}) => {
         axios.get(`${BASE_URL}/product-rating/user/${productId}`, {headers: {"Authorization": `${user.token_type} ${user.access_token}`}})
             .then((res)=>{
             setUserRating(res.data)
-                console.log(userRating)
         }).catch((err)=>{
             console.log(err)
         })

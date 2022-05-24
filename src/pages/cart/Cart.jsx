@@ -13,7 +13,7 @@ import CartContext from "../../contexts/CartContext";
 import AuthContext from "../../contexts/AuthContext";
 
 function Cart() {
-    const {carts, removeCart, increaseQty, reduceQty, getCart, empty, loading, setCount, total, count, setEmpty} = useContext(CartContext)
+    const {carts, removeCart, increaseQty, reduceQty, getCart, empty, setCount, total, count, setEmpty, main} = useContext(CartContext)
     const {isAuth, user} = useContext(AuthContext)
     const navigate = useNavigate()
 
@@ -39,6 +39,8 @@ function Cart() {
                 console.log(err)
             })
     })
+
+
     if(empty === 404)
     {
         return (
@@ -90,9 +92,7 @@ function Cart() {
                             <div>
                                 <Link className='flex justify-center my-3' to={`/product/${product.product.id}`}>
                                     <img
-                                        src={product?.product.images.map((img)=>{
-                                            return img.image
-                                        })}
+                                        src={product?.product.images[0].image}
                                         alt={product?.product.name}
                                         className="object-contain w-96 h-36 lg:w-36 rounded-2xl bg-gray-100"
                                     />

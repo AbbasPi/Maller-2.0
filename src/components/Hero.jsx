@@ -2,15 +2,15 @@ import React from 'react';
 
 function Hero(props) {
     return (
-        <div className={'lg:flex lg:justify-evenly border-b-2 py-8 '}>
+        <div className={'lg:flex lg:justify-evenly border-b-2 pt-8 font-[Poppins]'}>
             <div className={'lg:mt-40 mx-auto lg:mx-0 mt-20 text-gray-800 capitalize lg:w-3/6'}>
                 <p className='text-4xl lg:text-7xl lg:text-left hero'>Your choice matters</p>
-                <p className='text-3xl mx-10 lg:mx-0 text-gray-600 lg:w-10/12 lg:text-left'>Maller creates a new way for shopping
+                <p className='text-2xl mx-10 lg:mx-0 text-gray-600 lg:w-10/12 lg:text-left'>Maller creates a new way for shopping
                     now you can shop from your favorite stores
                     in one order</p>
             </div>
-            <div className='lg:mt-20 mx-auto lg:mx-0 w-fit mt-8'>
-                <svg width="370" height="377" viewBox="0 0 388 377" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <div className='lg:mt-20 mx-auto lg:mx-0 w-fit'>
+                <svg className='w-[280px] lg:w-[370px]' height="377" viewBox="0 0 388 377" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <g filter="url(#filter0_b_0_1)">
                         <path d="M344.511 262.826C344.511 262.826 399.051 199.606 385.041 118.756C371.031 37.9063 298.771 -4.42367 250.301 0.366334C201.831 5.15633 153.571 52.6663 106.211 58.5363C58.8509 64.4063 -12.5391 106.196 1.89092 185.706C16.3209 265.216 60.1709 272.996 131.151 275.916C202.131 278.836 302.571 315.246 344.511 262.826Z" fill="#89B4B9" fillOpacity="0.37"/>
                     </g>

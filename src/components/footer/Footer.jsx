@@ -21,15 +21,15 @@ import {Link} from "react-router-dom";
                             <h1 className='text-6xl text-white'>MALLER</h1>
                         </Link>
                     </div>
-                    <div className="flex space-x-6 lg:flex-row justify-center items-center space-y- lg:space-y-0 lg:space-x-20">
+                    <div className="flex space-x-2 lg:flex-row justify-center items-center space-y- lg:space-y-0 lg:space-x-20">
                         <div>
-                            <h2 className="text-left mb-6 text-sm font-semibold text-white uppercase">
+                            <h2 className="text-left mb-2 text-sm font-semibold text-white uppercase">
                                 who are we
                             </h2>
                             <ul className="flex flex-col items-start justify-start text-gray-300">
                                 {whoarewe.map((item, index)=>{
                                    return <li key={index}>
-                                        <Link to="/" className="hover:underline">
+                                        <Link to="/" className="hover:underline text-sm">
                                             {item}
                                         </Link>
                                     </li>
@@ -38,13 +38,13 @@ import {Link} from "react-router-dom";
                         </div>
 
                         <div>
-                            <h2 className=" text-left mb-6 text-sm font-semibold text-white uppercase">
+                            <h2 className=" text-left mb-2 text-sm font-semibold text-white uppercase">
                                 Customers service
                             </h2>
                             <ul className="flex flex-col items-start justify-start text-gray-300">
                                 {cus_service.map((item, index)=>{
                                     return <li key={index}>
-                                        <Link to="/" className="hover:underline">
+                                        <Link to="/" className="hover:underline text-sm">
                                             {item}
                                         </Link>
                                     </li>

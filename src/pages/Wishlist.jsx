@@ -13,14 +13,13 @@ import copy from '../components/assets/svg/icons8-copy-64.png'
 import ReactTooltip from 'react-tooltip';;
 
 function Wishlist() {
-        const navigate = useNavigate()
+    const navigate = useNavigate()
     const {isAuth, user} = useContext(AuthContext)
     const {addToCarts} = useContext(CartContext);
     const [loading, setLoading] = useState(true)
     const [product, setProduct] = useState([])
     const [wishlistId, setWishlistId] = useState('')
     const [status, setStatus] = useState(0)
-    const [msg, setMsg] = useState('dark')
     const getWishList = (()=>{
         setLoading(true)
         axios.get(`${BASE_URL}/wishlist`,
@@ -50,7 +49,7 @@ function Wishlist() {
     }
 
     const clickCopy = () =>{
-        navigator.clipboard.writeText(wishlistId)
+        navigator.clipboard.writeText(`${wishlistId}`)
     }
 
     if(status === 404) {

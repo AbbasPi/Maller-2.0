@@ -36,9 +36,7 @@ function AddressEdit() {
         axios.get(`${BASE_URL}/address/address`, { headers: {"Authorization" : `${user.token_type} ${user.access_token}`} } ).then((res)=>{
             setLoading(true)
             setAddress(res.data)
-            if(address.length > 0){
-                setCityAddress(address[0]?.city.name)
-            }
+
             setLoading(false)
         }).catch(function (error) {
             if (error.response) {
@@ -65,7 +63,7 @@ function AddressEdit() {
                         <h1 className="mb-8 text-3xl text-center">Edit Address</h1>
                         {
                             address.map((address)=>{
-                                return <div>
+                                return <div key={address.id}>
                                     <div className={`${errors.last_name?.type === 'required' ? 'block' : 'hidden'} bg-red-100 border
                          border-red-400 text-red-700 px-4 py-3  rounded-xl relative`}
                              role="alert">
@@ -95,8 +93,8 @@ function AddressEdit() {
                             })
                         }
                         <div className='flex flex-col'>
-                            <select className='float-left border block focus:outline-none focus:ring focus:ring-cyan-300 w-full p-3 rounded-2xl mb-4 p-2 font-medium bg-gray-100'  {...register("city_id", { required: true })}>
-                                <option className='py-12 rounded-xl' hidden >City</option>
+                            <select defaultValue={'d'} value={city.id} className='float-left border block focus:outline-none focus:ring focus:ring-cyan-300 w-full p-3 rounded-2xl mb-4 p-2 font-medium bg-gray-100'  {...register("city_id", { required: true })}>
+                                <option className='py-12 rounded-xl' value={'d'} selected>{address[0]?.city.name}</option>
                             {
                                 city.map((city)=>{
                                     return  <option className='py-12 rounded-xl' key={city.id} value={city.id}>{city.name}</option>

@@ -10,7 +10,7 @@ import ig from '../../components/assets/svg/icons8instagram.svg'
 import tw from '../../components/assets/svg/icons8-twitter.svg'
 import Loading from "../../components/Loading";
 import ReactPaginate from "react-paginate";
-function StoreDetail({l, logout}) {
+function StoreDetail({l}) {
     const {storeId} = useParams()
     const [store, setStore] = useState()
     const [pageCount, setpageCount] = useState(0);

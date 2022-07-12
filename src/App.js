@@ -1,5 +1,5 @@
 import './App.css';
-import {BrowserRouter, Routes, Route} from 'react-router-dom';
+import {BrowserRouter, Routes, Route, useLocation} from 'react-router-dom';
 import {useEffect, useState} from "react";
 import SnackbarProvider from 'react-simple-snackbar'
 import axios from "axios";
@@ -22,7 +22,9 @@ import EditAddress from "./address/EditAddress";
 import AddAddress from "./address/AddAddress";
 import Checkout from "./pages/checkout/Checkout";
 import Wishlist from "./pages/Wishlist";
-
+import WishlistShare from "./pages/WishlistShare";
+import {AnimatePresence} from "framer-motion";
+import AnimatedRoutes from "./components/AnimatedRoutes";
 
 function App() {
     const [products, setProducts] = useState([])
@@ -30,7 +32,6 @@ function App() {
     const [categories, setCategories] = useState([])
     const [topStores, setTopStores] = useState([])
     const [query, setQuery] = useState('');
-
     const getQuery = (inputValue) =>{
         setQuery(inputValue)
     }
@@ -62,15 +63,17 @@ function App() {
                     <SnackbarProvider>
                         <CartProvider>
                 <Navbar loading={loading} query={getQuery}/>
+                            <AnimatedRoutes/>
             <Routes>
                 <Route  path="/" element={<Home products={products.slice(0,4)}
                  topStores={topStores.slice(0,5)} categories={categories.slice(0,5)}  loading={loading}/>}/>
                 <Route  path='/products' element={<Products loading={loading} query={query}/>}/>
-                <Route path="/product/:productId" element={<ProductDetail  />} />
+                {/*<Route path="/product/:productId" element={<ProductDetail  />} />*/}
                 <Route path="/stores" element={<Stores stores={topStores} loading={loading}  />} />
                 <Route path="/store/:storeId" element={<StoreDetail  />}/>
                 <Route path="/category/:categoryId" element={<Categories  /> }/>
                 <Route path="/category" element={<CategoriesPage categories={categories}  />} />
+                <Route path="/wishlist/:WishlistId" element={<WishlistShare/>} />
                 <Route path="/signup" element={<SignUp/>} />
                 <Route path="/login" element={<SignIn/>} />
                 <Route path="/cart" element={<Cart/>} />

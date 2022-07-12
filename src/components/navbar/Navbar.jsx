@@ -53,7 +53,7 @@ const Navbar = ({loading, query}) => {
                     <div className='relative lg:hidden mt-2' >
                         <input placeholder='SEARCH' className='w-80  rounded-2xl pl-3 py-2
                                           focus:outline-none focus:ring focus:ring-cyan-500 border'
-                               type="text" onChange={(e)=>query(e.target.value)}
+                               type="search" onChange={(e)=>query(e.target.value)}
                                onKeyDown={handleKeyDown}/>
                         <Link to='/products'>
                             <img src={search} className={`${open ? 'top-1 ':'top-[-300px]'} absolute  lg:hidden right-14
@@ -72,7 +72,7 @@ const Navbar = ({loading, query}) => {
                         <Link to={'/stores'} className={`text--800 hover:text-cyan-700 duration-100 
                                 ${location.pathname === '/stores' && 'text-cyan-700 border-b-2 border-b-cyan-700'}  `}>Stores</Link>
                     </li>
-                    <li onClick={()=>setOpen(!open)} className='lg:ml-8 text-xl lg:my-0 my-7'>
+                    <li onClick={()=>setOpen(!open)} className='lg:ml-8 lg:hidden text-xl lg:my-0 my-7'>
                         <Link to={'/wishlist'} className={`text--800 hover:text-cyan-700 duration-100 
                                 ${location.pathname === '/wishlist' && 'text-cyan-700 border-b-2 border-b-cyan-700'}  `}>Wishlist</Link>
                     </li>
@@ -80,7 +80,7 @@ const Navbar = ({loading, query}) => {
                 <div className='relative hidden lg:block'>
                 <input placeholder='SEARCH' className='w-96 rounded-2xl pl-3 py-2 hidden lg:block
                                           focus:outline-none focus:ring focus:ring-cyan-500 border'
-                       type="text" onChange={(e)=>query(e.target.value)}
+                       type="search" onChange={(e)=>query(e.target.value)}
                 onKeyDown={handleKeyDown}/>
                     <Link to='/products'>
                 <img src={search} className={` absolute transition-all top-2 right-2 w-7 hover:cursor-pointer`}/>

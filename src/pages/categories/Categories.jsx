@@ -7,7 +7,7 @@ import Navbar from "../../components/navbar/Navbar";
 import Card from "../../components/card/Card";
 import Footer from "../../components/footer/Footer";
 
-function Categories({l, logout}) {
+function Categories({l}) {
     const {categoryId} = useParams()
     const [products, setProducts] = useState()
     const [loading, setLoading] = useState(true)

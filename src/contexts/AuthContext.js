@@ -1,8 +1,7 @@
-import {createContext, useContext, useEffect, useReducer, useState} from "react";
+import {createContext, useEffect, useReducer, useState} from "react";
 import axios from '../utils/axios'
-import {BASE_URL, TOKEN_KEY, TOKEN_STR} from '../utils/Constants'
+import {BASE_URL, TOKEN_KEY} from '../utils/Constants'
 import {useNavigate} from "react-router-dom";
-import CartContext from "./CartContext";
 
 let initState = {
     isAuth:false,
@@ -26,7 +25,7 @@ const reducer = (oldState, action)=>{
                 ...oldState,
                 isAuth:false
             }
-
+            default: return {...oldState}
     }
 }
 
@@ -36,7 +35,6 @@ export const AuthProvider = ({children})=>{
     const [passwordAlert, setPasswordAlert] = useState(false)
     const [user, setUser] = useState({})
     const [state, dispatch] = useReducer(reducer, initState)
-    const {getCart} = useContext(CartContext)
     const logout = ()=>{
         localStorage.removeItem(TOKEN_KEY);
         dispatch({

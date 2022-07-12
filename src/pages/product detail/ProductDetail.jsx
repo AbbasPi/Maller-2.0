@@ -8,7 +8,7 @@ import Loading from "../../components/Loading";
 import Footer from "../../components/footer/Footer";
 import CartContext from "../../contexts/CartContext";
 import AuthContext from "../../contexts/AuthContext";
-
+import {motion} from "framer-motion";
 
 function ProductDetail() {
     const {isAuth, user} = useContext(AuthContext)
@@ -90,7 +90,9 @@ function ProductDetail() {
         }
     }
 
-    return (<div>
+    return (<motion.div         initial={{opacity: 0}}
+                                animate={{opacity:1}}
+                                exit={{opacity:0}}>
         {product ? <div>
             <section className="font-[Poppins] text-gray-700 mt-6 body-font overflow-hidden bg-white">
                 <div className="container px-5 py-24 mx-auto">
@@ -178,7 +180,7 @@ function ProductDetail() {
             </section>
             <Footer/>
         </div> : <Loading/>}
-    </div>);
+    </motion.div>);
 }
 
 export default ProductDetail;

@@ -82,7 +82,7 @@ function Checkout() {
         axios.post(`${BASE_URL}/order/promo`, {
             promo_code: promo, order_id: order[0].id
         }, {headers: {"Authorization": `${user.token_type} ${user.access_token}`}}).then((res) => {
-            setPromoMsg('Promo Code Apllied Successfully')
+            setPromoMsg('Promo Code Applied Successfully')
         }).catch(function (error) {
             if (error.response) {
                 setPromoMsg('Invalid Promo Code')

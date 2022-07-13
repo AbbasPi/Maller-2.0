@@ -5,7 +5,6 @@ import { BASE_URL } from "../utils/Constants";
 import AuthContext from "./AuthContext";
 const initValue = {
   carts: [],
-  main: "",
   loading: true,
   empty: 0,
   total: 0,
@@ -35,13 +34,33 @@ export const CartProvider = ({ children }) => {
       fontSize: "15px",
     },
   };
-  const [openSnackbar, closeSnackbar] = useSnackbar(options);
+  const [openSnackbar] = useSnackbar(options);
   const [carts, setCarts] = useState([]);
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);
   const [empty, setEmpty] = useState(404);
   const [count, setCount] = useState(0);
-  const [main, setMain] = useState("");
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    getCart();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isAuth, user]);
+
+  useEffect(() => {
+    if (count !== products.length) {
+      setCount(products.length);
+    }
+    setProducts(carts?.map((cart) => cart.product.id));
+    setLoading(false);
+    setEmpty(0);
+    setTotal(
+      carts.reduce(
+        (total, item) => total + item.product.lowest * item.item_qty,
+        0
+      )
+    );
+  }, [carts, products.length]);
 
   const getCart = () => {
     if (isAuth === true) {
@@ -51,41 +70,21 @@ export const CartProvider = ({ children }) => {
         })
         .then((res) => {
           setCarts([...res.data]);
-          if (carts) {
-            setLoading(false);
-            setEmpty(0);
-            setTotal(
-              carts.reduce(
-                (total, item) => total + item.product.lowest * item.item_qty,
-                0
-              )
-            );
-          }
         })
         .catch(function (error) {
           if (error.response) {
             setEmpty(error.response.status);
           }
         });
-
-      setCount(carts.length);
     }
   };
 
-  useEffect(() => {
-    if (carts.length) {
-      setCount(carts.length);
-    } else {
-      setCount(0);
-    }
-  }, [isAuth, user, empty, carts.length]);
-
   const addToCarts = (cart) => {
-    let cartsTemp = carts;
     if (isAuth === true) {
+      if (!products.includes(cart)) {
+        setProducts(products.push(cart));
+      }
       openSnackbar("Added To Cart");
-      cartsTemp.push(cart);
-      setCarts([...cartsTemp]);
       axios
         .post(
           `${BASE_URL}/cart/my`,
@@ -103,34 +102,29 @@ export const CartProvider = ({ children }) => {
         .catch((err) => {
           console.log(err);
         });
-      if (!carts.includes(cart)) setCount(count + 1);
     } else if (isAuth === false) {
       openSnackbar("Login To Add To Cart");
     }
   };
 
   const removeCart = (id) => {
-    isAuth &&
+    if (isAuth === true) {
+      let temCart = carts;
+      temCart = temCart.filter((item) => item.id !== id);
+      setCarts(temCart);
       axios
         .delete(`${BASE_URL}/cart/item/delete/${id}`, {
           headers: { Authorization: `${user.token_type} ${user.access_token}` },
         })
         .then(() => {
-          getCart();
-          setTotal(
-            carts.reduce(
-              (total, item) => total + item.product.lowest * item.item_qty,
-              0
-            )
-          );
+          setTimeout(() => getCart(), 5000);
         })
         .catch((err) => {
           console.log(err);
         });
-    setCarts(carts.filter((item) => item.id !== id));
-    setCount((prev) => prev - 1);
-    if (count === 0) {
-      setEmpty(404);
+      if (count === 0) {
+        setEmpty(404);
+      }
     }
   };
 
@@ -212,7 +206,6 @@ export const CartProvider = ({ children }) => {
         setCount,
         setEmpty,
         setCarts,
-        main,
       }}
     >
       {children}

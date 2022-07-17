@@ -3,7 +3,7 @@ import "./navbar.css";
 import logo from "../assets/media/logo.png";
 import account from "../assets/media/account.png";
 import search from "../assets/svg/icons8-search.svg";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import CartContext from "../../contexts/CartContext";
 import AuthContext from "../../contexts/AuthContext";
 
@@ -80,7 +80,7 @@ const Navbar = ({ loading, query }) => {
                 onClick={() => setOpen(!open)}
                 className="lg:ml-8 text-xl lg:my-0 my-7"
               >
-                <Link
+                <NavLink
                   to={"/"}
                   className={`text--800 hover:text-cyan-700 duration-100 
                                 ${
@@ -89,13 +89,13 @@ const Navbar = ({ loading, query }) => {
                                 }  `}
                 >
                   Home
-                </Link>
+                </NavLink>
               </li>
               <li
                 onClick={() => setOpen(!open)}
                 className="lg:ml-8 text-xl lg:my-0 my-7"
               >
-                <Link
+                <NavLink
                   to={"/products"}
                   className={`text--800 hover:text-cyan-700 duration-100 
                                 ${
@@ -104,13 +104,13 @@ const Navbar = ({ loading, query }) => {
                                 }  `}
                 >
                   Products
-                </Link>
+                </NavLink>
               </li>
               <li
                 onClick={() => setOpen(!open)}
                 className="lg:ml-8 text-xl lg:my-0 my-7"
               >
-                <Link
+                <NavLink
                   to={"/stores"}
                   className={`text--800 hover:text-cyan-700 duration-100 
                                 ${
@@ -119,13 +119,13 @@ const Navbar = ({ loading, query }) => {
                                 }  `}
                 >
                   Stores
-                </Link>
+                </NavLink>
               </li>
               <li
                 onClick={() => setOpen(!open)}
                 className="lg:ml-8 lg:hidden text-xl lg:my-0 my-7"
               >
-                <Link
+                <NavLink
                   to={"/wishlist"}
                   className={`text--800 hover:text-cyan-700 duration-100 
                                 ${
@@ -134,7 +134,7 @@ const Navbar = ({ loading, query }) => {
                                 }  `}
                 >
                   Wishlist
-                </Link>
+                </NavLink>
               </li>
             </ul>
             <div className="relative hidden lg:block">

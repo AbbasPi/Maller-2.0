@@ -10,7 +10,7 @@ import CartContext from "../../contexts/CartContext";
 
 function Checkout() {
   const { isAuth, user } = useContext(AuthContext);
-  const { getCart, setCount, setCarts } = useContext(CartContext);
+  const { getCart, setCarts } = useContext(CartContext);
   const [city, setCity] = useState([]);
   const [order, setOrder] = useState([]);
   const [address, setAddress] = useState([]);
@@ -354,6 +354,7 @@ function Checkout() {
                       >
                         <div className="relative my-4">
                           <img
+                            alt=""
                             src={item.product.images[0].image}
                             className=" lg:h-28 lg:w-36 h-24 w-28 object-contain bg-white object-center rounded-xl"
                           />

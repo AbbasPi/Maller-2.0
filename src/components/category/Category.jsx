@@ -10,7 +10,7 @@ function Category({categories, categoriesPage}) {
                     !categoriesPage &&
                 <div className='flex justify-between'>
                     <h2 className="text-2xl font-bold text-gray-900">Categories</h2>
-                    <Link to={'/category'} className="text-2xl text-gray-900">Browse ></Link>
+                    <Link to={'/category'} className="text-2xl text-gray-900">Browse {'>'}</Link>
                 </div>
                 }
                 <div className="mt-6 grid gap-y-10 gap-x-6 grid-cols-2 lg:grid-cols-5 xl:gap-x-8">
@@ -20,7 +20,7 @@ function Category({categories, categoriesPage}) {
                              overflow-hidden group-hover:cursor-cell lg:h-60 lg:aspect-none">
                                 <Link to={`/category/${category.id}`}>
 
-                                <img
+                                <img alt=''
                                     src={category.image}
                                     className="w-full  h-full object-center object-contain lg:w-full lg:h-full"
                                 />

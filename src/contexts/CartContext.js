@@ -45,46 +45,64 @@ export const CartProvider = ({ children }) => {
   useEffect(() => {
     getCart();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isAuth, user]);
+  }, [isAuth]);
 
   useEffect(() => {
-    if (count !== products.length) {
-      setCount(products.length);
+    if (carts.length === 0) {
+      setEmpty(404);
+      setLoading(false);
+    } else {
+      setEmpty(0);
+      setLoading(false);
     }
-    setProducts(carts?.map((cart) => cart.product.id));
-    setLoading(false);
-    setEmpty(0);
-    setTotal(
-      carts.reduce(
-        (total, item) => total + item.product.lowest * item.item_qty,
-        0
-      )
-    );
-  }, [carts, products.length]);
+  }, [carts.length, isAuth]);
 
   const getCart = () => {
+    setLoading(true);
     if (isAuth === true) {
       axios
         .get(`${BASE_URL}/cart/my`, {
           headers: { Authorization: `${user.token_type} ${user.access_token}` },
         })
         .then((res) => {
-          setCarts([...res.data]);
+          setCarts(...[res.data]);
+          setCount(res.data.length);
+          setProducts(res.data.map((item) => item.product.id));
+          setLoading(false);
+          setEmpty(0);
+          setTotal(
+            carts.reduce(
+              (total, item) => total + item.product.lowest * item.item_qty,
+              0
+            )
+          );
         })
         .catch(function (error) {
           if (error.response) {
             setEmpty(error.response.status);
+            setLoading(false);
           }
         });
+    } else {
+      setCarts([]);
+      setCount(0);
+      setProducts([]);
+      setLoading(false);
+      setEmpty(404);
+      setTotal(0);
     }
   };
 
   const addToCarts = (cart) => {
     if (isAuth === true) {
-      if (!products.includes(cart)) {
-        setProducts(products.push(cart));
+      const newCart = carts;
+      const index = products.findIndex((item) => item === cart);
+      if (index === -1) {
+        setProducts((prev) => [...prev, cart]);
+        setCount(count + 1);
+      } else {
+        newCart.map((p) => p.product.id === cart && p.item_qty + 1);
       }
-      openSnackbar("Added To Cart");
       axios
         .post(
           `${BASE_URL}/cart/my`,
@@ -96,28 +114,69 @@ export const CartProvider = ({ children }) => {
           }
         )
         .then((res) => {
-          getCart();
-          setEmpty(0);
+          // getCart();
         })
         .catch((err) => {
           console.log(err);
         });
+
+      openSnackbar("Added To Cart");
     } else if (isAuth === false) {
       openSnackbar("Login To Add To Cart");
     }
   };
 
-  const removeCart = (id) => {
+  // const addToCarts = (cart) => {
+  //   if (isAuth === true) {
+  //     if (!products.includes(cart)) {
+  //       setProducts(products.push(cart));
+  //       setCount(products.length);
+  //       console.log("function", count, products.length);
+  //     }
+  //     openSnackbar("Added To Cart");
+  //     axios
+  //       .post(
+  //         `${BASE_URL}/cart/my`,
+  //         { product_id: cart, item_qty: 1 },
+  //         {
+  //           headers: {
+  //             Authorization: `${user.token_type} ${user.access_token}`,
+  //           },
+  //         }
+  //       )
+  //       .then((res) => {
+  //         getCart();
+  //         setEmpty(0);
+  //       })
+  //       .catch((err) => {
+  //         console.log(err);
+  //       });
+  //   } else if (isAuth === false) {
+  //     openSnackbar("Login To Add To Cart");
+  //   }
+  // };
+
+  const removeCart = (itemId, productId) => {
     if (isAuth === true) {
       let temCart = carts;
-      temCart = temCart.filter((item) => item.id !== id);
-      setCarts(temCart);
+      temCart = temCart.filter((item) => item.id !== itemId);
+      setCarts(...[temCart]);
+      let temProducts = products;
+      temProducts = temProducts.filter((id) => id !== productId);
+      setProducts(...[temProducts]);
+      setCount(temCart.length);
+      setTotal(
+        temCart.reduce(
+          (total, item) => total + item.product.lowest * item.item_qty,
+          0
+        )
+      );
       axios
-        .delete(`${BASE_URL}/cart/item/delete/${id}`, {
+        .delete(`${BASE_URL}/cart/item/delete/${itemId}`, {
           headers: { Authorization: `${user.token_type} ${user.access_token}` },
         })
         .then(() => {
-          setTimeout(() => getCart(), 5000);
+          // setTimeout(() => getCart(), 5000);
         })
         .catch((err) => {
           console.log(err);
@@ -141,7 +200,7 @@ export const CartProvider = ({ children }) => {
           }
         )
         .then((res) => {
-          getCart();
+          // getCart();
           setTotal(
             carts.reduce(
               (total, item) => total + item.product.lowest * item.item_qty,
@@ -160,7 +219,18 @@ export const CartProvider = ({ children }) => {
   };
 
   const reduceQty = (id) => {
-    isAuth &&
+    if (isAuth) {
+      let tempCart = carts;
+      tempCart.map((item) => {
+        if (item.id === id) {
+          if (item.item_qty === 1) {
+            removeCart(id);
+          } else {
+            item.item_qty--;
+            setCarts(...[tempCart]);
+          }
+        }
+      });
       axios
         .post(
           `${BASE_URL}/cart/item/reduce/${id}`,
@@ -172,7 +242,7 @@ export const CartProvider = ({ children }) => {
           }
         )
         .then((res) => {
-          getCart();
+          // getCart();
           setTotal(
             carts.reduce(
               (total, item) => total + item.product.lowest * item.item_qty,
@@ -183,11 +253,7 @@ export const CartProvider = ({ children }) => {
         .catch((err) => {
           console.log(err);
         });
-    carts.forEach((item) => {
-      if (item.id === id) {
-        item.item_qty--;
-      }
-    });
+    }
   };
 
   return (
@@ -203,7 +269,6 @@ export const CartProvider = ({ children }) => {
         reduceQty,
         increaseQty,
         getCart,
-        setCount,
         setEmpty,
         setCarts,
       }}

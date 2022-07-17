@@ -20,7 +20,7 @@ function Products({ query }) {
     getLabels();
     getProducts();
   }, [limit, query, labelId]);
-  
+
   const getLabels = () => {
     axios
       .get(`${BASE_URL}/label/all`)
@@ -32,7 +32,6 @@ function Products({ query }) {
       });
   };
   const getProducts = () => {
-    setLoading(true);
     axios
       .get(`${BASE_URL}/product/all`, {
         params: {

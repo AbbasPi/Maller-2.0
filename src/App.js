@@ -37,25 +37,21 @@ function App() {
   };
 
   useEffect(() => {
+    getHomePageContent();
+  }, []);
+  const getHomePageContent = () => {
+    setLoading(true);
     axios.get(`${BASE_URL}/category/all`).then((res) => {
       setCategories(res.data.slice(0, 5));
-      setLoading(false);
     });
-  }, []);
-
-  useEffect(() => {
     axios.get(`${BASE_URL}/vendor/all`).then((res) => {
       setTopStores(res.data);
-      setLoading(false);
     });
-  }, []);
-  useEffect(() => {
     axios.get(`${BASE_URL}/product/all`).then((res) => {
       setProducts(res.data.data);
-      setLoading(false);
     });
-  }, []);
-  
+    setLoading(false);
+  };
   return (
     <div className="App">
       <BrowserRouter>

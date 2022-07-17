@@ -1,6 +1,5 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import TopStoresCards from "../../components/top stores cards/TopStoresCards";
-import Navbar from "../../components/navbar/Navbar";
 import Footer from "../../components/footer/Footer";
 import Loading from "../../components/Loading";
 

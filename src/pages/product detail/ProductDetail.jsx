@@ -8,6 +8,7 @@ import Loading from "../../components/Loading";
 import Footer from "../../components/footer/Footer";
 import CartContext from "../../contexts/CartContext";
 import AuthContext from "../../contexts/AuthContext";
+import Snackbar from "../../components/Snackbar";
 
 function ProductDetail() {
   const { isAuth, user } = useContext(AuthContext);
@@ -20,6 +21,7 @@ function ProductDetail() {
   const [wish, setWish] = useState(false);
   const { addToCarts } = useContext(CartContext);
   const [color, setColor] = useState(true);
+  const [show, setShow] = useState(false);
   const options = {
     position: "bottom-right",
     style: {
@@ -100,6 +102,22 @@ function ProductDetail() {
   };
   return (
     <>
+      <div className="m-32">
+        <button
+          onClick={() => setShow(!show)}
+          className="bg-blue-800 text-white p-3 "
+        >
+          Click to show Snackbar
+        </button>
+        <Snackbar>
+          <div
+            className={`bg-cyan-700 border-2 transition-all duration-300 ease-in border-white bottom-4 text-white py-3 px-12 rounded-lg font-semibold font-[Poppins]
+               fixed  ${show ? " right-4" : " -right-96"}`}
+          >
+            Hello snackbar
+          </div>
+        </Snackbar>
+      </div>
       {product ? (
         <>
           <section className="font-[Poppins] text-gray-700 mt-6 body-font overflow-hidden bg-white">
